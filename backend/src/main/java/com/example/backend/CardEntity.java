@@ -16,6 +16,16 @@ public class CardEntity {
     private String hiddenPart;
     private String visiblePart;
 
+    private int mark;
+
+    public int getMark() {
+        return this.mark;
+    }
+
+    public void setMark(int mark) {
+        this.mark = mark;
+    }
+
     public Long getId() {
         return this.id;
     }

@@ -39,11 +39,12 @@ public class CardController {
 
     @PostMapping("/new")
     public @ResponseBody ResponseEntity<String> createCard(@RequestParam String hiddenPart,
-            @RequestParam String visiblePart) {
+            @RequestParam String visiblePart, @RequestParam(defaultValue = "0") int mark) {
 
         CardEntity card = new CardEntity();
         card.setHiddenPart(hiddenPart);
         card.setVisiblePart(visiblePart);
+        card.setMark(mark);
 
         cardRepository.save(card);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -56,10 +57,22 @@ public class CardController {
     }
 
     @PostMapping("/update")
-    public @ResponseBody ResponseEntity<String> updateCard(@RequestParam long id, @RequestParam String hiddenPart,
-            @RequestParam String visiblePart) {
-        this.deleteCard(id);
-        this.createCard(hiddenPart, visiblePart);
+    public @ResponseBody ResponseEntity<String> updateCard(@RequestParam long id,
+            @RequestParam(required = false) String hiddenPart,
+            @RequestParam(required = false) String visiblePart, @RequestParam(required = false, defaultValue = "-1") int mark) {
+
+        var card = cardRepository.findById(id).get();
+        if (hiddenPart != null){
+            card.setHiddenPart(hiddenPart);
+        }
+        if (visiblePart != null){
+            card.setVisiblePart(visiblePart);
+        }
+        if (mark != -1){
+            card.setMark(mark);
+        }
+        cardRepository.save(card);
+        
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

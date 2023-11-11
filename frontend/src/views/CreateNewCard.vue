@@ -40,6 +40,7 @@ const createNewCardForm = () => {
 
             <label>Visible part:</label>
             <input v-model="visiblePart" required />
+            
 
             <button type="submit">Submit</button>
         </form>
