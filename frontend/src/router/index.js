@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import CreateNewCard from '../views/CreateNewCard.vue'
+import AllCardView from '../views/AllCardView.vue'
+import LearnView from '../views/LearnView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,7 +19,22 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
-    }
+    },
+    {
+      path: '/new',
+      name: 'new',
+      component: CreateNewCard
+    },
+    {
+      path: '/cards',
+      name: 'cards',
+      component: AllCardView
+    },
+    {
+      path: '/learn',
+      name: 'learn',
+      component: LearnView
+    },
   ]
 })
 
