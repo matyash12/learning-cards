@@ -3,6 +3,10 @@ import HomeView from '../views/HomeView.vue'
 import CreateNewCard from '../views/CreateNewCard.vue'
 import AllCardView from '../views/AllCardView.vue'
 import LearnView from '../views/LearnView.vue'
+import AllDecksView from '../views/AllDecksView.vue'
+import CreateNewDeck from '../views/CreateNewDeck.vue'
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,8 +25,8 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/new',
-      name: 'new',
+      path: '/card/new',
+      name: 'card_new',
       component: CreateNewCard
     },
     {
@@ -34,6 +38,16 @@ const router = createRouter({
       path: '/learn',
       name: 'learn',
       component: LearnView
+    },
+    {
+      path: '/decks',
+      name: 'decks',
+      component: AllDecksView
+    },
+    {
+      path: '/deck/new',
+      name: 'deck_new',
+      component: CreateNewDeck
     },
   ]
 })

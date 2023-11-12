@@ -22,13 +22,19 @@ import { RouterLink, RouterView } from 'vue-router'
                 <RouterLink class="nav-link active"  to="/about">About</RouterLink>
               </li>
               <li class="nav-item">
-                <RouterLink class="nav-link active"  to="/new">New</RouterLink>
+                <RouterLink class="nav-link active"  to="/card/new">New card</RouterLink>
               </li>
               <li class="nav-item">
-                <RouterLink class="nav-link active"  to="/cards">All</RouterLink>
+                <RouterLink class="nav-link active"  to="/cards">All cards</RouterLink>
               </li>
               <li class="nav-item">
                 <RouterLink class="nav-link active"  to="/learn">Learn</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link active"  to="/decks">All decks</RouterLink>
+              </li>
+              <li class="nav-item">
+                <RouterLink class="nav-link active"  to="/deck/new">New deck</RouterLink>
               </li>
             </ul>
           </div>

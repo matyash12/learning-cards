@@ -40,6 +40,7 @@ update()
         <thead>
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">Deck</th>
                 <th scope="col">Mark</th>
                 <th scope="col">Hidden part</th>
                 <th scope="col">Visible part</th>
@@ -48,6 +49,7 @@ update()
         <tbody>
             <tr v-for="(card, index) in cards" :key="card.id">
                 <th scope="row">{{ index + 1 }}</th>
+                <td>{{ card.deckEntity.name }}</td>
                 <td>{{ card.mark }}</td>
                 <td>{{ card.hiddenPart }}</td>
                 <td>{{ card.visiblePart }}</td>
