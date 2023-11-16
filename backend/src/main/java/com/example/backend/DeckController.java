@@ -1,6 +1,8 @@
 package com.example.backend;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +44,13 @@ public class DeckController {
 
         deckRepository.save(table);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+     @PostMapping("/find")
+    public @ResponseBody ResponseEntity<List<DeckEntity>> getCards(@RequestParam long tridaid) {
+        var decks = deckRepository.findByTridaEntity(tridaRepository.findById(tridaid).get());
+
+        return new ResponseEntity<>(decks, HttpStatus.OK);
     }
 
     @PostMapping("/delete")
