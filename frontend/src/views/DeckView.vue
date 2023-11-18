@@ -108,6 +108,7 @@ refreshDataOnPage();
         <thead>
             <tr>
                 <th>#</th>
+                <th>Mark</th>
                 <th>Visible side</th>
                 <th>Hidden side</th>
                 <th>Delete</th>
@@ -116,6 +117,7 @@ refreshDataOnPage();
         <tbody>
             <tr v-for="(card, index) in cards">
                 <td>{{ index + 1 }}</td>
+                <td>{{ card.mark }}</td>
                 <td>{{ card.visiblePart }}</td>
                 <td>{{ card.hiddenPart }}</td>
                 <td><a @click="deleteCard(card.id)">Delete</a></td>
