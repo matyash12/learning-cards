@@ -63,10 +63,31 @@ const clickDeck = (id) => {
 }
 
 const createNewDeck = () => {
-    router.push('/'+selectedTrida.value.id+'/new')
+    router.push('/' + selectedTrida.value.id + '/new')
 }
 const createNewTrida = () => {
     router.push('/new')
+}
+
+const deleteTrida = () => {
+    axios.post(API_ADDRESS + 'tridy/delete',
+        {
+            id: selectedTrida.value.id,
+        },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    ).then(function (result) {
+        selectedTrida.value = null;
+        selectedTridaDecks.value = [];
+        getAllTrida();
+        
+
+    }).catch(function (err) {
+        console.log(err);
+    })
 }
 
 
@@ -99,6 +120,11 @@ getAllTrida();
 
         </div>
         <div class="column">
+            <div v-if="selectedTrida != null">
+                <button @click="deleteTrida">Delete</button>
+            </div>
+
+
             <aside class="menu">
                 <p class="menu-label">
                     {{ selectedTrida?.name ?? 'None selected' }}
