@@ -95,6 +95,18 @@ const deleteThisDeck = () => {
 
 refreshDataOnPage();
 
+
+
+
+const isDeleteConfirmationModalActive = ref(false);
+
+const showDeleteConfirmationModal = () => {
+  isDeleteConfirmationModalActive.value = true;
+};
+
+const hideDeleteConfirmationModal = () => {
+  isDeleteConfirmationModalActive.value = false;
+};
 </script>
 
 
@@ -104,7 +116,7 @@ refreshDataOnPage();
             <button @click="moveToLearning" class="button is-primary">Learn</button>
             <button @click="createNewCard" class="button is-success">Add card</button>
             <button @click="moveToClassView" class="button is-info">Classes</button>
-            <button @click="deleteThisDeck" class="button is-danger">Delete</button>
+            <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
         </div>
         <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
         <table class="table is-fullwidth">
@@ -130,5 +142,24 @@ refreshDataOnPage();
             </tbody>
         </table>
     </div>
+
+ <!-- Modal -->
+ <div class="modal" :class="{ 'is-active': isDeleteConfirmationModalActive }">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Confirmation</p>
+          <button class="delete" aria-label="close" @click="hideDeleteConfirmationModal()"></button>
+        </header>
+        <section class="modal-card-body">
+          Are you sure you want to delete this item?
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-danger" @click="deleteThisDeck" >Delete</button>
+          <button class="button" @click="hideDeleteConfirmationModal">Cancel</button>
+        </footer>
+      </div>
+    </div>
+
 </template>
-  
+

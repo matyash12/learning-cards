@@ -95,6 +95,18 @@ const deleteTrida = () => {
 getAllTrida();
 
 
+
+
+const isDeleteConfirmationModalActive = ref(false);
+
+const showDeleteConfirmationModal = () => {
+  isDeleteConfirmationModalActive.value = true;
+};
+
+const hideDeleteConfirmationModal = () => {
+  isDeleteConfirmationModalActive.value = false;
+};
+
 </script>
 
 
@@ -129,8 +141,8 @@ getAllTrida();
                     <button @click="createNewDeck" class="button is-primary ">
                         Create new deck
                     </button>
-                    <button class="button is-danger" @click="deleteTrida">Delete</button>
-              
+                    <button class="button is-danger" @click="showDeleteConfirmationModal">Delete</button>
+
 
                 </div>
 
@@ -155,7 +167,21 @@ getAllTrida();
     </div>
 
 
-
-
-    
+    <!-- Modal -->
+    <div class="modal" :class="{ 'is-active': isDeleteConfirmationModalActive }">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Confirmation</p>
+                <button class="delete" aria-label="close" @click="hideDeleteConfirmationModal()"></button>
+            </header>
+            <section class="modal-card-body">
+                Are you sure you want to delete this item?
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-danger" @click="deleteTrida">Delete</button>
+                <button class="button" @click="hideDeleteConfirmationModal">Cancel</button>
+            </footer>
+        </div>
+    </div>
 </template>
