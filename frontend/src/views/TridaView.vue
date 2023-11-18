@@ -65,6 +65,10 @@ const clickDeck = (id) => {
 const createNewDeck = () => {
     router.push('/'+selectedTrida.value.id+'/new')
 }
+const createNewTrida = () => {
+    router.push('/new')
+}
+
 
 
 getAllTrida();
@@ -84,6 +88,10 @@ getAllTrida();
                     <li v-for="(trida) in tridy">
                         <a :class="{ 'is-active': trida == selectedTrida }" @click="clickTrida(trida.id)">{{ trida.name
                         }}</a>
+                    </li>
+
+                    <li>
+                        <a @click="createNewTrida">Create new class</a>
                     </li>
 
                 </ul>
