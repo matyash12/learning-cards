@@ -14,7 +14,7 @@ const getDeck = (deckid) => {
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: API_ADDRESS + 'deck/1',
+        url: API_ADDRESS + 'deck/'+deckid,
         headers: {}
     };
 
