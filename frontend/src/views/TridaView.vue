@@ -29,7 +29,7 @@ const getAllTrida = () => {
 
 }
 const findDecks = (tridaid) => {
-    axios.post(API_ADDRESS+'deck/find',
+    axios.post(API_ADDRESS + 'deck/find',
         {
             tridaid: tridaid,
         },
@@ -59,8 +59,11 @@ const clickTrida = (id) => {
 }
 
 const clickDeck = (id) => {
-    console.log(id);
-    router.push('deck/'+id);
+    router.push('deck/' + id);
+}
+
+const createNewDeck = () => {
+    router.push('/'+selectedTrida.value.id+'/new')
 }
 
 
@@ -82,6 +85,7 @@ getAllTrida();
                         <a :class="{ 'is-active': trida == selectedTrida }" @click="clickTrida(trida.id)">{{ trida.name
                         }}</a>
                     </li>
+
                 </ul>
             </aside>
 
@@ -94,6 +98,9 @@ getAllTrida();
                 <ul class="menu-list">
                     <li v-for="(deck) in selectedTridaDecks">
                         <a @click="clickDeck(deck.id)">{{ deck.name }}</a>
+                    </li>
+                    <li v-if="selectedTrida != null">
+                        <a @click="createNewDeck">Create new deck</a>
                     </li>
                 </ul>
             </aside>

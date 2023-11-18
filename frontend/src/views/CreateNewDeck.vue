@@ -1,15 +1,22 @@
 <script setup>
-import { ref } from 'vue';
+import { API_ADDRESS } from '../helpers.js';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+const router = useRouter();
+const route = useRoute();
 
 
 // Data properties
 const deckName = ref('');
 
+let tridaid = route.params.tridaid;
+
 
 // Methods
 const createNewDeckForm = () => {
-    axios.post('http://localhost:8080/deck/new', {
-        'name': deckName.value
+    axios.post(API_ADDRESS+'deck/new', {
+        'name': deckName.value,
+        tridaid:tridaid,
     },
         {
             headers: {
@@ -20,25 +27,29 @@ const createNewDeckForm = () => {
     )
         .then(function (response) {
             console.log(response);
+            moveToClasses();
         })
         .catch(function (error) {
             console.log(error);
         });
 
 };
+
+
+const moveToClasses = () =>{
+    router.push('/');
+}
 </script>
 
 
 <template>
     <h1>Create new deck</h1>
     <div>
-        <form @submit="createNewDeckForm">
             <label>Deck name:</label>
-            <input v-model="deckName" required />
+            <input v-model="deckName"  />
             
-
-            <button type="submit">Submit</button>
-        </form>
+            <button @click="moveToClasses">Cancel</button>
+            <button @click="createNewDeckForm">Submit</button>
 
     </div>
 </template>

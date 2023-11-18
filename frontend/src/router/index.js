@@ -33,6 +33,11 @@ const router = createRouter({
       name: 'learn',
       component: LearnView
     },
+    {
+      path: '/:tridaid/new',
+      name: 'deck_new',
+      component: CreateNewDeck,
+    },
   ]
 })
 
