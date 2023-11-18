@@ -79,10 +79,7 @@ onUnmounted(() => {
 
 
 <template>
-    <p>Deck id:{{ deckid }}</p>
-    <p>Card id:{{ cardid }}</p>
-
-
+    <h1 class="title">Create new card</h1>
     <div>
         <div class="field">
             <label class="label">Hidden side</label>
@@ -98,13 +95,14 @@ onUnmounted(() => {
         </div>
 
 
-        <p v-if="wasLastCardCreated == true">Card was created</p>
+        <p v-if="wasLastCardCreated == true" class="is-italic">Card was created</p>
 
         <div class="field is-grouped">
             <div class="control">
-                <button @click="createCard" class="button">Create (c)</button>
-                <button @click="moveToDeckView" class="button">Cancel</button>
-                
+                <button class="button is-primary" @click="createCard">Create (c)</button>
+            </div>
+            <div class="control">
+                <button class="button is-link is-light" @click="moveToDeckView">Cancel</button>
             </div>
         </div>
     </div>

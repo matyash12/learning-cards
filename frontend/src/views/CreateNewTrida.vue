@@ -14,7 +14,7 @@ let tridaid = route.params.tridaid;
 
 // Methods
 const createNewTrida = () => {
-    axios.post(API_ADDRESS+'tridy/new', {
+    axios.post(API_ADDRESS + 'tridy/new', {
         'name': tridaName.value,
     },
         {
@@ -35,20 +35,33 @@ const createNewTrida = () => {
 };
 
 
-const moveToClasses = () =>{
+const moveToClasses = () => {
     router.push('/');
 }
 </script>
 
 
 <template>
-    <h1>Create new class</h1>
     <div>
-            <label>Class name:</label>
-            <input v-model="tridaName"  />
-            
-            <button @click="moveToClasses">Cancel</button>
-            <button @click="createNewTrida">Create</button>
+        <h1 class="title">Create new class</h1>
+
+        <div class="box">
+        <div class="field">
+            <label class="label">Class name</label>
+            <div class="control">
+                <input v-model="tridaName" class="input" type="text" placeholder="Class name">
+            </div>
+        </div>
+
+        <div class="field is-grouped">
+            <div class="control">
+                <button class="button is-primary" @click="createNewTrida">Create</button>
+            </div>
+            <div class="control">
+                <button class="button is-link is-light" @click="moveToClasses">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     </div>
 </template>

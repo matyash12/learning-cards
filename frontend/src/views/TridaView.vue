@@ -3,7 +3,6 @@
 import { API_ADDRESS } from '../helpers.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-
 const router = useRouter();
 let tridy = ref([]);
 let selectedTrida = ref(null);
@@ -83,12 +82,13 @@ const deleteTrida = () => {
         selectedTrida.value = null;
         selectedTridaDecks.value = [];
         getAllTrida();
-        
+
 
     }).catch(function (err) {
         console.log(err);
     })
 }
+
 
 
 
@@ -112,33 +112,50 @@ getAllTrida();
                     </li>
 
                     <li>
-                        <a @click="createNewTrida">Create new class</a>
+                        <a @click="createNewTrida" class="has-text-weight-bold">Create new class</a>
                     </li>
 
                 </ul>
             </aside>
 
         </div>
-        <div class="column">
-            <div v-if="selectedTrida != null">
-                <button @click="deleteTrida">Delete</button>
+        <div class="column" v-show="selectedTrida != null">
+            <div class="box">
+                <p class="title">
+                    {{ selectedTrida?.name ?? '' }}
+                </p>
+
+                <div class="buttons">
+                    <button @click="createNewDeck" class="button is-primary ">
+                        Create new deck
+                    </button>
+                    <button class="button is-danger" @click="deleteTrida">Delete</button>
+              
+
+                </div>
+
             </div>
 
 
+
+
             <aside class="menu">
-                <p class="menu-label">
-                    {{ selectedTrida?.name ?? 'None selected' }}
-                </p>
+
                 <ul class="menu-list">
                     <li v-for="(deck) in selectedTridaDecks">
                         <a @click="clickDeck(deck.id)">{{ deck.name }}</a>
                     </li>
                     <li v-if="selectedTrida != null">
-                        <a @click="createNewDeck">Create new deck</a>
+                        <a class="has-text-weight-bold" @click="createNewDeck">Create new deck</a>
                     </li>
                 </ul>
             </aside>
 
         </div>
     </div>
+
+
+
+
+    
 </template>

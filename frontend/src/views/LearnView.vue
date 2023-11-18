@@ -195,39 +195,39 @@ const updateUI = () => {
 }
 
 const handleKeyDown = (event) => {
-    
-    if (event.key === ' '){
-        if (!isHiddenVisible.value){
+
+    if (event.key === ' ') {
+        if (!isHiddenVisible.value) {
             isHiddenVisible.value = true;
         }
     }
-    if (event.key === '1'){
-        if (isHiddenVisible){
+    if (event.key === '1') {
+        if (isHiddenVisible) {
             nextMark(1);
         }
     }
-    if (event.key === '2'){
-        if (isHiddenVisible){
+    if (event.key === '2') {
+        if (isHiddenVisible) {
             nextMark(2);
         }
     }
-    if (event.key === '3'){
-        if (isHiddenVisible){
+    if (event.key === '3') {
+        if (isHiddenVisible) {
             nextMark(3);
         }
     }
-    if (event.key === '4'){
-        if (isHiddenVisible){
+    if (event.key === '4') {
+        if (isHiddenVisible) {
             nextMark(4);
         }
     }
-    if (event.key === '5'){
-        if (isHiddenVisible){
+    if (event.key === '5') {
+        if (isHiddenVisible) {
             nextMark(5);
         }
     }
-    if (event.key === '0'){
-        if (isHiddenVisible){
+    if (event.key === '0') {
+        if (isHiddenVisible) {
             next();
         }
     }
@@ -248,74 +248,77 @@ getDeck();
 <template>
     <div class="columns">
         <div class="column is-one-quarter">
-            <h1>{{ deck?.tridaEntity.name ?? 'loading..' }}</h1>
-            <h2>{{deck?.name ?? 'loading..'}}</h2>
-            <button @click="moveToDeck">Deck</button>
-            <progress class="progress" :value="progressBarWidth" max="100">progressBarWidth</progress>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Mark</th>
-                        <th>Count</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>{{ mark_one_count ?? 0 }}</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>{{ mark_two_count ?? 0 }}</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>{{ mark_three_count ?? 0 }}</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>{{ mark_four_count ?? 0 }}</td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>{{ mark_five_count ?? 0 }}</td>
-                    </tr>
-                    <tr>
-                        <td>None</td>
-                        <td>{{ mark_none_count ?? 0 }}</td>
-                    </tr>
-                </tbody>
-            </table>
-
-
-        </div>
-        <div class="column">
-            <h1>Learn</h1>
-            
-
-
-
-            <div v-if="activeid != -1">
-                <p>{{ cards[activeid].hiddenPart }}</p>
-
-
-                <p v-if="isHiddenVisible">{{ cards[activeid].visiblePart }}</p>
-
-                <button v-if="!isHiddenVisible" @click="showHidden">Show hidden</button>
-                <div v-if="isHiddenVisible">
-
-                    <button @click="nextMark(1)">1</button>
-                    <button @click="nextMark(2)">2</button>
-                    <button @click="nextMark(3)">3</button>
-                    <button @click="nextMark(4)">4</button>
-                    <button @click="nextMark(5)">5</button>
-                    <button v-if="isHiddenVisible" @click="next">Skip</button>
-                </div>
+            <div class="box">
+                <h1 class="title">{{ deck?.tridaEntity.name ?? 'Loading...' }}</h1>
+                <h2 class="subtitle">{{ deck?.name ?? 'Loading...' }}</h2>
+                <progress class="progress is-primary" :value="progressBarWidth" max="100">{{ progressBarWidth
+                }}%</progress>
+                <table class="table is-bordered is-striped is-narrow is-hoverable">
+                    <thead>
+                        <tr>
+                            <th>Mark</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>{{ mark_one_count ?? 0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>{{ mark_two_count ?? 0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>{{ mark_three_count ?? 0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>{{ mark_four_count ?? 0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>{{ mark_five_count ?? 0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>None</td>
+                            <td>{{ mark_none_count ?? 0 }}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
             </div>
+            <button @click="moveToDeck" class="button">Go to Deck</button>
 
+        </div>
 
+        <div class="column">
+            <div class="box">
 
+                <div v-if="activeid !== -1">
+                    <div class="box">
+                        <p class="title">{{ cards[activeid].hiddenPart }}</p>
+                    </div>
+                    <div class="box" v-if="isHiddenVisible">
+                        <p class="title">{{ cards[activeid].visiblePart }}</p>
+                    </div>
+                    
+
+                    <button v-if="!isHiddenVisible" @click="showHidden" class="button is-info">Show hidden</button>
+                    <div v-if="isHiddenVisible">
+                        <div class="buttons">
+                            <button @click="nextMark(1)" class="button is-success">1</button>
+                            <button @click="nextMark(2)" class="button is-success">2</button>
+                            <button @click="nextMark(3)" class="button is-success">3</button>
+                            <button @click="nextMark(4)" class="button is-success">4</button>
+                            <button @click="nextMark(5)" class="button is-success">5</button>
+                        </div>
+                        <button v-if="isHiddenVisible" @click="next" class="button is-primary is-light">Skip</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
+  
