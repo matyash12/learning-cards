@@ -54,9 +54,29 @@ const moveToClassView = () =>{
 const moveToLearning = () =>{
     router.push('/learn/'+id);
 }
+const refreshDataOnPage = () =>{
+    getDeck(id);
+    findCards(id);
+}
+const deleteCard = (cardid) => {
+    axios.post(API_ADDRESS + 'card/delete',
+        {
+            id: cardid,
+        },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    ).then(function (result) {
+        refreshDataOnPage();
 
-getDeck(id);
-findCards(id);
+    }).catch(function (err) {
+        console.log(err);
+    })
+}
+
+refreshDataOnPage();
 
 </script>
 
@@ -72,6 +92,7 @@ findCards(id);
                 <th>#</th>
                 <th>Visible side</th>
                 <th>Hidden side</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
@@ -79,7 +100,7 @@ findCards(id);
                 <td>{{ index + 1 }}</td>
                 <td>{{ card.visiblePart }}</td>
                 <td>{{ card.hiddenPart }}</td>
-
+                <td><a @click="deleteCard(card.id)">Delete</a></td>
             </tr>
         </tbody>
     </table>
