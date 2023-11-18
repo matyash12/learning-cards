@@ -75,6 +75,23 @@ const deleteCard = (cardid) => {
         console.log(err);
     })
 }
+const deleteThisDeck = () =>{
+    axios.post(API_ADDRESS + 'deck/delete',
+        {
+            id: id,
+        },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    ).then(function (result) {
+        moveToClassView();
+
+    }).catch(function (err) {
+        console.log(err);
+    })
+}
 
 refreshDataOnPage();
 
@@ -85,6 +102,7 @@ refreshDataOnPage();
     <button @click="moveToLearning">Learn</button>
     <button @click="createNewCard">Add</button>
     <button @click="moveToClassView">Classes</button>
+    <button @click="deleteThisDeck">Delete</button>
     <h1>{{ deck?.name ?? "loading..." }}</h1>
     <table class="table">
         <thead>
