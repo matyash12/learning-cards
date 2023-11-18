@@ -1,19 +1,22 @@
 <script setup>
-import { ref } from 'vue';
+import { API_ADDRESS } from '../helpers.js';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+const router = useRouter();
+const route = useRoute();
+
+let deckid = route.params.deckid;
+let cardid = route.params.cardid; //new == create new
+
+let visiblePart = ref('');
+let hiddenPart = ref('');
 
 
-// Data properties
-const hiddenPart = ref('');
-const visiblePart = ref('');
-const selectedDeckid = ref(-1);
-const decks = ref([]);
-
-// Methods
-const createNewCardForm = () => {
-    axios.post('http://localhost:8080/card/new', {
+const createCard = () => {
+    axios.post(API_ADDRESS+'card/new', {
         hiddenPart: hiddenPart.value,
         visiblePart: visiblePart.value,
-        deckid: selectedDeckid.value
+        deckid: deckid
     },
         {
             headers: {
@@ -23,49 +26,47 @@ const createNewCardForm = () => {
         ,
     )
         .then(function (response) {
-            //console.log(response);
+            console.log(response);
+            moveToDeckView();
         })
         .catch(function (error) {
             console.log(error);
         });
 
 };
-const update = () => {
-    axios.get('http://localhost:8080/deck/all')
-        .then(function (response) {
-            decks.value = response.data;
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+const moveToDeckView = () =>{
+    router.push('/deck/'+deckid)
 }
-
-update();
-
-
 </script>
 
 
 <template>
-    <h1>Create new card</h1>
+    <p>Deck id:{{ deckid }}</p>
+    <p>Card id:{{ cardid }}</p>
+
+
     <div>
-        <form @submit="createNewCardForm">
-            <label>Hidden part:</label>
-            <input v-model="hiddenPart" required />
+        <div class="field">
+            <label class="label">Hidden side</label>
+            <div class="control">
+                <input v-model="hiddenPart" class="input" type="text" placeholder="">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Visible side</label>
+            <div class="control">
+                <input v-model="visiblePart" class="input" type="text" placeholder="">
+            </div>
+        </div>
 
-            <label>Visible part:</label>
-            <input v-model="visiblePart" required />
 
-            <label>Deck:</label>
-            <select v-model="selectedDeckid" class="form-select">
-                <option selected>Select deck</option>
-                <option v-for="(deck) in decks" :key="deck.id" :value="deck.id">
-                    {{ deck.name }}
-                </option>
-            </select>
 
-            <button type="submit">Submit</button>
-        </form>
 
+        <div class="field is-grouped">
+            <div class="control">
+                <button @click="moveToDeckView" class="button">Cancel</button>
+                <button @click="createCard" class="button">Create</button>
+            </div>
+        </div>
     </div>
 </template>
