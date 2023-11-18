@@ -12,6 +12,7 @@ const deckName = ref('');
 let tridaid = route.params.tridaid;
 
 
+
 // Methods
 const createNewDeckForm = () => {
     axios.post(API_ADDRESS+'deck/new', {
@@ -27,7 +28,9 @@ const createNewDeckForm = () => {
     )
         .then(function (response) {
             console.log(response);
-            moveToClasses();
+            //moveToClasses();
+            
+            router.push('/deck/'+response.data.id)
         })
         .catch(function (error) {
             console.log(error);
@@ -49,7 +52,7 @@ const moveToClasses = () =>{
             <input v-model="deckName"  />
             
             <button @click="moveToClasses">Cancel</button>
-            <button @click="createNewDeckForm">Submit</button>
+            <button @click="createNewDeckForm">Create</button>
 
     </div>
 </template>

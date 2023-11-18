@@ -37,13 +37,13 @@ public class DeckController {
     }
 
     @PostMapping("/new")
-    public @ResponseBody ResponseEntity<String> create(@RequestParam String name, @RequestParam long tridaid) {
-        DeckEntity table = new DeckEntity();
-        table.setName(name);
-        table.setTridaEntity(tridaRepository.findById(tridaid).get());
+    public @ResponseBody ResponseEntity<DeckEntity> create(@RequestParam String name, @RequestParam long tridaid) {
+        DeckEntity deck = new DeckEntity();
+        deck.setName(name);
+        deck.setTridaEntity(tridaRepository.findById(tridaid).get());
 
-        deckRepository.save(table);
-        return new ResponseEntity<>(HttpStatus.OK);
+        deckRepository.save(deck);
+        return new ResponseEntity<>(deck,HttpStatus.OK);
     }
 
      @PostMapping("/find")
