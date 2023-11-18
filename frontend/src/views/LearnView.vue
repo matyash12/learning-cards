@@ -1,6 +1,6 @@
 <script setup>
 import { API_ADDRESS } from '../helpers.js';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
 const route = useRoute();
@@ -194,8 +194,51 @@ const updateUI = () => {
     numberOfMarksCountCounter();
 }
 
+const handleKeyDown = (event) => {
+    
+    if (event.key === ' '){
+        if (!isHiddenVisible.value){
+            isHiddenVisible.value = true;
+        }
+    }
+    if (event.key === '1'){
+        if (isHiddenVisible){
+            nextMark(1);
+        }
+    }
+    if (event.key === '2'){
+        if (isHiddenVisible){
+            nextMark(2);
+        }
+    }
+    if (event.key === '3'){
+        if (isHiddenVisible){
+            nextMark(3);
+        }
+    }
+    if (event.key === '4'){
+        if (isHiddenVisible){
+            nextMark(4);
+        }
+    }
+    if (event.key === '5'){
+        if (isHiddenVisible){
+            nextMark(5);
+        }
+    }
+    if (event.key === '0'){
+        if (isHiddenVisible){
+            next();
+        }
+    }
+};
 
-
+onMounted(() => {
+    window.addEventListener('keydown', handleKeyDown);
+});
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeyDown);
+});
 
 findCards();
 getDeck();
@@ -205,8 +248,10 @@ getDeck();
 <template>
     <div class="columns">
         <div class="column is-one-quarter">
-            <h1>{{ deck.tridaEntity.name }}</h1>
-            <h2>{{deck.name}}</h2>
+            <h1>{{ deck?.tridaEntity.name ?? 'loading..' }}</h1>
+            <h2>{{deck?.name ?? 'loading..'}}</h2>
+            <button @click="moveToDeck">Deck</button>
+            <progress class="progress" :value="progressBarWidth" max="100">progressBarWidth</progress>
             <table class="table">
                 <thead>
                     <tr>
@@ -246,8 +291,7 @@ getDeck();
         </div>
         <div class="column">
             <h1>Learn</h1>
-            <button @click="moveToDeck">Deck</button>
-            <progress class="progress" :value="progressBarWidth" max="100">progressBarWidth</progress>
+            
 
 
 
