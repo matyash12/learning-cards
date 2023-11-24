@@ -52,7 +52,8 @@ public class SecurityConfig {
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests((authorize) -> authorize
 						.requestMatchers("/user/info").permitAll()
-						.anyRequest().hasRole("USER"));
+						.anyRequest().hasRole("USER"))
+						.httpBasic(Customizer.withDefaults());
 
 		return http.build();
 	}
