@@ -1,7 +1,5 @@
-package com.example.backend;
+package com.example.backend.trida;
 
-
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,19 +14,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/deck")
+@RequestMapping("/tridy")
 @CrossOrigin(origins = "*")
-public class DeckController {
-    @Autowired
-    private DeckRepository deckRepository;
-
-
+public class TridaController {
     @Autowired
     private TridaRepository tridaRepository;
 
     @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<DeckEntity> get(@PathVariable long id) {
-        var t = deckRepository.findById(id);
+    public @ResponseBody ResponseEntity<TridaEntity> get(@PathVariable long id) {
+        var t = tridaRepository.findById(id);
         if (t.isPresent()) {
             return new ResponseEntity<>(t.get(), HttpStatus.OK);
         } else {
@@ -37,40 +31,32 @@ public class DeckController {
     }
 
     @PostMapping("/new")
-    public @ResponseBody ResponseEntity<DeckEntity> create(@RequestParam String name, @RequestParam long tridaid) {
-        DeckEntity deck = new DeckEntity();
-        deck.setName(name);
-        deck.setTridaEntity(tridaRepository.findById(tridaid).get());
+    public @ResponseBody ResponseEntity<String> create(@RequestParam String name) {
+        var trida = new TridaEntity();
+        trida.setName(name);
 
-        deckRepository.save(deck);
-        return new ResponseEntity<>(deck,HttpStatus.OK);
-    }
-
-     @PostMapping("/find")
-    public @ResponseBody ResponseEntity<List<DeckEntity>> getCards(@RequestParam long tridaid) {
-        var decks = deckRepository.findByTridaEntity(tridaRepository.findById(tridaid).get());
-
-        return new ResponseEntity<>(decks, HttpStatus.OK);
+        tridaRepository.save(trida);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/delete")
     public @ResponseBody ResponseEntity<String> delete(@RequestParam long id) {
-        deckRepository.deleteById(id);
+        tridaRepository.deleteById(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public @ResponseBody ResponseEntity<Iterable<DeckEntity>> getAll() {
-        return new ResponseEntity<>(deckRepository.findAll(), HttpStatus.OK);
+    public @ResponseBody ResponseEntity<Iterable<TridaEntity>> getAll() {
+        return new ResponseEntity<>(tridaRepository.findAll(), HttpStatus.OK);
     }
 
     @PostMapping("/update")
     public @ResponseBody ResponseEntity<String> update(@RequestParam long id,
             @RequestParam(required = false) String name) {
-        var deck = deckRepository.findById(id).get();
-        deck.setName(name);
-        deckRepository.save(deck);
+        var trida = tridaRepository.findById(id).get();
+        trida.setName(name);
+        tridaRepository.save(trida);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

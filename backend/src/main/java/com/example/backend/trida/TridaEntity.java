@@ -1,4 +1,4 @@
-package com.example.backend;
+package com.example.backend.trida;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package com.example.backend;
+package com.example.backend.card;
 
 import java.util.List;
 
@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.backend.deck.DeckRepository;
 
 @RestController
 @RequestMapping("/card")

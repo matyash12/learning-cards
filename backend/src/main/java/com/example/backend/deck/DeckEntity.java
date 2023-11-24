@@ -1,7 +1,9 @@
-package com.example.backend;
+package com.example.backend.deck;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import com.example.backend.trida.TridaEntity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
