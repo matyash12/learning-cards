@@ -5,13 +5,21 @@ import java.util.Collection;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
-public class ApiKeyAuthenticationToken extends AbstractAuthenticationToken {
-    private String apiKey;
-    private String name;
-    public ApiKeyAuthenticationToken(String apiKey,String name, Collection<? extends GrantedAuthority> authorities) {
+public class UserToken extends AbstractAuthenticationToken {
+    private String username;
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
+    public UserToken(String username, Collection<? extends GrantedAuthority> authorities) {
         super(authorities);
-        this.name = name;
-        this.apiKey = apiKey;
+        this.username = username;
         setAuthenticated(true);
     }
 
@@ -23,13 +31,9 @@ public class ApiKeyAuthenticationToken extends AbstractAuthenticationToken {
     public Collection<GrantedAuthority> getAuthorities() {
         return super.getAuthorities();
     }
-    @Override
-    public String getName() {
-        return name;
-    }
 
     @Override
     public Object getPrincipal() {
-        return apiKey;
+        return username;
     }
 }
