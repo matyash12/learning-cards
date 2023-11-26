@@ -1,4 +1,4 @@
-package com.example.backend.security;
+package com.example.backend.security.user;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "apikey")
-public class ApiKeyEntity {
+@Table(name = "user")
+public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +23,12 @@ public class ApiKeyEntity {
      * Name of the key.
      * Like "Matyas's key"
      */
-    private String name;
+    private String username;
     /*
      * Actual value of the api key "0imfnc8mVLWwsdAwJkr4Rx-Af50DDqtlx"
      */
-    private String value;
+    private String passwordhash;
+    private String passwordsalt;
 
     /*
      * comma separated
@@ -68,21 +69,28 @@ public class ApiKeyEntity {
         this.id = id;
     }
 
-    public String getName() {
-        return this.name;
+    public String getUsername() {
+        return this.username;
     }
 
-
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getValue() {
-        return this.value;
+    public String getPasswordhash() {
+        return this.passwordhash;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setPasswordhash(String passwordhash) {
+        this.passwordhash = passwordhash;
+    }
+
+    public String getPasswordsalt() {
+        return this.passwordsalt;
+    }
+
+    public void setPasswordsalt(String passwordsalt) {
+        this.passwordsalt = passwordsalt;
     }
 
 }
