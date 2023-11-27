@@ -74,6 +74,12 @@ public class UserController {
         }
 
     }
+    @PostMapping("/logout")
+     public @ResponseBody ResponseEntity<String> logout(HttpServletRequest request, HttpSession session) {
+        session.invalidate();
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
 
     @PostMapping("/register")
     public @ResponseBody ResponseEntity<String> register(@RequestParam String username, @RequestParam String password,
