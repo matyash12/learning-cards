@@ -58,6 +58,9 @@ public class UserController {
         session.invalidate();
         try {
             var user = userRepository.findByUsername(username);
+            if (user == null){
+                return new ResponseEntity<>("Password and username doesn't match!",HttpStatus.NOT_FOUND);
+            }
             if (PasswordUtils.verifyPassword(password, user.getPasswordsalt(), user.getPasswordhash()) == true) {
                 var ses = request.getSession(true);
                 var sessionEntity = new SessionEntity();
@@ -70,7 +73,7 @@ public class UserController {
             }
         } catch (Exception e) {
             System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
     }
