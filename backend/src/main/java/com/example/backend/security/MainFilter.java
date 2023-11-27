@@ -51,7 +51,7 @@ public class MainFilter implements Filter {
             }
             var user = userRepository.findById(sessionEntity.getUserId()).get();
 
-            SecurityContextHolder.getContext().setAuthentication(new UserToken(user.getUsername(), user.getRoles()));
+            SecurityContextHolder.getContext().setAuthentication(new UserToken(user.getUsername(),user, user.getRoles()));
 
             chain.doFilter(request, response);
         } catch (Exception e) {

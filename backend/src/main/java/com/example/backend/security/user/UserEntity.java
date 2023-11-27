@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,7 +29,11 @@ public class UserEntity {
     /*
      * Actual value of the api key "0imfnc8mVLWwsdAwJkr4Rx-Af50DDqtlx"
      */
+    
+    @JsonIgnore
     private String passwordhash;
+
+    @JsonIgnore
     private String passwordsalt;
 
     /*
