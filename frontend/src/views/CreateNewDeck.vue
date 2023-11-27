@@ -27,6 +27,7 @@ const getTrida = () => {
             trida.value = response.data;
         })
         .catch((error) => {
+            router.push("/user/login")
             console.log(error);
         });
 
@@ -53,6 +54,7 @@ const createNewDeckForm = () => {
             router.push('/deck/'+response.data.id)
         })
         .catch(function (error) {
+            router.push("/user/login")
             console.log(error);
         });
 

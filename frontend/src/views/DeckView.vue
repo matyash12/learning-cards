@@ -23,6 +23,7 @@ const getDeck = (deckid) => {
             deck.value = response.data;
         })
         .catch((error) => {
+            router.push("/user/login")
             console.log(error);
         });
 
@@ -41,6 +42,7 @@ const findCards = (deckid) => {
         cards.value = result.data;
 
     }).catch(function (err) {
+        router.push("/user/login")
         console.log(err);
     })
 }
@@ -72,6 +74,7 @@ const deleteCard = (cardid) => {
         refreshDataOnPage();
 
     }).catch(function (err) {
+        router.push("/user/login")
         console.log(err);
     })
 }
@@ -89,6 +92,7 @@ const deleteThisDeck = () => {
         moveToClassView();
 
     }).catch(function (err) {
+        router.push("/user/login")
         console.log(err);
     })
 }

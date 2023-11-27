@@ -74,6 +74,12 @@ public class UserController {
         }
 
     }
+    @PostMapping("/logout")
+     public @ResponseBody ResponseEntity<String> logout(HttpServletRequest request, HttpSession session) {
+        session.invalidate();
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
 
     @PostMapping("/register")
     public @ResponseBody ResponseEntity<String> register(@RequestParam String username, @RequestParam String password,
@@ -82,9 +88,16 @@ public class UserController {
 
         try {
 
+            if (PasswordChecker.isPasswordStrong(password) == false) {
+                return new ResponseEntity<>(PasswordChecker.getPasswordRequirementsMessage(), HttpStatus.NOT_FOUND);
+            }
+            if (UsernameChecker.isUsernameStrong(username) == false) {
+                return new ResponseEntity<>(UsernameChecker.getUsernameRequirementsMessage(), HttpStatus.NOT_FOUND);
+            }
+
             // checking if username already exists
             if (userRepository.findByUsername(username) != null) {
-                return new ResponseEntity<>("User already exists!", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("Username already exists. Please choose a different username.", HttpStatus.NOT_FOUND);
             }
 
             var newUser = new UserEntity();

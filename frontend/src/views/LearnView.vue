@@ -32,6 +32,7 @@ const getDeck = () => {
             deck.value = response.data;
         })
         .catch((error) => {
+            router.push("/user/login")
             console.log(error);
         });
 }
@@ -110,6 +111,7 @@ const findCards = () => {
         }
 
     }).catch(function (err) {
+        router.push("/user/login")
         console.log(err);
     })
 }
@@ -147,6 +149,7 @@ const nextMark = (mark) => {
 
         }
     }).catch(function (err) {
+        router.push("/user/login")
         console.log(err);
     })
     next();

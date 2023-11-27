@@ -12,7 +12,7 @@
         <div class="field">
             <label class="label">Password</label>
             <div class="control">
-                <input v-model="password" class="input" type="text" placeholder="Password">
+                <input v-model="password" class="input" type="password" placeholder="Password">
             </div>
         </div>
 
@@ -21,7 +21,7 @@
                 <button class="button is-primary" @click="loginRequest">Login</button>
             </div>
             <div class="control">
-                <button class="button is-link is-light" >Cancel</button>
+                <button class="button is-link is-light" @click="createAccount">Create account</button>
             </div>
         </div>
     </div>
@@ -60,6 +60,10 @@ const loginRequest =() => {
     }).catch(function (err) {
         console.log(err);
     })
+}
+
+const createAccount = () => {
+    router.push("/user/register");
 }
 
 </script>

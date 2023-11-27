@@ -9,7 +9,8 @@ import TridaView from '../views/TridaView.vue'
 import DeckView from '../views/DeckView.vue';
 import LoginView from '../views/LoginView.vue';
 import CreateNewTrida from '../views/CreateNewTrida.vue';
-
+import NotFoundView from '../views/NotFound.vue';
+import RegisterView from '../views/RegisterView.vue';
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -20,8 +21,8 @@ const router = createRouter({
       //place where user can see all trida and theirs decks
     },
     {
-      path:'/deck/:id',
-      name:'deckinfo',
+      path: '/deck/:id',
+      name: 'deckinfo',
       component: DeckView
       //main place for editing deck
     },
@@ -50,6 +51,15 @@ const router = createRouter({
       path: '/user/login',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: NotFoundView
+    },
+    {
+      path: '/user/register',
+      name: 'register',
+      component: RegisterView
     }
   ]
 })

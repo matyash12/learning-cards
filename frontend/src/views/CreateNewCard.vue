@@ -36,6 +36,7 @@ const createCard = () => {
             //moveToDeckView();
         })
         .catch(function (error) {
+            router.push("/user/login")
             console.log(error);
             wasLastCardCreated.value = false;
         });
