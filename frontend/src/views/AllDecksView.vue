@@ -9,6 +9,7 @@ const update = () => {
             decks.value = response.data;
         })
         .catch(function (error) {
+            router.push("/user/login")
             console.log(error);
         });
 }
@@ -29,6 +30,7 @@ const deleteDeck = (id) => {
             update();
         })
         .catch(function (error) {
+            router.push("/user/login")
             console.log(error);
         });
 }

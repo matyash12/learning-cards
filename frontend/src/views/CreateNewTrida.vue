@@ -29,6 +29,7 @@ const createNewTrida = () => {
             moveToClasses();
         })
         .catch(function (error) {
+            router.push("/user/login")
             console.log(error);
         });
 

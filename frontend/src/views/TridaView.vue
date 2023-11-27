@@ -23,6 +23,7 @@ const getAllTrida = () => {
             tridy.value = response.data;
         })
         .catch((error) => {
+            router.push("/user/login")
             console.log(error);
         });
 
@@ -41,6 +42,7 @@ const findDecks = (tridaid) => {
         selectedTridaDecks.value = result.data;
 
     }).catch(function (err) {
+        router.push("/user/login")
         console.log(err);
     })
 }
@@ -85,6 +87,7 @@ const deleteTrida = () => {
 
 
     }).catch(function (err) {
+        router.push("/user/login")
         console.log(err);
     })
 }

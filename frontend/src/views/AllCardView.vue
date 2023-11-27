@@ -8,6 +8,7 @@ const update = () => {
             cards.value = result.data;
         }
     }).catch(function (err) {
+        router.push("/user/login")
         console.log(err);
     })
 }
@@ -25,6 +26,7 @@ const deleteCard = (id) => {
     ).then(function (result) {
         update();
     }).catch(function (err) {
+        router.push("/user/login")
         console.log(err);
     });
 }
