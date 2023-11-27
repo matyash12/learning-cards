@@ -22,7 +22,10 @@
                     <input v-model="password2" class="input" type="password" placeholder="Password">
                 </div>
             </div>
-
+            <div class="notification is-danger" v-show="showWarning">
+                <button class="delete" @click="closeWarning"></button>
+                <p v-text="warningMessage"></p>
+            </div>
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-primary" @click="registerRequest">Create</button>
@@ -48,6 +51,15 @@ const username = ref('');
 const password = ref('');
 const password2 = ref('');
 
+const showWarning = ref(false);
+const warningMessage = ref('');
+
+const closeWarning = () =>{
+    showWarning.value = false;
+    warningMessage.value = '';
+}
+
+
 const registerRequest = () => {
     if (password2.value !== password.value) {
         return;
@@ -67,6 +79,8 @@ const registerRequest = () => {
 
         router.push('/user/login');
     }).catch(function (err) {
+        warningMessage.value = err.response.data;
+        showWarning.value = true;
         console.log(err);
     })
 }
