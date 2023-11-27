@@ -53,7 +53,7 @@ const registerRequest = () => {
         return;
     }
 
-    axios.post(API_ADDRESS + 'user/login',
+    axios.post(API_ADDRESS + 'user/register',
         {
             "username": username.value,
             "password": password.value
