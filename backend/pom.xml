@@ -50,7 +50,15 @@
 						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
 					</image>
 				</configuration>
+				<executions>
+					<execution>
+						<configuration>
+							<mainClass>com.example.backend.BackendApplication</mainClass>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+			
 		</plugins>
 	</build>
 

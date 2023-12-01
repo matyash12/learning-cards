@@ -3,6 +3,7 @@
 // import 'bootstrap-icons/font/bootstrap-icons.css';
 // import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bulma/css/bulma.css';
+import axios from 'axios';
 
 import { createApp } from 'vue'
 import App from './App.vue'

@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+  mysql-db:
+    image: mysql:8.2.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3306:3306"
+    networks:
+      - learning_cards_network
+
+  spring-java-backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    networks:
+      - learning_cards_network
+    depends_on:
+      - mysql-db
+
+  vue-nginx-frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "80:80"
+    networks:
+      - learning_cards_network
+    depends_on:
+      - spring-java-backend
+  
+
+networks:
+  learning_cards_network:
+    driver: bridge

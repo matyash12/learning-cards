@@ -1,4 +1,6 @@
 <script setup>
+import axios from 'axios';
+
 import { ref } from 'vue';
 let cards = ref();
 
