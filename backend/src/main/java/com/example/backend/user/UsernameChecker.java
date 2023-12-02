@@ -24,7 +24,7 @@ public class UsernameChecker {
     }
 
     public static String getUsernameRequirementsMessage() {
-        return "Please create a strong username that meets the following criteria:\n" +
+        return "Please create a username that meets the following criteria:\n" +
                 "- Minimum length of 5 characters.\n" +
                 "- Should contain only alphanumeric characters (letters A-Z, a-z, and digits 0-9).";
     }
