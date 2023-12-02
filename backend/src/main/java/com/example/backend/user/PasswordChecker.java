@@ -9,8 +9,7 @@ public class PasswordChecker {
                 "- Minimum length of 8 characters.\n" +
                 "- At least one digit (0-9).\n" +
                 "- At least one uppercase letter (A-Z).\n" +
-                "- At least one lowercase letter (a-z).\n" +
-                "- At least one special character (e.g., !@#$%^&*()).";
+                "- At least one lowercase letter (a-z).";
     }
 
     public static boolean isPasswordStrong(String password) {
@@ -38,13 +37,13 @@ public class PasswordChecker {
             return false;
         }
 
-        // Check for at least one special character
-        Pattern specialCharPattern = Pattern.compile("[^a-zA-Z0-9]");
-        Matcher matcher = specialCharPattern.matcher(password);
-        if (!matcher.find()) {
-            System.out.println("Password must contain at least one special character.");
-            return false;
-        }
+        // // Check for at least one special character
+        // Pattern specialCharPattern = Pattern.compile("[^a-zA-Z0-9]");
+        // Matcher matcher = specialCharPattern.matcher(password);
+        // if (!matcher.find()) {
+        //     System.out.println("Password must contain at least one special character.");
+        //     return false;
+        // }
 
         // If all checks pass, the password is considered strong
         return true;
