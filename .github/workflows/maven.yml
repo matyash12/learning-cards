@@ -1,0 +1,31 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '17'
+
+    - name: Build with Maven
+      run: mvn clean install
+      working-directory: backend  # Change to your actual subdirectory name
+
+    - name: Upload JAR artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: backend_cards
+        path: backend/target/*.jar  # Change to your actual subdirectory name
