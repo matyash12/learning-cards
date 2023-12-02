@@ -2,7 +2,12 @@ name: Build Vue App
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 
 jobs:
   build:
