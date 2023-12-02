@@ -1,0 +1,37 @@
+name: Build Vue App
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: |
+        cd frontend
+        npm install
+
+    - name: Build app
+      run: |
+        cd frontend
+        npm run build
+
+    - name: Archive dist
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: frontend/dist
+
+
+
