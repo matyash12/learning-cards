@@ -29,30 +29,3 @@ jobs:
         with:
           name: backend_cards
           path: backend/target/*.jar
-
-  create-release:
-    runs-on: ubuntu-latest
-    needs: build
-    
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Get commit information
-        id: commit_info
-        run: echo "::set-output name=commit_sha::$(git rev-parse HEAD)"
-        
-      - name: Create Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: v${{ steps.commit_info.outputs.commit_sha }}
-          name: Release ${{ steps.commit_info.outputs.commit_sha }}
-          files: backend/target/backend_cards.jar  # Change to your actual subdirectory name
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
