@@ -17,7 +17,7 @@ pipeline {
 
         stage('Copy .env file to workspace'){
             steps{
-                withCredentials([file(credentialsId: LEARNING-CARDS-ENV-FILE, variable: 'env_file')]) {
+                withCredentials([file(credentialsId: LEARNING_CARDS_ENV_FILE, variable: 'env_file')]) {
                     writeFile file: '.env', text: readFile(env_file)
                 }
             }
