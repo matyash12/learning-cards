@@ -26,6 +26,16 @@ pipeline {
             }
         }
 
+        stage('Copy application.properties file to workspace (java)') {
+            steps {
+                withCredentials([file(credentialsId: 'LEARNING_CARDS_APPLICATION_PROPERTIES', variable: 'application_properties')]) {
+                    script {
+                        def appContent = readFile(application_properties)
+                        writeFile file: 'backend/src/main/resources/application.properties', text: appContent
+                    }
+                }
+            }
+        }
 
         stage('Run ./build.sh') {
             steps {
