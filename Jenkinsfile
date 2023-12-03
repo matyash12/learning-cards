@@ -15,6 +15,14 @@ pipeline {
             }
         }
 
+        stage('Copy .env file to workspace'){
+            steps{
+                withCredentials([file(credentialsId: LEARNING-CARDS-ENV-FILE, variable: 'env_file']) {
+                    writeFile file: '.env', text: readFile(env_file)
+                }
+            }
+        }
+
 
         stage('Start docker') {
             steps {
