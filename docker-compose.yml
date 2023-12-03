@@ -2,6 +2,7 @@ version: '3'
 
 services:
   mysql-db:
+    container_name: mysql-db
     image: mysql:8.2.0
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -12,6 +13,7 @@ services:
       - learning_cards_network
 
   spring-java-backend:
+    container_name: spring-java-backend
     build:
       context: ./backend
     networks:
@@ -20,6 +22,7 @@ services:
       - mysql-db
 
   vue-nginx-frontend:
+    container_name: vue-nginx-frontend 
     build:
       context: ./frontend
     ports:
