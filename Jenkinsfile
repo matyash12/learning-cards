@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        // Define environment variables if needed
-        NODEJS_HOME = tool 'NodeJS' // Assuming you have a NodeJS tool configured in Jenkins
-        PATH = "$NODEJS_HOME/bin:${env.PATH}"
+        NODEJS_HOME = tool 'NodeJS'
+        DOCKER_IMAGE = 'testjenkinsvue'
+        LOCAL_DOCKER_SERVER = 'unix:///var/run/docker.sock' // Replace with your local Docker server address
     }
 
     stages {
@@ -17,10 +17,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('frontend') {
-                    // Change to the 'frontend' directory before running npm install
                     script {
-                        // You might need to customize the npm registry or use a mirror
-                        // Example: sh 'npm config set registry https://registry.npmjs.org/'
                         sh 'npm install'
                     }
                 }
@@ -30,32 +27,42 @@ pipeline {
         stage('Build') {
             steps {
                 dir('frontend') {
-                    // Change to the 'frontend' directory before running the build
                     script {
-                        // Customize the build command if needed (e.g., npm run build)
                         sh 'npm run build'
                     }
                 }
             }
         }
 
-        stage('Publish Artifacts') {
+        stage('Build Docker Image') {
             steps {
-                // Assuming your build artifacts are in the 'dist' directory
-                archiveArtifacts 'frontend/dist/**'
+                script {
+                    // Build Docker image with the Dockerfile in the 'frontend' directory
+                    sh "docker build -t $DOCKER_IMAGE frontend"
+                }
+            }
+        }
+
+        stage('Deploy to Local Docker Server') {
+            steps {
+                script {
+                    // Tag the Docker image for the local server
+                    sh "docker tag $DOCKER_IMAGE $LOCAL_DOCKER_SERVER/$DOCKER_IMAGE"
+
+                    // Push the Docker image to the local server
+                    sh "docker push $LOCAL_DOCKER_SERVER/$DOCKER_IMAGE"
+                }
             }
         }
     }
 
     post {
         success {
-            // Add post-build actions or notifications on success if needed
-            echo 'Build successful!'
+            echo 'Build and local deployment successful!'
         }
 
         failure {
-            // Add post-build actions or notifications on failure if needed
-            echo 'Build failed!'
+            echo 'Build or local deployment failed!'
         }
     }
 }
