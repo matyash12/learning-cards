@@ -1,2 +1,2 @@
-export const API_ADDRESS = location.host;
+export const API_ADDRESS = location.origin;
 
