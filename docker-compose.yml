@@ -1,4 +1,5 @@
 version: '3'
+name: learning_cards
 
 services:
   mysql-db:
