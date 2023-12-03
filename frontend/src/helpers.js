@@ -1,2 +1,2 @@
-export const API_ADDRESS = 'http://localhost/api/'
+export const API_ADDRESS = location.origin + "/api/";
 

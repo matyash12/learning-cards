@@ -16,4 +16,4 @@ cd backend
 
 
 #start docker
-docker compose up --build -d
+docker compose up -d --build
