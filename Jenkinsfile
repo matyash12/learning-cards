@@ -19,10 +19,7 @@ pipeline {
             steps {
                 withCredentials([file(credentialsId: 'LEARNING_CARDS_ENV_FILE', variable: 'env_file')]) {
                     script {
-                        echo "Copying .env file to workspace..."
                         def envContent = readFile(env_file)
-                        echo "Content of the environment file:"
-                        echo "${envContent}"
                         writeFile file: '.env', text: envContent
                     }
                 }
