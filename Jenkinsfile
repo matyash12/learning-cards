@@ -15,16 +15,22 @@ pipeline {
             }
         }
 
-        stage('Copy .env file to workspace'){
-            steps{
-                withCredentials([file(credentialsId: LEARNING_CARDS_ENV_FILE, variable: 'env_file')]) {
-                    writeFile file: '.env', text: readFile(env_file)
+        stage('Copy .env file to workspace') {
+            steps {
+                withCredentials([file(credentialsId: 'LEARNING_CARDS_ENV_FILE', variable: 'env_file')]) {
+                    script {
+                        echo "Copying .env file to workspace..."
+                        def envContent = readFile(env_file)
+                        echo "Content of the environment file:"
+                        echo "${envContent}"
+                        writeFile file: '.env', text: envContent
+                    }
                 }
             }
         }
 
 
-        stage('Start docker') {
+        stage('Run ./build.sh') {
             steps {
                 script {
                     sh "./build.sh"
