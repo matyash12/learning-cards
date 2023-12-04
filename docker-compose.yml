@@ -12,6 +12,12 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     networks:
       - learning_cards_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 100
+      start_period: 10s
 
   spring-java-backend:
     container_name: spring-java-backend
@@ -20,7 +26,8 @@ services:
     networks:
       - learning_cards_network
     depends_on:
-      - mysql-db
+      mysql-db:
+        condition: service_healthy
 
   vue-nginx-frontend:
     container_name: vue-nginx-frontend 
