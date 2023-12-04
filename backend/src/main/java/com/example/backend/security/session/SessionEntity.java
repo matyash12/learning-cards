@@ -1,8 +1,6 @@
 package com.example.backend.security.session;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Entity;
