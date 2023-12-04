@@ -105,7 +105,7 @@ onUnmounted(() => {
                 <button class="button is-primary" @click="createCard">Create (c)</button>
             </div>
             <div class="control">
-                <button class="button is-link is-light" @click="moveToDeckView">Cancel</button>
+                <button class="button is-link is-light" @click="moveToDeckView">Done</button>
             </div>
         </div>
     </div>
