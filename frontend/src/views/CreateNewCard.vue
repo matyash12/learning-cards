@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 
-import { API_ADDRESS } from '../helpers.js';
+import { API_ADDRESS, isValidField } from '../helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
@@ -15,7 +15,16 @@ let hiddenPart = ref('');
 let visiblePartInput = ref(null);
 let wasLastCardCreated = ref(null);
 
+
 const createCard = () => {
+    if (!isValidField(hiddenPart.value) || !isValidField(visiblePart.value)){
+        showWarning.value = true;
+        warningMessage.value = "You can't have empty side."
+        return;
+    }
+    
+    
+
     axios.post(API_ADDRESS + 'card/new', {
         hiddenPart: hiddenPart.value,
         visiblePart: visiblePart.value,
@@ -78,6 +87,19 @@ onUnmounted(() => {
     window.removeEventListener('keydown', handleKeyDown);
 });
 
+const userChangesValue = () =>{
+    showWarning.value = false;
+    wasLastCardCreated.value = false;
+}
+
+const showWarning = ref(false);
+const warningMessage = ref('');
+
+const closeWarning = () =>{
+    showWarning.value = false;
+    warningMessage.value = '';
+}
+
 </script>
 
 
@@ -87,25 +109,28 @@ onUnmounted(() => {
         <div class="field">
             <label class="label">Hidden side</label>
             <div class="control">
-                <input ref="visiblePartInput"  v-model="hiddenPart" class="input" type="text" placeholder="">
+                <input ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="input" type="text" placeholder="">
             </div>
         </div>
         <div class="field">
             <label class="label">Visible side</label>
             <div class="control">
-                <input id="visiblePart" v-model="visiblePart" class="input" type="text" placeholder="">
+                <input id="visiblePart" v-model="visiblePart" @input="userChangesValue" class="input" type="text" placeholder="">
             </div>
         </div>
 
 
         <p v-if="wasLastCardCreated == true" class="is-italic">Card was created</p>
-
+        <div class="notification is-danger" v-show="showWarning">
+            <button class="delete" @click="closeWarning"></button>
+            <p v-text="warningMessage"></p>
+          </div>
         <div class="field is-grouped">
             <div class="control">
                 <button class="button is-primary" @click="createCard">Create (c)</button>
             </div>
             <div class="control">
-                <button class="button is-link is-light" @click="moveToDeckView">Cancel</button>
+                <button class="button is-link is-light" @click="moveToDeckView">Done</button>
             </div>
         </div>
     </div>
