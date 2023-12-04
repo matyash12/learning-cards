@@ -1,8 +1,5 @@
 package com.example.backend.user;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class PasswordChecker {
     public static String getPasswordRequirementsMessage() {
         return "Please create a strong password that meets the following criteria:\n" +

@@ -1,5 +1,4 @@
 package com.example.backend.user;
-import java.util.regex.Pattern;
 
 public class UsernameChecker {
 
