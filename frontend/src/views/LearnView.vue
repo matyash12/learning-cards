@@ -251,7 +251,7 @@ getDeck();
 </script>
 
 <template>
-    <div class="columns">
+    <div class="columns is-hidden-mobile">
         <div class="column is-one-quarter">
             <div class="box">
                 <h1 class="title">{{ deck?.tridaEntity.name ?? 'Loading...' }}</h1>
@@ -324,6 +324,83 @@ getDeck();
                 </div>
             </div>
         </div>
+    </div>
+
+
+    <div class="columns ">
+        <div class="column">
+            <div class="box">
+
+                <div v-if="activeid !== -1">
+                    <div class="box">
+                        <p class="title">{{ cards[activeid].hiddenPart }}</p>
+                    </div>
+                    <div class="box" v-if="isHiddenVisible">
+                        <p class="title">{{ cards[activeid].visiblePart }}</p>
+                    </div>
+                    
+
+                    <button v-if="!isHiddenVisible" @click="showHidden" class="button is-info">Show hidden</button>
+                    <div v-if="isHiddenVisible">
+                        <div class="buttons">
+                            <button @click="nextMark(1)" class="button is-success">1</button>
+                            <button @click="nextMark(2)" class="button is-success">2</button>
+                            <button @click="nextMark(3)" class="button is-success">3</button>
+                            <button @click="nextMark(4)" class="button is-success">4</button>
+                            <button @click="nextMark(5)" class="button is-success">5</button>
+                        </div>
+                        <button v-if="isHiddenVisible" @click="next" class="button is-primary is-light">Skip</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column is-one-quarter">
+            <div class="box">
+                <h1 class="title">{{ deck?.tridaEntity.name ?? 'Loading...' }}</h1>
+                <h2 class="subtitle">{{ deck?.name ?? 'Loading...' }}</h2>
+                <progress class="progress is-primary" :value="progressBarWidth" max="100">{{ progressBarWidth
+                }}%</progress>
+                <table class="table is-bordered is-striped is-narrow is-hoverable">
+                    <thead>
+                        <tr>
+                            <th>Mark</th>
+                            <th>Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>{{ mark_one_count ?? 0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>{{ mark_two_count ?? 0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>{{ mark_three_count ?? 0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>{{ mark_four_count ?? 0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>{{ mark_five_count ?? 0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>None</td>
+                            <td>{{ mark_none_count ?? 0 }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <button @click="moveToDeck" class="button">Go to Deck</button>
+
+        </div>
+
+        
     </div>
 </template>
   
