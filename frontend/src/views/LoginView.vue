@@ -2,7 +2,7 @@
     <div>
       <h1 class="title">Login</h1>
   
-      <form @submit.prevent>
+      <form @submit.prevent @keyup.enter="loginRequest">
         <div class="box">
           <div class="field">
             <label class="label">Username</label>

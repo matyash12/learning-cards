@@ -2,7 +2,7 @@
     <div>
       <h1 class="title">Create account</h1>
   
-      <form @submit.prevent>
+      <form @submit.prevent @keyup.enter="registerRequest">
         <div class="box">
           <div class="field">
             <label class="label">Username</label>
