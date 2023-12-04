@@ -1,9 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 import CreateNewCard from '../views/CreateNewCard.vue'
-import AllCardView from '../views/AllCardView.vue'
 import LearnView from '../views/LearnView.vue'
-import AllDecksView from '../views/AllDecksView.vue'
 import CreateNewDeck from '../views/CreateNewDeck.vue'
 import TridaView from '../views/TridaView.vue'
 import DeckView from '../views/DeckView.vue';
