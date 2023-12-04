@@ -1,38 +1,39 @@
 <template>
     <div>
-
-        <h1 class="title">Login</h1>
-
+      <h1 class="title">Login</h1>
+  
+      <form>
         <div class="box">
-            <div class="field">
-                <label class="label">Username</label>
-                <div class="control">
-                    <input v-model="username" class="input" type="text" placeholder="Username">
-                </div>
+          <div class="field">
+            <label class="label">Username</label>
+            <div class="control">
+              <input v-model="username" class="input" type="text" placeholder="Username" autocomplete="username">
             </div>
-            <div class="field">
-                <label class="label">Password</label>
-                <div class="control">
-                    <input v-model="password" class="input" type="password" placeholder="Password">
-                </div>
+          </div>
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+              <input v-model="password" class="input" type="password" placeholder="Password" autocomplete="current-password">
             </div>
-            <div class="notification is-danger" v-show="showWarning">
-                <button class="delete" @click="closeWarning"></button>
-                <p v-text="warningMessage"></p>
+          </div>
+          <div class="notification is-danger" v-show="showWarning">
+            <button class="delete" @click="closeWarning"></button>
+            <p v-text="warningMessage"></p>
+          </div>
+          <div class="field is-grouped">
+            <div class="control">
+              <button class="button is-primary" @click="loginRequest">Login</button>
             </div>
-            <div class="field is-grouped">
-                <div class="control">
-                    <button class="button is-primary" @click="loginRequest">Login</button>
-                </div>
-                <div class="control">
-                    <button class="button is-link is-light" @click="createAccount">Create account</button>
-                </div>
+            <div class="control">
+              <button class="button is-link is-light" @click="createAccount">Create account</button>
             </div>
+          </div>
         </div>
-
+      </form>
+  
     </div>
-</template>
-
+  </template>
+  
 
 <script setup>
 import axios from 'axios';
