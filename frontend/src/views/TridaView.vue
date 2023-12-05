@@ -135,6 +135,10 @@ const toggleBurgerMenu = () => {
   isBurgerMenuOpen.value = !isBurgerMenuOpen.value;
 };
 
+const exportData = () => {
+    router.push("/export")
+}
+
 </script>
 
 
@@ -154,6 +158,11 @@ const toggleBurgerMenu = () => {
         </div>
 
         <div id="navbarBasicExample" :class="{ 'is-active': isBurgerMenuOpen }" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" @click="exportData">
+                    Export data
+                </a>
+            </div>
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">

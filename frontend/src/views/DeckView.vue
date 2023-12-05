@@ -98,6 +98,9 @@ const deleteThisDeck = () => {
         console.log(err);
     })
 }
+const editCard = (cardid) => {
+    router.push("/deck/"+deck.value.id+"/"+cardid+"/edit");
+}
 
 refreshDataOnPage();
 
@@ -132,6 +135,7 @@ const hideDeleteConfirmationModal = () => {
                     <th>Mark</th>
                     <th>Visible side</th>
                     <th>Hidden side</th>
+                    <th>Edit</th>
                     <th>Delete</th>
                 </tr>
             </thead>
@@ -141,6 +145,9 @@ const hideDeleteConfirmationModal = () => {
                     <td>{{ card.mark }}</td>
                     <td>{{ card.visiblePart }}</td>
                     <td>{{ card.hiddenPart }}</td>
+                    <td>
+                        <a @click="editCard(card.id)" class="">Edit</a>
+                    </td>
                     <td>
                         <a @click="deleteCard(card.id)" class="has-text-danger">Delete</a>
                     </td>
