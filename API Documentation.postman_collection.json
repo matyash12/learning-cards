@@ -1,0 +1,630 @@
+{
+	"info": {
+		"_postman_id": "bbce6d9f-fcb5-4de3-9357-f43d438b60d9",
+		"name": "API Documentation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23011773"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "Tomas",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Password1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get info about current user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/info",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "Matyas",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "Password1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "The `/me` endpoints let you manage information about the authenticated user."
+		},
+		{
+			"name": "Export",
+			"item": [
+				{
+					"name": "Get string of cards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/export/allcardshumanformat",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"export",
+								"allcardshumanformat"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Card",
+			"item": [
+				{
+					"name": "Get card by it's id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/card/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"card",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all cards",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/card/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"card",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create new card",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "hiddenPart",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "visiblePart",
+									"value": "log(2)",
+									"type": "text"
+								},
+								{
+									"key": "deckid",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/card/new",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"card",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete one card by id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/card/delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"card",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update one card",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "required",
+									"type": "text"
+								},
+								{
+									"key": "hiddenPart",
+									"value": "Dog",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "visiblePart",
+									"value": "Pes",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "mark",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "deckid",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/card/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"card",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find card by deckid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "deckid",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/card/find",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"card",
+								"find"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Deck",
+			"item": [
+				{
+					"name": "Create new deck",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "logaritmy",
+									"type": "text"
+								},
+								{
+									"key": "tridaid",
+									"value": "4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/deck/new",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"deck",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get deck by deckid",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/deck/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"deck",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete deck by id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/deck/delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"deck",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all decks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/deck/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"deck",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update deck",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Fyzika",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/deck/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"deck",
+								"update"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Trida (class)",
+			"item": [
+				{
+					"name": "Create new trida",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "matika",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tridy/new",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tridy",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get trida by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tridy/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tridy",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete trida",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tridy/delete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tridy",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all trida",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/tridy/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tridy",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update trida",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Fyzika",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/tridy/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tridy",
+								"update"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080"
+		}
+	]
+}
