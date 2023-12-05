@@ -8,6 +8,8 @@ import LoginView from '../views/LoginView.vue';
 import CreateNewTrida from '../views/CreateNewTrida.vue';
 import NotFoundView from '../views/NotFound.vue';
 import RegisterView from '../views/RegisterView.vue';
+import EditCardView from '../views/EditCardView.vue';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -57,6 +59,11 @@ const router = createRouter({
       path: '/user/register',
       name: 'register',
       component: RegisterView
+    },
+    {
+      path: '/deck/:deckid/:cardid/edit',
+      name: 'editcard',
+      component: EditCardView
     }
   ]
 })
