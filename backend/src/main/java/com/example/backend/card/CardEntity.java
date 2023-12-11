@@ -1,5 +1,7 @@
 package com.example.backend.card;
 
+import java.util.List;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,16 @@ public class CardEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private DeckEntity deckEntity;
     
+    /**
+     *
+     */
+    @OneToMany(mappedBy = "cardEntity")
+    private List<ImageEntity> ImageEntities;
     
+
+    public List<ImageEntity> getImageEntities() {
+        return ImageEntities;
+    }
 
     public DeckEntity getDeckEntity() {
         return this.deckEntity;

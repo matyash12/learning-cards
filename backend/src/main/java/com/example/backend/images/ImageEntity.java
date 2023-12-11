@@ -2,10 +2,13 @@ package com.example.backend.images;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import com.example.backend.ServerURLConfig;
 import com.example.backend.card.CardEntity;
 import com.example.backend.security.user.UserEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,15 +28,14 @@ public class ImageEntity {
     
     private String name;
 
-
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "card_entity_id", nullable = false)
     @OnDelete(action = OnDeleteAction.NO_ACTION) //TODO add delete
     private CardEntity cardEntity;
 
     
     private int position;
-
 
 
     public int getPosition() {
