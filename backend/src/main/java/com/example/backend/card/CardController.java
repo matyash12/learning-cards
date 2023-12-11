@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.backend.deck.DeckRepository;
+import com.example.backend.images.ImageController;
 import com.example.backend.security.Helper;
 
 @RestController
@@ -27,6 +29,9 @@ public class CardController {
 
     @Autowired
     private DeckRepository deckRepository;
+
+    @Autowired
+    private ImageController imageController;
 
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity<CardEntity> getCard(@PathVariable long id) {
@@ -60,9 +65,9 @@ public class CardController {
     }
 
     @GetMapping(path = "/all")
-    public @ResponseBody ResponseEntity<Iterable<CardEntity>> getAllCards() {
+    public @ResponseBody ResponseEntity<ArrayList<CardEntity>> getAllCards() {
         var allCards = cardRepository.findAll();
-        List<CardEntity> allowedCards = new ArrayList<>();
+        var allowedCards = new ArrayList<CardEntity>();
 
         for (var card : allCards) {
             if (Helper.hasRightsForCard(card)) {
@@ -77,18 +82,34 @@ public class CardController {
     @PostMapping("/new")
     public @ResponseBody ResponseEntity<String> createCard(@RequestParam String hiddenPart,
             @RequestParam String visiblePart, @RequestParam(defaultValue = "0") int mark,
-            @RequestParam long deckid) {
+            @RequestParam long deckid,
+            @RequestParam(value = "hiddenPartImageFile", required = false) MultipartFile hiddenPartImageFile,
+            @RequestParam(value = "visiblePartImageFile", required = false) MultipartFile visiblePartImageFile) {
         var deck = deckRepository.findById(deckid).get();
         if (!Helper.hasRightsForDeck(deck)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        CardEntity card = new CardEntity();
-        card.setHiddenPart(hiddenPart);
-        card.setVisiblePart(visiblePart);
-        card.setMark(mark);
-        card.setDeckEntity(deck);
+
+        CardEntity card = new CardEntity(hiddenPart, visiblePart, mark, deck);
 
         cardRepository.save(card);
+        if (hiddenPartImageFile != null) {
+            var hiddenPartImage = imageController.upload(hiddenPartImageFile, card, 0);
+            if (hiddenPartImage == null) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            //card.setHiddenPartImage(hiddenPartImage);
+
+        }
+        if (visiblePartImageFile != null) {
+            var visiblePartImage = imageController.upload(visiblePartImageFile, card, 1);
+            if (visiblePartImage == null) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            
+            //card.setVisiblePartImage(visiblePartImage);
+        }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
