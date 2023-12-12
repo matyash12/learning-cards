@@ -14,22 +14,30 @@ let visiblePart = ref('');
 let hiddenPart = ref('');
 let visiblePartInput = ref(null);
 let wasLastCardCreated = ref(null);
-
+let hiddenImagePart = ref("");
+let visibleImagePart = ref("");
 
 const createCard = () => {
-    if (!isValidField(hiddenPart.value) || !isValidField(visiblePart.value)){
+    if (!isValidField(hiddenPart.value) || !isValidField(visiblePart.value)) {
         showWarning.value = true;
         warningMessage.value = "You can't have empty side."
         return;
     }
-    
-    
-
-    axios.post(API_ADDRESS + 'card/new', {
+    let formData = {
         hiddenPart: hiddenPart.value,
         visiblePart: visiblePart.value,
-        deckid: deckid
-    },
+        deckid: deckid,
+
+    };
+
+    if (hiddenImagePart.value != "") {
+        formData["hiddenPartImageFile"] = imageHiddenFile.value
+    }
+    if (visibleImagePart.value != "") {
+        formData["visiblePartImageFile"] = imageVisibleFile.value;
+    }
+
+    axios.post(API_ADDRESS + 'card/new', formData,
         {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -43,7 +51,15 @@ const createCard = () => {
             hiddenPart.value = '';
             visiblePartInput.value.focus();
             wasLastCardCreated.value = true;
-            router.push('/deck/'+deckid+'/new')
+
+            //images
+            imageHiddenFile.value = "";
+            hiddenImagePart.value = "";
+            imageVisibleFile.value = "";
+            visibleImagePart.value = "";
+
+            
+            router.push('/deck/' + deckid + '/new')
             //moveToDeckView();
         })
         .catch(function (error) {
@@ -61,11 +77,11 @@ const handleKeyDown = (event) => {
     if (event.key === 'Tab' && event.target.id === 'visiblePart') {
         createCard();
     }
-    
+
     const isInputField = event.target.tagName.toLowerCase() === 'input' ||
         event.target.tagName.toLowerCase() === 'textarea';
 
-    
+
     // If it's an input field, do nothing
     if (isInputField) {
         return;
@@ -75,8 +91,8 @@ const handleKeyDown = (event) => {
     if (event.key === 'c') {
         createCard();
     }
-    
-    
+
+
 };
 
 onMounted(() => {
@@ -87,7 +103,7 @@ onUnmounted(() => {
     window.removeEventListener('keydown', handleKeyDown);
 });
 
-const userChangesValue = () =>{
+const userChangesValue = () => {
     showWarning.value = false;
     wasLastCardCreated.value = false;
 }
@@ -95,28 +111,110 @@ const userChangesValue = () =>{
 const showWarning = ref(false);
 const warningMessage = ref('');
 
-const closeWarning = () =>{
+const closeWarning = () => {
     showWarning.value = false;
     warningMessage.value = '';
 }
 
+let imageHiddenFile = ref("");
+let imageVisibleFile = ref("");
+
+const imageHiddenFileChange = (event) => {
+    imageHiddenFile.value = event.target.files[0];
+    hiddenImagePart.value = (window.URL ? URL : webkitURL).createObjectURL(event.target.files[0])
+}
+const imageHiddenFileDelete = () => {
+    imageHiddenFile.value = "";
+    hiddenImagePart.value = ""
+}
+
+const imageVisibleFileChange = (event) => {
+    imageVisibleFile.value = event.target.files[0];
+    visibleImagePart.value = (window.URL ? URL : webkitURL).createObjectURL(event.target.files[0])
+}
+const imageVisibleFileDelete = () => {
+    imageVisibleFile.value = "";
+    visibleImagePart.value = ""
+}
 </script>
 
 
 <template>
     <h1 class="title">Create new card</h1>
     <div>
-        <div class="field">
-            <label class="label">Hidden side</label>
-            <div class="control">
-                <input ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="input" type="text" placeholder="">
+        <!--HIDDEN SIDE-->
+        <div>
+            <div class="field">
+                <label class="label">Hidden side image</label>
+                <div class="control">
+                    <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
+                </div>
+            </div>
+
+
+            <div class="file has-name">
+                <label class="file-label">
+                    <input @change="imageHiddenFileChange" class="file-input" type="file" name="resume">
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                            Choose a file…
+                        </span>
+                    </span>
+                    <span class="file-name">
+                    </span>
+                </label>
+                <button v-if="hiddenImagePart != ''" @click="imageHiddenFileDelete" class="button">
+                    Remove image
+                </button>
+            </div>
+            <div class="field">
+                <label class="label">Hidden side text</label>
+                <div class="control">
+                    <input ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="input" type="text"
+                        placeholder="">
+                </div>
             </div>
         </div>
-        <div class="field">
-            <label class="label">Visible side</label>
-            <div class="control">
-                <input id="visiblePart" v-model="visiblePart" @input="userChangesValue" class="input" type="text" placeholder="">
+        <!--VISIBLE SIDE-->
+        <div>
+            <div class="field">
+                <label class="label">Visible side image</label>
+                <div class="control">
+                    <img v-if="visibleImagePart != ''" :src="visibleImagePart">
+                </div>
             </div>
+
+
+            <div class="file has-name">
+                <label class="file-label">
+                    <input @change="imageVisibleFileChange" class="file-input" type="file" name="resume">
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                            Choose a file…
+                        </span>
+                    </span>
+                    <span class="file-name">
+                    </span>
+                </label>
+                <button v-if="visibleImagePart != ''" @click="imageVisibleFileDelete" class="button">
+                    Remove image
+                </button>
+            </div>
+
+            <div class="field">
+                <label class="label">Visible side text</label>
+                <div class="control">
+                    <input id="visiblePart" v-model="visiblePart" @input="userChangesValue" class="input" type="text"
+                        placeholder="">
+                </div>
+            </div>
+
         </div>
 
 
@@ -124,7 +222,7 @@ const closeWarning = () =>{
         <div class="notification is-danger" v-show="showWarning">
             <button class="delete" @click="closeWarning"></button>
             <p v-text="warningMessage"></p>
-          </div>
+        </div>
         <div class="field is-grouped">
             <div class="control">
                 <button class="button is-primary" @click="createCard">Create (c)</button>

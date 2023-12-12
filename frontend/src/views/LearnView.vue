@@ -21,6 +21,10 @@ let mark_none_count = ref(null);
 
 let deck = ref(null);
 
+
+let hiddenImagePart = ref("")
+let visibleImagePart = ref("")
+
 const getDeck = () => {
     let config = {
         method: 'get',
@@ -123,7 +127,7 @@ const showHidden = () => {
     isHiddenVisible.value = true
 }
 const next = () => {
-
+    
     if (cards.value.length > 0) {
         if (cards.value.length > activeid.value) {
             activeid.value = activeid.value + 1;
@@ -132,6 +136,7 @@ const next = () => {
             activeid.value = 0;
         }
     }
+    loadImages();
     isHiddenVisible.value = false;
 }
 const nextMark = (mark) => {
@@ -244,10 +249,43 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeyDown);
 });
+const loadImages = () => {
+    if (activeid .value== -1){
+        return;
+    }
+    hiddenImagePart.value = "";
+    visibleImagePart.value = "";
+    axios.post(API_ADDRESS + 'image/find', {
+        "cardid": cards.value[activeid.value].id
+    },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    )
+        .then(function (response) {
+            console.log("UPDAATES")
+            hiddenImagePart.value = "";
+            visibleImagePart.value = "";
+            for (const imageR of response.data) {
+                if (imageR.position == 0) {
+                    hiddenImagePart.value = API_ADDRESS + 'image/show/' + imageR.id;
+                }
+                if (imageR.position == 1) {
+                    visibleImagePart.value = API_ADDRESS + 'image/show/' + imageR.id;
+                }
+            }
+
+        }).catch(function (error) {
+            //router.push("/user/login")
+            console.log(error);
+        });
+}
 
 findCards();
 getDeck();
-
+loadImages();
 </script>
 
 <template>
@@ -303,12 +341,14 @@ getDeck();
 
                 <div v-if="activeid !== -1">
                     <div class="box">
-                        <p class="title">{{ cards[activeid].hiddenPart }}</p>
-                    </div>
-                    <div class="box" v-if="isHiddenVisible">
+                        <img v-if="visibleImagePart != ''" :src="visibleImagePart">
                         <p class="title">{{ cards[activeid].visiblePart }}</p>
                     </div>
-                    
+                    <div  class="box" v-if="isHiddenVisible">
+                        <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
+                        <p class="title">{{ cards[activeid].hiddenPart }}</p>
+                    </div>
+
 
                     <button v-if="!isHiddenVisible" @click="showHidden" class="button is-info">Show hidden</button>
                     <div v-if="isHiddenVisible">
@@ -327,18 +367,20 @@ getDeck();
     </div>
 
 
-    <div class="columns ">
+    <div class="columns is-hidden-desktop">
         <div class="column">
             <div class="box">
 
                 <div v-if="activeid !== -1">
                     <div class="box">
+                        <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
                         <p class="title">{{ cards[activeid].hiddenPart }}</p>
                     </div>
                     <div class="box" v-if="isHiddenVisible">
+                        <img v-if="visibleImagePart != ''" :src="visibleImagePart">
                         <p class="title">{{ cards[activeid].visiblePart }}</p>
                     </div>
-                    
+
 
                     <button v-if="!isHiddenVisible" @click="showHidden" class="button is-info">Show hidden</button>
                     <div v-if="isHiddenVisible">
@@ -400,7 +442,7 @@ getDeck();
 
         </div>
 
-        
+
     </div>
 </template>
   

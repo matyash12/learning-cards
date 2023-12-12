@@ -56,13 +56,7 @@ public class CardEntity {
     /**
      *
      */
-    @OneToMany(mappedBy = "cardEntity")
-    private List<ImageEntity> ImageEntities;
     
-
-    public List<ImageEntity> getImageEntities() {
-        return ImageEntities;
-    }
 
     public DeckEntity getDeckEntity() {
         return this.deckEntity;
