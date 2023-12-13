@@ -21,6 +21,10 @@ let mark_none_count = ref(null);
 
 let deck = ref(null);
 
+
+let hiddenImagePart = ref("")
+let visibleImagePart = ref("")
+
 const getDeck = () => {
     let config = {
         method: 'get',
@@ -123,7 +127,7 @@ const showHidden = () => {
     isHiddenVisible.value = true
 }
 const next = () => {
-
+    
     if (cards.value.length > 0) {
         if (cards.value.length > activeid.value) {
             activeid.value = activeid.value + 1;
@@ -132,6 +136,7 @@ const next = () => {
             activeid.value = 0;
         }
     }
+    loadImages();
     isHiddenVisible.value = false;
 }
 const nextMark = (mark) => {
@@ -244,14 +249,47 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeyDown);
 });
+const loadImages = () => {
+    if (activeid .value== -1){
+        return;
+    }
+    hiddenImagePart.value = "";
+    visibleImagePart.value = "";
+    axios.post(API_ADDRESS + 'image/find', {
+        "cardid": cards.value[activeid.value].id
+    },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    )
+        .then(function (response) {
+            console.log("UPDAATES")
+            hiddenImagePart.value = "";
+            visibleImagePart.value = "";
+            for (const imageR of response.data) {
+                if (imageR.position == 0) {
+                    hiddenImagePart.value = API_ADDRESS + 'image/show/' + imageR.id;
+                }
+                if (imageR.position == 1) {
+                    visibleImagePart.value = API_ADDRESS + 'image/show/' + imageR.id;
+                }
+            }
+
+        }).catch(function (error) {
+            //router.push("/user/login")
+            console.log(error);
+        });
+}
 
 findCards();
 getDeck();
-
+loadImages();
 </script>
 
 <template>
-    <div class="columns is-hidden-mobile">
+    <div class="columns">
         <div class="column is-one-quarter">
             <div class="box">
                 <h1 class="title">{{ deck?.tridaEntity.name ?? 'Loading...' }}</h1>
@@ -303,12 +341,14 @@ getDeck();
 
                 <div v-if="activeid !== -1">
                     <div class="box">
-                        <p class="title">{{ cards[activeid].hiddenPart }}</p>
-                    </div>
-                    <div class="box" v-if="isHiddenVisible">
+                        <img v-if="visibleImagePart != ''" :src="visibleImagePart">
                         <p class="title">{{ cards[activeid].visiblePart }}</p>
                     </div>
-                    
+                    <div  class="box" v-if="isHiddenVisible">
+                        <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
+                        <p class="title">{{ cards[activeid].hiddenPart }}</p>
+                    </div>
+
 
                     <button v-if="!isHiddenVisible" @click="showHidden" class="button is-info">Show hidden</button>
                     <div v-if="isHiddenVisible">
@@ -324,83 +364,6 @@ getDeck();
                 </div>
             </div>
         </div>
-    </div>
-
-
-    <div class="columns ">
-        <div class="column">
-            <div class="box">
-
-                <div v-if="activeid !== -1">
-                    <div class="box">
-                        <p class="title">{{ cards[activeid].hiddenPart }}</p>
-                    </div>
-                    <div class="box" v-if="isHiddenVisible">
-                        <p class="title">{{ cards[activeid].visiblePart }}</p>
-                    </div>
-                    
-
-                    <button v-if="!isHiddenVisible" @click="showHidden" class="button is-info">Show hidden</button>
-                    <div v-if="isHiddenVisible">
-                        <div class="buttons">
-                            <button @click="nextMark(1)" class="button is-success">1</button>
-                            <button @click="nextMark(2)" class="button is-success">2</button>
-                            <button @click="nextMark(3)" class="button is-success">3</button>
-                            <button @click="nextMark(4)" class="button is-success">4</button>
-                            <button @click="nextMark(5)" class="button is-success">5</button>
-                        </div>
-                        <button v-if="isHiddenVisible" @click="next" class="button is-primary is-light">Skip</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="column is-one-quarter">
-            <div class="box">
-                <h1 class="title">{{ deck?.tridaEntity.name ?? 'Loading...' }}</h1>
-                <h2 class="subtitle">{{ deck?.name ?? 'Loading...' }}</h2>
-                <progress class="progress is-primary" :value="progressBarWidth" max="100">{{ progressBarWidth
-                }}%</progress>
-                <table class="table is-bordered is-striped is-narrow is-hoverable">
-                    <thead>
-                        <tr>
-                            <th>Mark</th>
-                            <th>Count</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>{{ mark_one_count ?? 0 }}</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>{{ mark_two_count ?? 0 }}</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>{{ mark_three_count ?? 0 }}</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>{{ mark_four_count ?? 0 }}</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>{{ mark_five_count ?? 0 }}</td>
-                        </tr>
-                        <tr>
-                            <td>None</td>
-                            <td>{{ mark_none_count ?? 0 }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-            </div>
-            <button @click="moveToDeck" class="button">Go to Deck</button>
-
-        </div>
-
-        
     </div>
 </template>
   
