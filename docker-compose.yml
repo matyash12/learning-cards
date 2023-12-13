@@ -41,6 +41,7 @@ services:
       - spring-java-backend
 
   minio-data:
+    container_name: minio-data
     image: minio/minio
     ports:
       - "9001:9001"
@@ -48,6 +49,19 @@ services:
       MINIO_ROOT_USER: myminiouser
       MINIO_ROOT_PASSWORD: mysecurepassword
     command: server --address ":9000" --console-address ":9001" /data
+    networks:
+      - learning_cards_network
+
+  createbucket:
+    image: minio/mc
+    depends_on:
+      - minio-data
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio-data:9000 myminiouser mysecurepassword;
+      /usr/bin/mc mb myminio/images;
+      exit 0;
+      "
     networks:
       - learning_cards_network
 
