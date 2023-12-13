@@ -109,13 +109,13 @@ const closeWarning = () =>{
         <div class="field">
             <label class="label">Hidden side</label>
             <div class="control">
-                <input ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="input" type="text" placeholder="">
+                <textarea ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="textarea" type="text" placeholder=""></textarea>
             </div>
         </div>
         <div class="field">
             <label class="label">Visible side</label>
             <div class="control">
-                <input id="visiblePart" v-model="visiblePart" @input="userChangesValue" class="input" type="text" placeholder="">
+                <textarea id="visiblePart" v-model="visiblePart" @input="userChangesValue" class="textarea" type="text" placeholder=""></textarea>
             </div>
         </div>
 
