@@ -32,12 +32,12 @@ jobs:
         cd frontend
         npm run build
 
-    - name: Archive dist
-      uses: actions/upload-artifact@v2
-      with:
-        name: dist
-        path: frontend/dist
-        retention-days: 5
+   # - name: Archive dist
+   #  uses: actions/upload-artifact@v2
+   #   with:
+   #     name: dist
+   #     path: frontend/dist
+  #      retention-days: 5
 
 
 
