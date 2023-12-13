@@ -138,7 +138,8 @@ public class ImageController {
                             .contentType("image/jpeg")//TODO other than jpeg?
                             .build());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e);
+            
             return null;
         }
 
