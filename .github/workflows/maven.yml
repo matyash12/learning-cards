@@ -32,3 +32,4 @@ jobs:
       with:
         name: backend
         path: backend/target/*.jar  # Change to your actual subdirectory name
+        retention-days: 5
