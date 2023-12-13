@@ -27,9 +27,9 @@ jobs:
       run: mvn clean install
       working-directory: backend  # Change to your actual subdirectory name
 
-    - name: Upload JAR artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: backend
-        path: backend/target/*.jar  # Change to your actual subdirectory name
-        retention-days: 5
+   # - name: Upload JAR artifact
+   #   uses: actions/upload-artifact@v2
+   #   with:
+   #     name: backend
+   #     path: backend/target/*.jar  # Change to your actual subdirectory name
+    #    retention-days: 5
