@@ -47,7 +47,6 @@ services:
     environment:
       MINIO_ROOT_USER: myminiouser
       MINIO_ROOT_PASSWORD: mysecurepassword
-  
     command: server --address ":9000" --console-address ":9001" /data
     networks:
       - learning_cards_network
