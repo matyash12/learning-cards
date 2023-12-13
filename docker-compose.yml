@@ -39,7 +39,18 @@ services:
       - learning_cards_network
     depends_on:
       - spring-java-backend
+
+  minio-data:
+    image: minio/minio
+    ports:
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: myminiouser
+      MINIO_ROOT_PASSWORD: mysecurepassword
   
+    command: server --address ":9000" --console-address ":9001" /data
+    networks:
+      - learning_cards_network
 
 networks:
   learning_cards_network:
