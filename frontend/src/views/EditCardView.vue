@@ -16,13 +16,49 @@ let hiddenPart = ref('');
 let markValue = ref(0);
 let visiblePartInput = ref(null);
 let wasLastCardCreated = ref(null);
+let hiddenImagePart = ref();
+let visibleImagePart = ref();
 
-const loadCardDetails = () => {
+
+const loadImages = () => {
+    axios.post(API_ADDRESS + 'image/find', {
+        "cardid": cardid
+    },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    )
+        .then(function (response) {
+            hiddenImagePart.value = "";
+            visibleImagePart.value = "";
+            for (const imageR of response.data) {
+                if (imageR.position == 0) {
+                    hiddenImagePart.value = API_ADDRESS + 'image/show/' + imageR.id;
+                }
+                if (imageR.position == 1) {
+                    visibleImagePart.value = API_ADDRESS + 'image/show/' + imageR.id;
+                }
+            }
+
+        }).catch(function (error) {
+            //router.push("/user/login")
+            console.log(error);
+        });
+}
+
+const loadCardDetails = (onlyImages) => {
     axios.get(API_ADDRESS + 'card/' + cardid)
         .then(function (response) {
-            visiblePart.value = response.data.visiblePart;
-            hiddenPart.value = response.data.hiddenPart;
-            markValue.value = response.data.mark;
+            if (!onlyImages) {
+                console.log("Update images")
+                visiblePart.value = response.data.visiblePart;
+                hiddenPart.value = response.data.hiddenPart;
+                markValue.value = response.data.mark;
+            }
+
+            loadImages();
 
         }).catch(function (error) {
             router.push("/user/login")
@@ -97,7 +133,7 @@ const handleKeyDown = (event) => {
 
 };
 
-const setMark = (mark) =>{
+const setMark = (mark) => {
 
     markValue.value = mark;
 
@@ -125,6 +161,94 @@ const closeWarning = () => {
     showWarning.value = false;
     warningMessage.value = '';
 }
+const imageHiddenFileChange = (event) => {
+    axios.post(API_ADDRESS + 'card/update', {
+        'id': cardid,
+        'hiddenPartImageFile': event.target.files[0],
+
+    },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+        ,
+    )
+        .then(function (response) {
+            loadCardDetails(true);
+            console.log(response);
+        })
+        .catch(function (error) {
+            router.push("/user/login")
+            console.log(error);
+        });
+}
+const imageHiddenFileDelete = () => {
+    axios.post(API_ADDRESS + 'card/update', {
+        'id': cardid,
+        'hiddenPartImageFileDelete': 'True'
+    },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+        ,
+    )
+        .then(function (response) {
+            loadImages();
+            console.log(response);
+        })
+        .catch(function (error) {
+            loadCardDetails(true);
+            //router.push("/user/login")
+            console.log(error);
+        });
+}
+
+
+const imageVisibleFileChange = (event) => {
+    axios.post(API_ADDRESS + 'card/update', {
+        'id': cardid,
+        'visiblePartImageFile': event.target.files[0],
+
+    },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+        ,
+    )
+        .then(function (response) {
+            loadCardDetails(true);
+        })
+        .catch(function (error) {
+            router.push("/user/login")
+            console.log(error);
+        });
+}
+const imageVisibleFileDelete = () => {
+    axios.post(API_ADDRESS + 'card/update', {
+        'id': cardid,
+        'visiblePartImageFileDelete': 'True'
+    },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+        ,
+    )
+        .then(function (response) {
+            loadImages();
+        })
+        .catch(function (error) {
+            loadCardDetails(true);
+            //router.push("/user/login")
+            console.log(error);
+        });
+}
 
 </script>
 
@@ -132,20 +256,84 @@ const closeWarning = () => {
 <template>
     <h1 class="title">Edit card</h1>
     <div>
-        <div class="field">
-            <label class="label">Hidden side</label>
-            <div class="control">
-                <textarea ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="textarea" type="text"
+
+        <!--HIDDEN SIDE-->
+        <div>
+            <div class="field">
+                <label class="label">Hidden side image</label>
+                <div class="control">
+                    <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
+                </div>
+            </div>
+
+
+            <div class="file has-name">
+                <label class="file-label">
+                    <input @change="imageHiddenFileChange" class="file-input" type="file" name="resume">
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                            Choose a file…
+                        </span>
+                    </span>
+                    <span class="file-name">
+                    </span>
+                </label>
+                <button v-if="hiddenImagePart != ''" @click="imageHiddenFileDelete" class="button">
+                    Remove image
+                </button>
+            </div>
+            <div class="field">
+                <label class="label">Hidden side text</label>
+                <div class="control">
+                     <textarea ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="textarea" type="text"
                     placeholder=""></textarea>
+                </div>
             </div>
         </div>
-        <div class="field">
-            <label class="label">Visible side</label>
-            <div class="control">
-                <textarea id="visiblePart" v-model="visiblePart" @input="userChangesValue" class="textarea" type="text"
-                    placeholder=""></textarea>
+        <!--VISIBLE SIDE-->
+        <div>
+            <div class="field">
+                <label class="label">Visible side image</label>
+                <div class="control">
+                    <img v-if="visibleImagePart != ''" :src="visibleImagePart">
+                </div>
             </div>
+
+
+            <div class="file has-name">
+                <label class="file-label">
+                    <input @change="imageVisibleFileChange" class="file-input" type="file" name="resume">
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                            Choose a file…
+                        </span>
+                    </span>
+                    <span class="file-name">
+                    </span>
+                </label>
+                <button v-if="visibleImagePart != ''" @click="imageVisibleFileDelete" class="button">
+                    Remove image
+                </button>
+            </div>
+
+            <div class="field">
+                <label class="label">Visible side text</label>
+                <div class="control">
+                   <textarea id="visiblePart" v-model="visiblePart" @input="userChangesValue" class="textarea" type="text"
+                    placeholder=""></textarea>
+                </div>
+            </div>
+
         </div>
+
+
+
         <div class="field">
             <label class="label">Mark</label>
             <div class="buttons">

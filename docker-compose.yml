@@ -39,7 +39,31 @@ services:
       - learning_cards_network
     depends_on:
       - spring-java-backend
-  
+
+  minio-data:
+    container_name: minio-data
+    image: minio/minio
+    ports:
+      - "${MINIO_CONSOLE_PORT}:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
+    command: server --address ":9000" --console-address ":9001" /data
+    networks:
+      - learning_cards_network
+
+  createbucket:
+    image: minio/mc
+    depends_on:
+      - minio-data
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio-data:9000 $MINIO_USER $MINIO_PASSWORD;
+      /usr/bin/mc mb myminio/images;
+      exit 0;
+      "
+    networks:
+      - learning_cards_network
 
 networks:
   learning_cards_network:
