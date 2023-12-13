@@ -256,6 +256,7 @@ const imageVisibleFileDelete = () => {
 <template>
     <h1 class="title">Edit card</h1>
     <div>
+
         <!--HIDDEN SIDE-->
         <div>
             <div class="field">
@@ -287,8 +288,8 @@ const imageVisibleFileDelete = () => {
             <div class="field">
                 <label class="label">Hidden side text</label>
                 <div class="control">
-                    <input ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="input" type="text"
-                        placeholder="">
+                     <textarea ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="textarea" type="text"
+                    placeholder=""></textarea>
                 </div>
             </div>
         </div>
@@ -324,8 +325,8 @@ const imageVisibleFileDelete = () => {
             <div class="field">
                 <label class="label">Visible side text</label>
                 <div class="control">
-                    <input id="visiblePart" v-model="visiblePart" @input="userChangesValue" class="input" type="text"
-                        placeholder="">
+                   <textarea id="visiblePart" v-model="visiblePart" @input="userChangesValue" class="textarea" type="text"
+                    placeholder=""></textarea>
                 </div>
             </div>
 
