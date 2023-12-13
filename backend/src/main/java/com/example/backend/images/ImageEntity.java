@@ -30,7 +30,7 @@ public class ImageEntity {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "card_entity_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.NO_ACTION) //TODO add delete
+    @OnDelete(action = OnDeleteAction.CASCADE) //TODO add delete in minio db
     private CardEntity cardEntity;
 
     
