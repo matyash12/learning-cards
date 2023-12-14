@@ -342,11 +342,11 @@ loadImages();
                 <div v-if="activeid !== -1">
                     <div class="box">
                         <img v-if="visibleImagePart != ''" :src="visibleImagePart">
-                        <p class="title">{{ cards[activeid].visiblePart }}</p>
+                        <textarea class="textarea" readonly>{{ cards[activeid].visiblePart }}</textarea>
                     </div>
                     <div  class="box" v-if="isHiddenVisible">
                         <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
-                        <p class="title">{{ cards[activeid].hiddenPart }}</p>
+                        <textarea class="textarea" readonly>{{ cards[activeid].hiddenPart }}</textarea>
                     </div>
 
 
