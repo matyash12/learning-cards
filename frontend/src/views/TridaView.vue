@@ -110,6 +110,9 @@ const logOut = () => {
     })
     
 }
+const editTrida = () =>{
+    router.push("/"+selectedTrida.value.id+"/edit")
+}
 
 
 
@@ -207,6 +210,9 @@ const exportData = () => {
                 <div class="buttons">
                     <button @click="createNewDeck" class="button is-primary ">
                         Create new deck
+                    </button>
+                    <button @click="editTrida" class="button ">
+                        Edit class
                     </button>
                     <button class="button is-danger" @click="showDeleteConfirmationModal">Delete</button>
 

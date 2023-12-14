@@ -116,6 +116,9 @@ const showDeleteConfirmationModal = () => {
 const hideDeleteConfirmationModal = () => {
   isDeleteConfirmationModalActive.value = false;
 };
+const editDeck = () => {
+    router.push("/deck/"+id+"/edit")
+};
 </script>
 
 
@@ -123,6 +126,7 @@ const hideDeleteConfirmationModal = () => {
     <div>
         <div class="buttons">
             <button @click="moveToLearning" class="button is-primary">Learn</button>
+            <button @click="editDeck" class="button">Edit deck</button>
             <button @click="createNewCard" class="button is-success">Add card</button>
             <button @click="moveToClassView" class="button is-info">Classes</button>
             <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
