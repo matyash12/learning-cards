@@ -11,6 +11,8 @@ import RegisterView from '../views/RegisterView.vue';
 import EditCardView from '../views/EditCardView.vue';
 import ExportDataView from '../views/ExportDataView.vue';
 import TridaEditView from '../views/TridaEditView.vue';
+import EditDeckView from '../views/EditDeckView.vue';
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -75,6 +77,11 @@ const router = createRouter({
       path: '/:tridaid/edit',
       name: 'edittrida',
       component: TridaEditView
+    },
+    {
+      path: '/deck/:deckid/edit',
+      name: 'editdeck',
+      component: EditDeckView
     },
   ]
 })
