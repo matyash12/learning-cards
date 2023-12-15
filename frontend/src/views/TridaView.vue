@@ -22,7 +22,7 @@ const getAllTrida = () => {
 
     axios.request(config)
         .then((response) => {
-            tridy.value = response.data;
+            tridy.value = response.data.data;
         })
         .catch((error) => {
             router.push("/user/login")
@@ -41,7 +41,7 @@ const findDecks = (tridaid) => {
             }
         }
     ).then(function (result) {
-        selectedTridaDecks.value = result.data;
+        selectedTridaDecks.value = result.data.data;
 
     }).catch(function (err) {
         router.push("/user/login")

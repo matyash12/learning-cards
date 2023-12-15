@@ -40,7 +40,7 @@ const renameTrida = () => {
 
 const loadTrida = () =>{
     axios.get(API_ADDRESS+'tridy/'+tridaid).then(function(response){
-        tridaName.value = response.data.name;
+        tridaName.value = response.data.data.name;
     }).catch(function(error){
         router.push("/user/login")
             console.log(error);

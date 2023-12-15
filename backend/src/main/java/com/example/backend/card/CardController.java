@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.backend.ApiMessages;
+import com.example.backend.ApiResponse;
 import com.example.backend.AppVariables;
 import com.example.backend.deck.DeckRepository;
 import com.example.backend.images.ImageController;
@@ -39,38 +41,38 @@ public class CardController {
     private ImageRepository imageRepository;
 
     @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<CardEntity> getCard(@PathVariable long id) {
+    public @ResponseBody ResponseEntity<ApiResponse> getCard(@PathVariable long id) {
 
         try {
             var card = cardRepository.findById(id).get();
             if (!Helper.hasRightsForCard(card)) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ApiResponse(null,ApiMessages.FORBIDDEN,HttpStatus.FORBIDDEN).toResponseEntity();
             }
-            return new ResponseEntity<>(card, HttpStatus.OK);
+            return new ApiResponse(card,ApiMessages.OK,HttpStatus.OK).toResponseEntity();
         } catch (Exception e) {
             System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.NOT_FOUND, HttpStatus.NOT_FOUND).toResponseEntity();
         }
 
     }
 
     @PostMapping("/find")
-    public @ResponseBody ResponseEntity<List<CardEntity>> getCards(@RequestParam long deckid) {
+    public @ResponseBody ResponseEntity<ApiResponse> getCards(@RequestParam long deckid) {
         try {
             var deck = deckRepository.findById(deckid).get();
             if (!Helper.hasRightsForDeck(deck)) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ApiResponse(null, ApiMessages.FORBIDDEN, HttpStatus.FORBIDDEN).toResponseEntity();
             }
             var cards = cardRepository.findByDeckEntity(deck);
-            return new ResponseEntity<>(cards, HttpStatus.OK);
+            return new ApiResponse(cards, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
         } catch (Exception e) {
             System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
         }
     }
 
     @GetMapping(path = "/all")
-    public @ResponseBody ResponseEntity<ArrayList<CardEntity>> getAllCards() {
+    public @ResponseBody ResponseEntity<ApiResponse> getAllCards() {
         var allCards = cardRepository.findAll();
         var allowedCards = new ArrayList<CardEntity>();
 
@@ -80,12 +82,11 @@ public class CardController {
             }
 
         }
-
-        return new ResponseEntity<>(allowedCards, HttpStatus.OK);
+        return new ApiResponse(allowedCards, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
     }
 
     @PostMapping("/new")
-    public @ResponseBody ResponseEntity<String> createCard(@RequestParam String hiddenPart,
+    public @ResponseBody ResponseEntity<ApiResponse> createCard(@RequestParam String hiddenPart,
             @RequestParam String visiblePart, @RequestParam(defaultValue = "0") int mark,
             @RequestParam long deckid,
             @RequestParam(value = "hiddenPartImageFile", required = false) MultipartFile hiddenPartImageFile,
@@ -93,42 +94,39 @@ public class CardController {
 
         var deck = deckRepository.findById(deckid).get();
         if (!Helper.hasRightsForDeck(deck)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.FORBIDDEN, HttpStatus.FORBIDDEN).toResponseEntity();
         }
         CardEntity card = new CardEntity(hiddenPart, visiblePart, mark, deck);
         cardRepository.save(card);
         if (hiddenPartImageFile != null) {
             var hiddenPartImage = imageController.upload(hiddenPartImageFile, card, 0);
             if (hiddenPartImage == null) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
             }
-            // card.setHiddenPartImage(hiddenPartImage);
         }
         if (visiblePartImageFile != null) {
             var visiblePartImage = imageController.upload(visiblePartImageFile, card, 1);
             if (visiblePartImage == null) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
             }
 
-            // card.setVisiblePartImage(visiblePartImage);
         }
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ApiResponse(null, ApiMessages.CREATED, HttpStatus.CREATED).toResponseEntity();
     }
 
     @PostMapping("/delete")
-    public @ResponseBody ResponseEntity<String> deleteCard(@RequestParam long id) {
+    public @ResponseBody ResponseEntity<ApiResponse> deleteCard(@RequestParam long id) {
         var card = cardRepository.findById(id).get();
         if (!Helper.hasRightsForCard(card)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.FORBIDDEN, HttpStatus.FORBIDDEN).toResponseEntity();
         }
 
         cardRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ApiResponse(null, ApiMessages.NO_CONTENT, HttpStatus.NO_CONTENT).toResponseEntity();
     }
 
     @PostMapping("/update")
-    public @ResponseBody ResponseEntity<String> updateCard(@RequestParam long id,
+    public @ResponseBody ResponseEntity<ApiResponse> updateCard(@RequestParam long id,
             @RequestParam(required = false) String hiddenPart,
             @RequestParam(required = false) String visiblePart,
             @RequestParam(required = false, defaultValue = "-1") int mark,
@@ -142,7 +140,7 @@ public class CardController {
 
         var card = cardRepository.findById(id).get();
         if (!Helper.hasRightsForCard(card)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.FORBIDDEN, HttpStatus.FORBIDDEN).toResponseEntity();
         }
 
         if (hiddenPart != null) {
@@ -160,18 +158,16 @@ public class CardController {
         if (hiddenPartImageFile != null) {
             var hiddenPartImage = imageController.upload(hiddenPartImageFile, card, 0);
             if (hiddenPartImage == null) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
             }
-            // card.setHiddenPartImage(hiddenPartImage);
 
         }
         if (visiblePartImageFile != null) {
             var visiblePartImage = imageController.upload(visiblePartImageFile, card, 1);
             if (visiblePartImage == null) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
             }
 
-            // card.setVisiblePartImage(visiblePartImage);
         }
         if (hiddenPartImageFileDelete == true) {
             var images = imageRepository.findByCardEntity(card);
@@ -198,8 +194,7 @@ public class CardController {
         }
 
         cardRepository.save(card);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ApiResponse(null, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
     }
 
 }

@@ -40,7 +40,7 @@ const renameDeck = () => {
 
 const loadDeck = () =>{
     axios.get(API_ADDRESS+'deck/'+deckid).then(function(response){
-        deckName.value = response.data.name;
+        deckName.value = response.data.data.name;
     }).catch(function(error){
         router.push("/user/login")
             console.log(error);

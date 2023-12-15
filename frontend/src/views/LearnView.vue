@@ -35,7 +35,7 @@ const getDeck = () => {
 
     axios.request(config)
         .then((response) => {
-            deck.value = response.data;
+            deck.value = response.data.data;
         })
         .catch((error) => {
             router.push("/user/login")
@@ -109,7 +109,7 @@ const findCards = () => {
             }
         }
     ).then(function (result) {
-        cards.value = result.data;
+        cards.value = result.data.data;
         updateUI();
 
         if (activeid.value == -1) {
@@ -265,10 +265,9 @@ const loadImages = () => {
         }
     )
         .then(function (response) {
-            console.log("UPDAATES")
             hiddenImagePart.value = "";
             visibleImagePart.value = "";
-            for (const imageR of response.data) {
+            for (const imageR of response.data.data) {
                 if (imageR.position == 0) {
                     hiddenImagePart.value = API_ADDRESS + 'image/show/' + imageR.id;
                 }

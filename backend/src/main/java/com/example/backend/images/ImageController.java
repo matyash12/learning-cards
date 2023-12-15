@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.backend.ApiMessages;
+import com.example.backend.ApiResponse;
 import com.example.backend.card.CardEntity;
 import com.example.backend.card.CardRepository;
 import com.example.backend.deck.DeckEntity;
@@ -68,16 +70,17 @@ public class ImageController {
     private String imageBucketName;
 
     @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<ImageEntity> get(@PathVariable long id) {
+    public @ResponseBody ResponseEntity<ApiResponse> get(@PathVariable long id) {
         try {
             var img = imageRepository.findById(id).get();
             if (Helper.hasRightsForImage(img)) {
-                return new ResponseEntity<>(img, HttpStatus.OK);
+                return new ApiResponse(img, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
             }
         } catch (Exception e) {
             System.out.println(e);
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ApiResponse(null, ApiMessages.NOT_FOUND, HttpStatus.NOT_FOUND).toResponseEntity();
 
     }
 
@@ -111,17 +114,17 @@ public class ImageController {
     }
 
     @PostMapping("/find")
-    public @ResponseBody ResponseEntity<List<ImageEntity>> getCards(@RequestParam long cardid) {
+    public @ResponseBody ResponseEntity<ApiResponse> getCards(@RequestParam long cardid) {
         try {
             var card = cardRepository.findById(cardid).get();
             if (!Helper.hasRightsForCard(card)) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ApiResponse(null, ApiMessages.FORBIDDEN, HttpStatus.FORBIDDEN).toResponseEntity();
             }
             var images = imageRepository.findByCardEntity(card);
-            return new ResponseEntity<>(images, HttpStatus.OK);
+            return new ApiResponse(images, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
         } catch (Exception e) {
             System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
         }
     }
 
@@ -147,7 +150,7 @@ public class ImageController {
     }
 
     @GetMapping("/all")
-    public @ResponseBody ResponseEntity<Iterable<ImageEntity>> getAll() {
+    public @ResponseBody ResponseEntity<ApiResponse> getAll() {
         try {
             var images = imageRepository.findAll();
             List<ImageEntity> allowedImages = new ArrayList<>();
@@ -157,10 +160,10 @@ public class ImageController {
                     allowedImages.add(image);
                 }
             }
-            return new ResponseEntity<>(allowedImages, HttpStatus.OK);
+            return new ApiResponse(allowedImages, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
         } catch (Exception e) {
             System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
         }
     }
 

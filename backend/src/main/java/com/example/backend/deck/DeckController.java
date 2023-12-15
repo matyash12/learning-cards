@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.backend.ApiMessages;
+import com.example.backend.ApiResponse;
 import com.example.backend.security.Helper;
 import com.example.backend.trida.TridaEntity;
 import com.example.backend.trida.TridaRepository;
@@ -30,81 +32,77 @@ public class DeckController {
     private TridaRepository tridaRepository;
 
     @GetMapping("/{id}")
-    public @ResponseBody ResponseEntity<DeckEntity> get(@PathVariable long id) {
+    public @ResponseBody ResponseEntity<ApiResponse> get(@PathVariable long id) {
         try {
             var deck = deckRepository.findById(id).get();
             if (Helper.hasRightsForDeck(deck)) {
-                return new ResponseEntity<>(deck, HttpStatus.OK);
+                return new ApiResponse(deck, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
             } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ApiResponse(null, ApiMessages.FORBIDDEN, HttpStatus.FORBIDDEN).toResponseEntity();
             }
 
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
         }
 
     }
 
     @PostMapping("/new")
-    public @ResponseBody ResponseEntity<DeckEntity> create(@RequestParam String name, @RequestParam long tridaid) {
+    public @ResponseBody ResponseEntity<ApiResponse> create(@RequestParam String name, @RequestParam long tridaid) {
         TridaEntity trida;
         try {
             trida = tridaRepository.findById(tridaid).get();
             if (!Helper.hasRightsForTrida(trida)) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ApiResponse(null, ApiMessages.FORBIDDEN, HttpStatus.FORBIDDEN).toResponseEntity();
 
             }
         } catch (Exception e) {
             System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
         }
 
         DeckEntity deck = new DeckEntity();
         deck.setName(name);
         deck.setTridaEntity(trida);
         deckRepository.save(deck);
-
-        return new ResponseEntity<>(deck, HttpStatus.OK);
+        return new ApiResponse(deck, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
     }
 
     @PostMapping("/find")
-    public @ResponseBody ResponseEntity<List<DeckEntity>> getCards(@RequestParam long tridaid) {
+    public @ResponseBody ResponseEntity<ApiResponse> getCards(@RequestParam long tridaid) {
         TridaEntity trida;
         try {
             trida = tridaRepository.findById(tridaid).get();
             if (!Helper.hasRightsForTrida(trida)) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
+                return new ApiResponse(null, ApiMessages.FORBIDDEN, HttpStatus.FORBIDDEN).toResponseEntity();
             }
         } catch (Exception e) {
             System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
         }
 
         var decks = deckRepository.findByTridaEntity(trida);
-
-        return new ResponseEntity<>(decks, HttpStatus.OK);
+        return new ApiResponse(decks, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
     }
 
     @PostMapping("/delete")
-    public @ResponseBody ResponseEntity<String> delete(@RequestParam long id) {
+    public @ResponseBody ResponseEntity<ApiResponse> delete(@RequestParam long id) {
         try {
             var deck = deckRepository.findById(id).get();
             if (!Helper.hasRightsForDeck(deck)) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ApiResponse(null, ApiMessages.FORBIDDEN, HttpStatus.FORBIDDEN).toResponseEntity();
             }
         } catch (Exception e) {
             System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
         }
 
         deckRepository.deleteById(id);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ApiResponse(null, ApiMessages.NO_CONTENT, HttpStatus.NO_CONTENT).toResponseEntity();
     }
 
     @GetMapping("/all")
-    public @ResponseBody ResponseEntity<Iterable<DeckEntity>> getAll() {
+    public @ResponseBody ResponseEntity<ApiResponse> getAll() {
         try {
             var decks = deckRepository.findAll();
             List<DeckEntity> allowedDecks = new ArrayList<>();
@@ -114,28 +112,28 @@ public class DeckController {
                     decks.add(deck);
                 }
             }
-            return new ResponseEntity<>(allowedDecks, HttpStatus.OK);
+            return new ApiResponse(allowedDecks, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
         } catch (Exception e) {
             System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
         }
     }
 
     @PostMapping("/update")
-    public @ResponseBody ResponseEntity<String> update(@RequestParam long id,
+    public @ResponseBody ResponseEntity<ApiResponse> update(@RequestParam long id,
             @RequestParam(required = false) String name) {
         try {
             var deck = deckRepository.findById(id).get();
 
             if (!Helper.hasRightsForDeck(deck)) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return new ApiResponse(null, ApiMessages.FORBIDDEN, HttpStatus.FORBIDDEN).toResponseEntity();
             }
             deck.setName(name);
             deckRepository.save(deck);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ApiResponse(null, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
         } catch (Exception e) {
             System.out.println(e);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
         }
 
     }
