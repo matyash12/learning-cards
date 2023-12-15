@@ -22,7 +22,7 @@ const getDeck = (deckid) => {
 
     axios.request(config)
         .then((response) => {
-            deck.value = response.data;
+            deck.value = response.data.data;
         })
         .catch((error) => {
             router.push("/user/login")
