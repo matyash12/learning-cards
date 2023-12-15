@@ -33,7 +33,7 @@ const loadImages = () => {
         .then(function (response) {
             hiddenImagePart.value = "";
             visibleImagePart.value = "";
-            for (const imageR of response.data) {
+            for (const imageR of response.data.data) {
                 if (imageR.position == 0) {
                     hiddenImagePart.value = API_ADDRESS + 'image/show/' + imageR.id;
                 }
@@ -53,9 +53,9 @@ const loadCardDetails = (onlyImages) => {
         .then(function (response) {
             if (!onlyImages) {
                 console.log("Update images")
-                visiblePart.value = response.data.visiblePart;
-                hiddenPart.value = response.data.hiddenPart;
-                markValue.value = response.data.mark;
+                visiblePart.value = response.data.data.visiblePart;
+                hiddenPart.value = response.data.data.hiddenPart;
+                markValue.value = response.data.data.mark;
             }
 
             loadImages();

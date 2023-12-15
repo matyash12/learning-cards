@@ -41,7 +41,7 @@ const findCards = (deckid) => {
             }
         }
     ).then(function (result) {
-        cards.value = result.data;
+        cards.value = result.data.data;
 
     }).catch(function (err) {
         router.push("/user/login")

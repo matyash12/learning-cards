@@ -109,7 +109,7 @@ const findCards = () => {
             }
         }
     ).then(function (result) {
-        cards.value = result.data;
+        cards.value = result.data.data;
         updateUI();
 
         if (activeid.value == -1) {
