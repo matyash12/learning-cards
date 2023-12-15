@@ -24,7 +24,7 @@ const downloadHF = () => {
 
         const fileName = 'data.txt';
 
-        const blob = new Blob([response.data], { type: 'text/plain' });
+        const blob = new Blob([response.data.data.text], { type: 'text/plain' });
         const link = document.createElement('a');
         link.href = window.URL.createObjectURL(blob);
         link.download = fileName;
