@@ -10,7 +10,25 @@
 			"name": "User",
 			"item": [
 				{
-					"name": "Login",
+					"name": "Info about current user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/info",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"info"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -19,7 +37,7 @@
 							"urlencoded": [
 								{
 									"key": "username",
-									"value": "Tomas",
+									"value": "Matyas",
 									"type": "text"
 								},
 								{
@@ -37,24 +55,6 @@
 							"path": [
 								"user",
 								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get info about current user",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{baseUrl}}/user/info",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"user",
-								"info"
 							]
 						}
 					},
@@ -88,6 +88,24 @@
 							"path": [
 								"user",
 								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/user/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"logout"
 							]
 						}
 					},
@@ -128,13 +146,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{baseUrl}}/card/1",
+							"raw": "{{baseUrl}}/card/9",
 							"host": [
 								"{{baseUrl}}"
 							],
 							"path": [
 								"card",
-								"1"
+								"9"
 							],
 							"query": [
 								{
@@ -182,18 +200,29 @@
 							"formdata": [
 								{
 									"key": "hiddenPart",
-									"value": "2",
+									"value": "Test s all obrazkem AKJDGHJKFAHGKSHJKHJKF",
 									"type": "text"
 								},
 								{
 									"key": "visiblePart",
-									"value": "log(2)",
+									"value": "PES",
 									"type": "text"
 								},
 								{
 									"key": "deckid",
 									"value": "1",
 									"type": "text"
+								},
+								{
+									"key": "hiddenPartImageFile",
+									"type": "file",
+									"src": "/Users/matyas/Downloads/dog.jpeg"
+								},
+								{
+									"key": "visiblePartImageFile",
+									"type": "file",
+									"src": "/Users/matyas/Downloads/kocka (1).jpeg",
+									"disabled": true
 								}
 							]
 						},
@@ -208,7 +237,128 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Only text",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "hiddenPart",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "visiblePart",
+											"value": "log(2)",
+											"type": "text"
+										},
+										{
+											"key": "deckid",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "hiddenPartImageFile",
+											"type": "file",
+											"src": "/Users/matyas/Downloads/kocka (1).jpeg",
+											"disabled": true
+										},
+										{
+											"key": "visiblePartImageFile",
+											"type": "file",
+											"src": "/Users/matyas/Downloads/kocka.jpeg",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/card/new",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"card",
+										"new"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "With images",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "hiddenPart",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "visiblePart",
+											"value": "log(2)",
+											"type": "text"
+										},
+										{
+											"key": "deckid",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "hiddenPartImageFile",
+											"description": "include image from your disk",
+											"type": "file",
+											"src": "/Users/matyas/Downloads/kocka (1).jpeg"
+										},
+										{
+											"key": "visiblePartImageFile",
+											"description": "include image from your disk",
+											"type": "file",
+											"src": "/Users/matyas/Downloads/kocka.jpeg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/card/new",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"card",
+										"new"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
 				},
 				{
 					"name": "Delete one card by id",
@@ -273,6 +423,31 @@
 								{
 									"key": "deckid",
 									"value": "1",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "hiddenPartImageFile",
+									"type": "file",
+									"src": "/Users/matyas/Downloads/kocka (1).jpeg"
+								},
+								{
+									"key": "visiblePartImageFile",
+									"type": "file",
+									"src": [],
+									"disabled": true
+								},
+								{
+									"key": "hiddenPartImageFileDelete",
+									"value": "True",
+									"description": "to delete",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "visiblePartImageFileDelete",
+									"value": "True",
+									"description": "to delete",
 									"type": "text",
 									"disabled": true
 								}
@@ -593,6 +768,122 @@
 									"value": null,
 									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Image",
+			"item": [
+				{
+					"name": "Get image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/image/5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"image",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload image",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/matyas/Downloads/kocka.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/image/upload",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"image",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get image by cardid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "cardid",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/image/find",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"image",
+								"find"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all images",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/image/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"image",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Show image",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/image/show/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"image",
+								"show",
+								"2"
 							]
 						}
 					},
