@@ -10,7 +10,7 @@ import NotFoundView from '../views/NotFound.vue';
 import RegisterView from '../views/RegisterView.vue';
 import EditCardView from '../views/EditCardView.vue';
 import ExportDataView from '../views/ExportDataView.vue';
-import TridaEditView from '../views/TridaEditView.vue';
+import EditTridaView from '../views/EditTridaView.vue';
 import EditDeckView from '../views/EditDeckView.vue';
 
 const router = createRouter({
@@ -76,7 +76,7 @@ const router = createRouter({
     {
       path: '/:tridaid/edit',
       name: 'edittrida',
-      component: TridaEditView
+      component: EditTridaView
     },
     {
       path: '/deck/:deckid/edit',
