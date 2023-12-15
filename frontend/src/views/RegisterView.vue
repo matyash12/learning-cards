@@ -83,7 +83,7 @@ const registerRequest = () => {
 
         router.push('/user/login');
     }).catch(function (err) {
-        warningMessage.value = err.response.data;
+        warningMessage.value = err.response.data.message;
         showWarning.value = true;
         console.log(err);
     })

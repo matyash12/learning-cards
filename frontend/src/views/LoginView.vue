@@ -69,7 +69,7 @@ const loginRequest = () => {
 
         router.push('/');
     }).catch(function (err) {
-        warningMessage.value = err.response.data;
+        warningMessage.value = err.response.data.message;
         showWarning.value = true;
         console.log(err);
     })
