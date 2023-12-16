@@ -39,6 +39,7 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.GET, "/user/register").permitAll()
                                                 .requestMatchers(HttpMethod.POST, "/user/login").permitAll()
                                                 .requestMatchers(HttpMethod.GET, "/user/**").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/recovery/**").permitAll()
                                                 .anyRequest().authenticated());
                 // .httpBasic(Customizer.withDefaults());
                 // http.cors();

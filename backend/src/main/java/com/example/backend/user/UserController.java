@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.ApiMessages;
 import com.example.backend.ApiResponse;
+import com.example.backend.EmailMessages;
+import com.example.backend.email.EmailUtil;
 import com.example.backend.security.PasswordUtils;
 import com.example.backend.security.session.SessionEntity;
 import com.example.backend.security.session.SessionRepository;
@@ -30,10 +32,19 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 
     @Autowired
+    private PasswordUtils passwordUtils;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private SessionRepository sessionRepository;
+
+    @Autowired
+    private EmailUtil emailUtil;
+
+    @Autowired
+    private EmailMessages emailMessages;
 
     /**
      * info_response_class
@@ -104,7 +115,7 @@ public class UserController {
                 return new ApiResponse(null, "Password and username doesn't match!", HttpStatus.NOT_FOUND)
                         .toResponseEntity();
             }
-            if (PasswordUtils.verifyPassword(password, user.getPasswordsalt(), user.getPasswordhash()) == true) {
+            if (passwordUtils.verifyPassword(password, user.getPasswordsalt(), user.getPasswordhash()) == true) {
                 var ses = request.getSession(true);
                 var sessionEntity = new SessionEntity();
                 sessionEntity.setJSESSIONID(ses.getId());
@@ -165,11 +176,11 @@ public class UserController {
                 return new ApiResponse(null, "Email already exists. Please choose a different email.",
                         HttpStatus.NOT_FOUND).toResponseEntity();
             }
-
-            var salt = PasswordUtils.generateSaltAsString();
-            var user = new UserEntity(username, email, PasswordUtils.hashPassword(password, salt), salt, "ROLE_USER");
+            
+            var salt = passwordUtils.generateSaltAsString();
+            var user = new UserEntity(username, email, passwordUtils.hashPassword(password, salt), salt, "ROLE_USER");
             userRepository.save(user);
-
+            emailUtil.SendEmail(email, emailMessages.NewEmailSubject(), emailMessages.NewAccountBody());
             return new ApiResponse(null, "New account created", HttpStatus.OK).toResponseEntity();
         } catch (Exception e) {
             System.out.println(e);

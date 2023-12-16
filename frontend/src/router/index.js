@@ -13,6 +13,11 @@ import ExportDataView from '../views/ExportDataView.vue';
 import EditTridaView from '../views/EditTridaView.vue';
 import EditDeckView from '../views/EditDeckView.vue';
 
+import RequestNewPasswordView from '../views/passwordReset/RequestNewPasswordView.vue';
+import CreateNewPasswordView from '../views/passwordReset/CreateNewPasswordView.vue';
+import CheckYourEmailView from '../views/passwordReset/CheckYourEmailView.vue';
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -83,6 +88,27 @@ const router = createRouter({
       name: 'editdeck',
       component: EditDeckView
     },
+
+
+    {
+      path: '/requestnewpassword',
+      name: 'requestnewpassword',
+      component: RequestNewPasswordView
+    },
+    {
+      path: '/reset-password',
+      name: 'createnewpassword',
+      component: CreateNewPasswordView,
+      props: route => ({
+        token: route.query.token,
+        userId: route.query.userId
+      })
+    },
+    {
+      path: '/checkyouremail',
+      name: 'checkyouremail',
+      component: CheckYourEmailView
+    }
   ]
 })
 
