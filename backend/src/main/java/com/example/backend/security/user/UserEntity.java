@@ -26,10 +26,15 @@ public class UserEntity {
      * Like "Matyas's key"
      */
     private String username;
+
+
+    private String email;
     /*
      * Actual value of the api key "0imfnc8mVLWwsdAwJkr4Rx-Af50DDqtlx"
      */
     
+    
+
     @JsonIgnore
     private String passwordhash;
 
@@ -41,7 +46,16 @@ public class UserEntity {
      * ROLE_USER, ROLE_ADMIN
      */
     private String roles;
-
+    
+    public UserEntity() {
+    }
+    public UserEntity(String username, String email, String passwordhash, String passwordsalt, String roles) {
+        this.username = username;
+        this.email = email;
+        this.passwordhash = passwordhash;
+        this.passwordsalt = passwordsalt;
+        this.roles = roles;
+    }
     public String getRolesStr() {
         return this.roles;
     }
@@ -97,6 +111,13 @@ public class UserEntity {
 
     public void setPasswordsalt(String passwordsalt) {
         this.passwordsalt = passwordsalt;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
 }

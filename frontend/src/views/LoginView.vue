@@ -5,9 +5,9 @@
       <form @submit.prevent @keyup.enter="loginRequest">
         <div class="box">
           <div class="field">
-            <label class="label">Username</label>
+            <label class="label">Email</label>
             <div class="control">
-              <input v-model="username" class="input" type="text" placeholder="Username" autocomplete="username">
+              <input v-model="email" class="input" type="email" placeholder="Email" autocomplete="email">
             </div>
           </div>
           <div class="field">
@@ -44,7 +44,7 @@ import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
 const route = useRoute();
 
-const username = ref('');
+const email = ref('');
 const password = ref('');
 const showWarning = ref(false);
 const warningMessage = ref('');
@@ -57,7 +57,7 @@ const closeWarning = () =>{
 const loginRequest = () => {
     axios.post(API_ADDRESS + 'user/login',
         {
-            "username": username.value,
+            "email": email.value,
             "password": password.value
         },
         {

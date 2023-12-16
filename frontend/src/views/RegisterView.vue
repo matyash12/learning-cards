@@ -4,10 +4,16 @@
   
       <form @submit.prevent @keyup.enter="registerRequest">
         <div class="box">
-          <div class="field">
+          <!-- <div class="field">
             <label class="label">Username</label>
             <div class="control">
               <input v-model="username" class="input" type="text" placeholder="Username" autocomplete="username">
+            </div>
+          </div> -->
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input v-model="email" class="input" type="email" placeholder="Email" autocomplete="email">
             </div>
           </div>
           <div class="field">
@@ -52,6 +58,7 @@ const router = useRouter();
 const route = useRoute();
 
 const username = ref('');
+const email = ref('');
 const password = ref('');
 const password2 = ref('');
 
@@ -71,7 +78,7 @@ const registerRequest = () => {
 
     axios.post(API_ADDRESS + 'user/register',
         {
-            "username": username.value,
+            "email":email.value,
             "password": password.value
         },
         {
