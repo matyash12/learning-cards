@@ -13,3 +13,9 @@ Postman
 ### Api docs
 Build in postman with all endpoints: api_docs.postman_collection.json
 https://github.com/matyash12/learning-cards/blob/4bf3b972462fc9c79887c0780fdd43273180d6a4/api_docs.postman_collection.json
+
+
+## Things to edit or create to run
+frontend/manifest.json - set start_url
+backend/src/main/resources/application.properties
+
