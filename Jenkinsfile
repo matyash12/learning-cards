@@ -36,6 +36,16 @@ pipeline {
                 }
             }
         }
+        stage('Copy manifest.json file to workspace') {
+            steps {
+                withCredentials([file(credentialsId: 'MANIFESTJSON', variable: 'manifestjson')]) {
+                    script {
+                        def manifestContent = readFile(manifestjson)
+                        writeFile file: 'frontend/manifest.json', text: manifestContent
+                    }
+                }
+            }
+        }
 
         stage('Run ./build.sh') {
             steps {
