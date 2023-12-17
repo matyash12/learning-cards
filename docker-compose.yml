@@ -43,8 +43,6 @@ services:
   minio-data:
     container_name: minio-data
     image: minio/minio
-    ports:
-      - "${MINIO_CONSOLE_PORT}:9001"
     environment:
       MINIO_ROOT_USER: ${MINIO_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
