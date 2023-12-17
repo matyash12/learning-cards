@@ -12,19 +12,19 @@ import javax.crypto.spec.PBEKeySpec;
 import org.springframework.stereotype.Component;
 @Component
 public class PasswordUtils {
-    public static String generateSaltAsString() {
+    public String generateSaltAsString() {
         byte[] salt = generateSalt();
         return Base64.getEncoder().encodeToString(salt);
     }
 
-    private static byte[] generateSalt() {
+    private byte[] generateSalt() {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[16];
         random.nextBytes(salt);
         return salt;
     }
 
-    public static String hashPassword(String password, String salt) {
+    public String hashPassword(String password, String salt) {
         int iterations = 10000;
         int keyLength = 256;
 
@@ -42,7 +42,7 @@ public class PasswordUtils {
         }
     }
 
-    public static boolean verifyPassword(String enteredPassword, String salt, String storedHash) {
+    public boolean verifyPassword(String enteredPassword, String salt, String storedHash) {
         String enteredPasswordHash = hashPassword(enteredPassword, salt);
         return enteredPasswordHash != null && enteredPasswordHash.equals(storedHash);
     }

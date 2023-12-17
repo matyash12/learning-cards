@@ -1,7 +1,5 @@
 package com.example.backend.user;
 
-import java.util.HashMap;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.backend.ApiMessages;
 import com.example.backend.ApiResponse;
+import com.example.backend.EmailMessages;
+import com.example.backend.email.EmailUtil;
 import com.example.backend.security.PasswordUtils;
 import com.example.backend.security.session.SessionEntity;
 import com.example.backend.security.session.SessionRepository;
@@ -32,10 +32,19 @@ import jakarta.servlet.http.HttpSession;
 public class UserController {
 
     @Autowired
+    private PasswordUtils passwordUtils;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private SessionRepository sessionRepository;
+
+    @Autowired
+    private EmailUtil emailUtil;
+
+    @Autowired
+    private EmailMessages emailMessages;
 
     /**
      * info_response_class
@@ -43,37 +52,70 @@ public class UserController {
     public class info_response_class {
         public String userId;
         public String authorities;
+
         public info_response_class(String userId, String authorities) {
             this.userId = userId;
             this.authorities = authorities;
         }
-        
-        
+
     }
+
     @GetMapping("/info")
     public @ResponseBody ResponseEntity<ApiResponse> info() {
-
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         String authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities().toString();
 
-
-        var response = new ApiResponse(new info_response_class(userId, authorities),"Info about you" , HttpStatus.OK);
+        var response = new ApiResponse(new info_response_class(userId, authorities), "Info about you", HttpStatus.OK);
 
         return response.toResponseEntity();
 
     }
 
-    @PostMapping("/login")
-    public @ResponseBody ResponseEntity<ApiResponse> login(HttpServletRequest request, @RequestParam String username,
+    // @PostMapping(value = "/login", consumes = "application/x-www-form-urlencoded", params = "username")
+    // public @ResponseBody ResponseEntity<ApiResponse> loginUsername(HttpServletRequest request,
+    //         @RequestParam String username,
+    //         @RequestParam String password, HttpSession session) {
+
+    //     return new ApiResponse(null, "Outdated request. Please update", HttpStatus.BAD_REQUEST).toResponseEntity();
+    //     // session.invalidate();
+    //     // try {
+    //     //     var user = userRepository.findByUsername(username);
+    //     //     if (user == null) {
+    //     //         return new ApiResponse(null, "Password and username doesn't match!", HttpStatus.NOT_FOUND)
+    //     //                 .toResponseEntity();
+    //     //     }
+    //     //     if (PasswordUtils.verifyPassword(password, user.getPasswordsalt(), user.getPasswordhash()) == true) {
+    //     //         var ses = request.getSession(true);
+    //     //         var sessionEntity = new SessionEntity();
+    //     //         sessionEntity.setJSESSIONID(ses.getId());
+    //     //         sessionEntity.setUserId(user.getId());
+    //     //         sessionRepository.save(sessionEntity);
+    //     //         return new ApiResponse(null, "Login successful", HttpStatus.OK).toResponseEntity();
+    //     //     } else {
+    //     //         return new ApiResponse(null, "Password and username doesn't match!", HttpStatus.UNAUTHORIZED)
+    //     //                 .toResponseEntity();
+    //     //     }
+    //     // } catch (Exception e) {
+    //     //     System.out.println(e);
+    //     //     return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR)
+    //     //             .toResponseEntity();
+    //     // }
+
+    // }
+
+    @PostMapping(value = "/login")
+    public @ResponseBody ResponseEntity<ApiResponse> loginEmail(HttpServletRequest request, @RequestParam String email,
             @RequestParam String password, HttpSession session) {
+        
         session.invalidate();
         try {
-            var user = userRepository.findByUsername(username);
-            if (user == null){
-                return new ApiResponse(null,"Password and username doesn't match!",HttpStatus.NOT_FOUND).toResponseEntity();
+            var user = userRepository.findByEmail(email);
+           if (user == null) {
+                return new ApiResponse(null, "Password and username doesn't match!", HttpStatus.NOT_FOUND)
+                        .toResponseEntity();
             }
-            if (PasswordUtils.verifyPassword(password, user.getPasswordsalt(), user.getPasswordhash()) == true) {
+            if (passwordUtils.verifyPassword(password, user.getPasswordsalt(), user.getPasswordhash()) == true) {
                 var ses = request.getSession(true);
                 var sessionEntity = new SessionEntity();
                 sessionEntity.setJSESSIONID(ses.getId());
@@ -81,52 +123,69 @@ public class UserController {
                 sessionRepository.save(sessionEntity);
                 return new ApiResponse(null, "Login successful", HttpStatus.OK).toResponseEntity();
             } else {
-                return new ApiResponse(null, "Password and username doesn't match!", HttpStatus.UNAUTHORIZED).toResponseEntity();
+                return new ApiResponse(null, "Password and username doesn't match!", HttpStatus.UNAUTHORIZED)
+                        .toResponseEntity();
             }
         } catch (Exception e) {
             System.out.println(e);
-            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR)
+                    .toResponseEntity();
         }
-
     }
+
     @PostMapping("/logout")
-     public @ResponseBody ResponseEntity<ApiResponse> logout(HttpServletRequest request, HttpSession session) {
+    public @ResponseBody ResponseEntity<ApiResponse> logout(HttpServletRequest request, HttpSession session) {
         session.invalidate();
         return new ApiResponse(null, "Logout successful", HttpStatus.OK).toResponseEntity();
 
     }
 
     @PostMapping("/register")
-    public @ResponseBody ResponseEntity<ApiResponse> register(@RequestParam String username, @RequestParam String password,
+    public @ResponseBody ResponseEntity<ApiResponse> register(@RequestParam(required = false) String username,
+            @RequestParam String email,
+            @RequestParam String password,
             HttpServletRequest request,
             HttpServletResponse response) {
 
         try {
 
             if (PasswordChecker.isPasswordStrong(password) == false) {
-                return new ApiResponse(null, PasswordChecker.getPasswordRequirementsMessage(), HttpStatus.NOT_FOUND).toResponseEntity();
+                return new ApiResponse(null, PasswordChecker.getPasswordRequirementsMessage(), HttpStatus.NOT_FOUND)
+                        .toResponseEntity();
             }
-            if (UsernameChecker.isUsernameStrong(username) == false) {
-                return new ApiResponse(null, UsernameChecker.getUsernameRequirementsMessage(), HttpStatus.NOT_FOUND).toResponseEntity();
+            if (username != null) {
+                if (UsernameChecker.isUsernameStrong(username) == false) {
+                    return new ApiResponse(null, UsernameChecker.getUsernameRequirementsMessage(), HttpStatus.NOT_FOUND)
+                            .toResponseEntity();
+                }
+            }
+            if (EmailChecker.isEmailValid(email) == false) {
+                return new ApiResponse(null, EmailChecker.getEmailValidationMessage(email), HttpStatus.NOT_FOUND)
+                        .toResponseEntity();
+            }
+            if (username != null) {
+                // checking if username already exists
+                if (userRepository.findByUsername(username) != null) {
+                    return new ApiResponse(null, "Username already exists. Please choose a different username.",
+                            HttpStatus.NOT_FOUND).toResponseEntity();
+                }
             }
 
-            // checking if username already exists
-            if (userRepository.findByUsername(username) != null) {
-                return new ApiResponse(null, "Username already exists. Please choose a different username.", HttpStatus.NOT_FOUND).toResponseEntity();
+            // checking if email already exists
+            if (userRepository.findByEmail(email) != null) {
+                return new ApiResponse(null, "Email already exists. Please choose a different email.",
+                        HttpStatus.NOT_FOUND).toResponseEntity();
             }
-
-            var newUser = new UserEntity();
-            newUser.setRoles("ROLE_USER");
-            newUser.setUsername(username);
-            var salt = PasswordUtils.generateSaltAsString();
-            newUser.setPasswordsalt(salt);
-            newUser.setPasswordhash(PasswordUtils.hashPassword(password, salt));
-
-            userRepository.save(newUser);
+            
+            var salt = passwordUtils.generateSaltAsString();
+            var user = new UserEntity(username, email, passwordUtils.hashPassword(password, salt), salt, "ROLE_USER");
+            userRepository.save(user);
+            emailUtil.SendEmail(email, emailMessages.NewEmailSubject(), emailMessages.NewAccountBody());
             return new ApiResponse(null, "New account created", HttpStatus.OK).toResponseEntity();
         } catch (Exception e) {
             System.out.println(e);
-            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR).toResponseEntity();
+            return new ApiResponse(null, ApiMessages.INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR)
+                    .toResponseEntity();
         }
     }
 }
