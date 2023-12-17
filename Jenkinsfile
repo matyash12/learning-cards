@@ -41,7 +41,7 @@ pipeline {
                 withCredentials([file(credentialsId: 'MANIFESTJSON', variable: 'manifestjson')]) {
                     script {
                         def manifestContent = readFile(manifestjson)
-                        writeFile file: 'frontend/manifest.json', text: manifestContent
+                        writeFile file: 'frontend/public/manifest.json', text: manifestContent
                     }
                 }
             }
