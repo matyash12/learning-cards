@@ -1,9 +1,10 @@
 <template>
-    <div>
+    <div class="container">
+      <div class="columns is-centered">
+      <div class="column is-half">
       <h1 class="title">Create account</h1>
   
       <form @submit.prevent @keyup.enter="registerRequest">
-        <div class="box">
           <!-- <div class="field">
             <label class="label">Username</label>
             <div class="control">
@@ -40,9 +41,9 @@
               <button class="button is-link is-light" @click="loginInstead">Login instead</button>
             </div>
           </div>
-        </div>
       </form>
-  
+      </div>
+      </div>
     </div>
   </template>
   
