@@ -6,6 +6,8 @@
 
   "display": "standalone", 
 
+  "start_url": ".",
+  
   "icons": [{ 
 
     "src": "/pwa-512x512.png", 
