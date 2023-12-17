@@ -4,35 +4,28 @@
       <div class="column is-half">
         <h1 class="title">Login</h1>
 
-        <form @submit.prevent @keyup.enter="loginRequest">
-          <div class="box">
-            <div class="field">
-              <label class="label">Email</label>
-              <div class="control">
-                <input v-model="email" class="input" type="email" placeholder="Email" autocomplete="email">
-              </div>
+        <form @submit.prevent @keyup.enter="loginRequest" >
+          <div class="field">
+            <label class="label">Email</label>
+            <div class="control">
+              <input v-model="email" class="input" type="email" placeholder="Email" autocomplete="email">
             </div>
-            <div class="field">
-              <label class="label">Password</label>
-              <div class="control">
-                <input v-model="password" class="input" type="password" placeholder="Password" autocomplete="current-password">
-              </div>
+          </div>
+          <div class="field">
+            <label class="label">Password</label>
+            <div class="control">
+              <input v-model="password" class="input" type="password" placeholder="Password"
+                autocomplete="current-password">
             </div>
-            <div class="notification is-danger" v-show="showWarning">
-              <button class="delete" @click="closeWarning"></button>
-              <p v-text="warningMessage"></p>
-            </div>
-            <div class="field is-grouped">
-              <div class="control">
-                <button class="button is-primary" @click="loginRequest">Login</button>
-              </div>
-              <div class="control">
-                <button class="button is-link is-light" @click="recoverPassword">Recover password</button>
-              </div>
-              <div class="control">
-                <button class="button is-link is-light" @click="createAccount">Create account</button>
-              </div>
-            </div>
+          </div>
+          <div class="notification is-danger" v-show="showWarning">
+            <button class="delete" @click="closeWarning"></button>
+            <p v-text="warningMessage"></p>
+          </div>
+          <div class="buttons">
+              <button class="button is-primary" @click="loginRequest">Login</button>
+              <button class="button is-link is-light" @click="recoverPassword">Recover password</button>
+              <button class="button is-link is-light" @click="createAccount">Create account</button>
           </div>
         </form>
       </div>
