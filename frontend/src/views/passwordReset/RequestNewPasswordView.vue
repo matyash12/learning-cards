@@ -1,8 +1,9 @@
 <template>
-    <div>
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-half">
         <h1 class="title">Recover password</h1>
         <form @submit.prevent>
-        <div class="box">
           <div class="field">
             <label class="label">Email</label>
             <div class="control">
@@ -22,11 +23,10 @@
             </div>
 
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
-    
-    
+  </div>
 </template>
 
 <script setup>
@@ -41,26 +41,26 @@ const route = useRoute();
 const email = ref('');
 const showWarning = ref(false);
 const warningMessage = ref('');
-const sendRecoveryEmail = () =>{
-    axios.post(API_ADDRESS + 'recovery/request/password',
-        {
-            "email": email.value
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    ).then(function (result) {
-        router.push('/checkyouremail');
-    }).catch(function (err) {
-        warningMessage.value = err.response.data.message;
-        showWarning.value = true;
-        console.log(err);
-    })
+const sendRecoveryEmail = () => {
+  axios.post(API_ADDRESS + 'recovery/request/password',
+    {
+      "email": email.value
+    },
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+  ).then(function (result) {
+    router.push('/checkyouremail');
+  }).catch(function (err) {
+    warningMessage.value = err.response.data.message;
+    showWarning.value = true;
+    console.log(err);
+  })
 }
 
-const loginInstead = () =>{
+const loginInstead = () => {
   router.push("/user/login");
 }
 

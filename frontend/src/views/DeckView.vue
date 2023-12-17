@@ -135,7 +135,6 @@ const editDeck = () => {
         <table class="table is-fullwidth">
             <thead>
                 <tr>
-                    <th>#</th>
                     <th>Mark</th>
                     <th>Visible side</th>
                     <th>Hidden side</th>
@@ -145,7 +144,6 @@ const editDeck = () => {
             </thead>
             <tbody>
                 <tr v-for="(card, index) in cards" :key="card.id">
-                    <td>{{ index + 1 }}</td>
                     <td>{{ card.mark }}</td>
                     <td>{{ card.visiblePart }}</td>
                     <td>{{ card.hiddenPart }}</td>
