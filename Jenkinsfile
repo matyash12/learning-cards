@@ -38,7 +38,7 @@ pipeline {
         }
         stage('Copy manifest.json file to workspace') {
             steps {
-                withCredentials([file(credentialsId: 'MANIFESTJSON', variable: 'manifestjson')]) {
+                withCredentials([file(credentialsId: 'LEARNING_CARDS_MANIFESTJSON', variable: 'manifestjson')]) {
                     script {
                         def manifestContent = readFile(manifestjson)
                         writeFile file: 'frontend/public/manifest.json', text: manifestContent
