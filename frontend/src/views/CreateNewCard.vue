@@ -224,7 +224,7 @@ const imageVisibleFileDelete = () => {
         </div>
         <div class="field is-grouped">
             <div class="control">
-                <button class="button is-primary" @click="createCard">Create (c)</button>
+                <button class="button is-primary" @click="createCard">Create</button>
             </div>
             <div class="control">
                 <button class="button is-link is-light" @click="moveToDeckView">Done</button>
