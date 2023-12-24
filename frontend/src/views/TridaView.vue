@@ -11,8 +11,6 @@ let selectedTrida = ref(null);
 let selectedTridaDecks = ref(null);
 
 const getAllTrida = () => {
-    //const axios = require('axios');
-
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
