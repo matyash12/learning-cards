@@ -99,7 +99,7 @@ const deleteThisDeck = () => {
     })
 }
 const editCard = (cardid) => {
-    router.push("/deck/"+deck.value.id+"/"+cardid+"/edit");
+    router.push("/deck/" + deck.value.id + "/" + cardid + "/edit");
 }
 
 refreshDataOnPage();
@@ -110,14 +110,14 @@ refreshDataOnPage();
 const isDeleteConfirmationModalActive = ref(false);
 
 const showDeleteConfirmationModal = () => {
-  isDeleteConfirmationModalActive.value = true;
+    isDeleteConfirmationModalActive.value = true;
 };
 
 const hideDeleteConfirmationModal = () => {
-  isDeleteConfirmationModalActive.value = false;
+    isDeleteConfirmationModalActive.value = false;
 };
 const editDeck = () => {
-    router.push("/deck/"+id+"/edit")
+    router.push("/deck/" + id + "/edit")
 };
 </script>
 
@@ -126,9 +126,9 @@ const editDeck = () => {
     <div>
         <div class="buttons">
             <button @click="moveToLearning" class="button is-primary">Learn</button>
-            <button @click="editDeck" class="button">Edit deck</button>
+            <button @click="editDeck" class="button is-info">Edit deck</button>
             <button @click="createNewCard" class="button is-success">Add card</button>
-            <button @click="moveToClassView" class="button is-info">Classes</button>
+            <button @click="moveToClassView" class="button is-warning">Classes</button>
             <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
         </div>
         <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
@@ -158,23 +158,22 @@ const editDeck = () => {
         </table>
     </div>
 
- <!-- Modal -->
- <div class="modal" :class="{ 'is-active': isDeleteConfirmationModalActive }">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Confirmation</p>
-          <button class="delete" aria-label="close" @click="hideDeleteConfirmationModal()"></button>
-        </header>
-        <section class="modal-card-body">
-          Are you sure you want to delete this item?
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-danger" @click="deleteThisDeck" >Delete</button>
-          <button class="button" @click="hideDeleteConfirmationModal">Cancel</button>
-        </footer>
-      </div>
+    <!-- Modal -->
+    <div class="modal" :class="{ 'is-active': isDeleteConfirmationModalActive }">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Confirmation</p>
+                <button class="delete" aria-label="close" @click="hideDeleteConfirmationModal()"></button>
+            </header>
+            <section class="modal-card-body">
+                Are you sure you want to delete this item?
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-danger" @click="deleteThisDeck">Delete</button>
+                <button class="button" @click="hideDeleteConfirmationModal">Cancel</button>
+            </footer>
+        </div>
     </div>
-
 </template>
 

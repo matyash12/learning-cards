@@ -211,7 +211,7 @@ const exportData = () => {
                     <button @click="createNewDeck" class="button is-primary ">
                         Create new deck
                     </button>
-                    <button @click="editTrida" class="button ">
+                    <button @click="editTrida" class="button is-link">
                         Edit class
                     </button>
                     <button class="button is-danger" @click="showDeleteConfirmationModal">Delete</button>
