@@ -142,43 +142,8 @@ const imageVisibleFileDelete = () => {
 <template>
     <h1 class="title">Create new card</h1>
     <div>
-        <!--HIDDEN SIDE-->
-        <div>
-            <div class="field">
-                <label class="label">Hidden side image</label>
-                <div class="control">
-                    <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
-                </div>
-            </div>
-
-
-            <div class="file has-name">
-                <label class="file-label">
-                    <input @change="imageHiddenFileChange" class="file-input" type="file" name="resume">
-                    <span class="file-cta">
-                        <span class="file-icon">
-                            <i class="fas fa-upload"></i>
-                        </span>
-                        <span class="file-label">
-                            Choose a file…
-                        </span>
-                    </span>
-                    <span class="file-name">
-                    </span>
-                </label>
-                <button v-if="hiddenImagePart != ''" @click="imageHiddenFileDelete" class="button">
-                    Remove image
-                </button>
-            </div>
-            <div class="field">
-                <label class="label">Hidden side text</label>
-                <div class="control">
-                                <textarea ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="textarea" type="text" placeholder=""></textarea>
-                </div>
-            </div>
-        </div>
-        <!--VISIBLE SIDE-->
-        <div>
+         <!--VISIBLE SIDE-->
+         <div>
             <div class="field">
                 <label class="label">Visible side image</label>
                 <div class="control">
@@ -214,6 +179,42 @@ const imageVisibleFileDelete = () => {
             </div>
 
         </div>
+        <!--HIDDEN SIDE-->
+        <div>
+            <div class="field">
+                <label class="label">Hidden side image</label>
+                <div class="control">
+                    <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
+                </div>
+            </div>
+
+
+            <div class="file has-name">
+                <label class="file-label">
+                    <input @change="imageHiddenFileChange" class="file-input" type="file" name="resume">
+                    <span class="file-cta">
+                        <span class="file-icon">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                        <span class="file-label">
+                            Choose a file…
+                        </span>
+                    </span>
+                    <span class="file-name">
+                    </span>
+                </label>
+                <button v-if="hiddenImagePart != ''" @click="imageHiddenFileDelete" class="button">
+                    Remove image
+                </button>
+            </div>
+            <div class="field">
+                <label class="label">Hidden side text</label>
+                <div class="control">
+                                <textarea ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="textarea" type="text" placeholder=""></textarea>
+                </div>
+            </div>
+        </div>
+       
 
 
         <p v-if="wasLastCardCreated == true" class="is-italic">Card was created</p>
