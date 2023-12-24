@@ -74,7 +74,7 @@ const moveToDeckView = () => {
 }
 
 const handleKeyDown = (event) => {
-    if (event.key === 'Tab' && event.target.id === 'visiblePart') {
+    if (event.key === 'Tab' && event.target.id === 'hiddenPart') {
         createCard();
     }
 
@@ -174,7 +174,7 @@ const imageVisibleFileDelete = () => {
             <div class="field">
                 <label class="label">Visible side text</label>
                 <div class="control">
-                    <textarea id="visiblePart" v-model="visiblePart" @input="userChangesValue" class="textarea" type="text" placeholder=""></textarea>
+                    <textarea ref="visiblePartInput" id="visiblePart" v-model="visiblePart" @input="userChangesValue" class="textarea" type="text" placeholder=""></textarea>
                 </div>
             </div>
 
@@ -210,7 +210,7 @@ const imageVisibleFileDelete = () => {
             <div class="field">
                 <label class="label">Hidden side text</label>
                 <div class="control">
-                                <textarea ref="visiblePartInput" v-model="hiddenPart" @input="userChangesValue" class="textarea" type="text" placeholder=""></textarea>
+                                <textarea  v-model="hiddenPart" id="hiddenPart" @input="userChangesValue" class="textarea" type="text" placeholder=""></textarea>
                 </div>
             </div>
         </div>
