@@ -84,7 +84,7 @@ const deleteTrida = () => {
         selectedTrida.value = null;
         selectedTridaDecks.value = [];
         getAllTrida();
-
+        isDeleteConfirmationModalActive.value = false;
 
     }).catch(function (err) {
         router.push("/user/login")
