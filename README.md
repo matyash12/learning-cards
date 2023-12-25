@@ -16,6 +16,8 @@ https://github.com/matyash12/learning-cards/blob/4bf3b972462fc9c79887c0780fdd432
 
 
 ## Things to edit or create to run
+.env
 frontend/manifest.json - set start_url
 backend/src/main/resources/application.properties
+frontend/src/helpers.js - when running in development. Eg. change api address
 

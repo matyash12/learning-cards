@@ -12,6 +12,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -37,6 +38,7 @@ public class EmailUtil {
 
 
     // TODO add boolean if success.
+    @Async
     public void SendEmail(String toEmail, String subject, String body) {
         System.out.println("SSLEmail Start");
         Properties props = new Properties();
