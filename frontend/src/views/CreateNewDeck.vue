@@ -53,7 +53,7 @@ const createNewDeckForm = () => {
             console.log(response);
             //moveToClasses();
             
-            router.push('/deck/'+response.data.id)
+            router.push('/deck/'+response.data.data.id)
         })
         .catch(function (error) {
             router.push("/user/login")
