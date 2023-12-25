@@ -11,8 +11,6 @@ let selectedTrida = ref(null);
 let selectedTridaDecks = ref(null);
 
 const getAllTrida = () => {
-    //const axios = require('axios');
-
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
@@ -86,7 +84,7 @@ const deleteTrida = () => {
         selectedTrida.value = null;
         selectedTridaDecks.value = [];
         getAllTrida();
-
+        isDeleteConfirmationModalActive.value = false;
 
     }).catch(function (err) {
         router.push("/user/login")
@@ -211,7 +209,7 @@ const exportData = () => {
                     <button @click="createNewDeck" class="button is-primary ">
                         Create new deck
                     </button>
-                    <button @click="editTrida" class="button ">
+                    <button @click="editTrida" class="button is-link">
                         Edit class
                     </button>
                     <button class="button is-danger" @click="showDeleteConfirmationModal">Delete</button>

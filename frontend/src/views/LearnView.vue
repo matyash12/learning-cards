@@ -331,7 +331,7 @@ loadImages();
                 </table>
 
             </div>
-            <button @click="moveToDeck" class="button">Go to Deck</button>
+            <button @click="moveToDeck" class="button is-link">Go to Deck</button>
 
         </div>
 
