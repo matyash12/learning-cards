@@ -140,6 +140,10 @@ const next = () => {
     isHiddenVisible.value = false;
 }
 const nextMark = (mark) => {
+    if (isHiddenVisible.value == false){
+        return;
+    }
+
     axios.post(API_ADDRESS + 'card/update',
         {
             id: cards.value[activeid.value].id,
