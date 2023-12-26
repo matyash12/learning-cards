@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 
-import { API_ADDRESS } from '../helpers.js';
+import { API_ADDRESS } from '@/helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
