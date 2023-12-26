@@ -4,6 +4,8 @@ import axios from 'axios';
 import { API_ADDRESS } from '../helpers.js';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js'; 
+const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -73,6 +75,7 @@ const deleteCard = (cardid) => {
             }
         }
     ).then(function (result) {
+        store.newNotification("Card was deleted",false,"is-info",3);
         refreshDataOnPage();
 
     }).catch(function (err) {
@@ -91,6 +94,7 @@ const deleteThisDeck = () => {
             }
         }
     ).then(function (result) {
+        store.newNotification("Deck was deleted",false,"is-info",3);
         moveToClassView();
 
     }).catch(function (err) {

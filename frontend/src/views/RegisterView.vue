@@ -1,13 +1,11 @@
-
-  
-  
-  
 <script setup>
 import axios from 'axios';
 
 import { API_ADDRESS } from '../helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js'; 
+const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -41,7 +39,7 @@ const registerRequest = () => {
       }
     }
   ).then(function (result) {
-
+    store.newNotification("Account created",false,"is-success",3);
     router.push('/user/login');
   }).catch(function (err) {
     warningMessage.value = err.response.data.message;

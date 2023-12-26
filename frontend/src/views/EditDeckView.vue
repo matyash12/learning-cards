@@ -4,6 +4,8 @@ import axios from 'axios';
 import { API_ADDRESS } from '../helpers.js';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js'; 
+const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -28,6 +30,8 @@ const renameDeck = () => {
         ,
     )
         .then(function (response) {
+            store.newNotification("Deck was renamed",false,"is-info",3);
+
             console.log(response);
             moveToDeck();
         })

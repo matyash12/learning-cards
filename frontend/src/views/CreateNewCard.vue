@@ -4,6 +4,8 @@ import axios from 'axios';
 import { API_ADDRESS, isValidField } from '../helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js'; 
+const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -46,6 +48,8 @@ const createCard = () => {
         ,
     )
         .then(function (response) {
+            store.newNotification("Card was created",false,"is-success",1);
+
             console.log(response);
             visiblePart.value = '';
             hiddenPart.value = '';
@@ -219,8 +223,10 @@ const imageVisibleFileDelete = () => {
             </div>
 
 
-
+            <!--
+                Not used anymore
             <p v-if="wasLastCardCreated == true" class="is-italic">Card was created</p>
+            -->
             <div class="notification is-danger" v-show="showWarning">
                 <button class="delete" @click="closeWarning"></button>
                 <p v-text="warningMessage"></p>

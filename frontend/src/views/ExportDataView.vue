@@ -1,11 +1,11 @@
-
-
 <script setup>
 import axios from 'axios';
 
 import { API_ADDRESS } from '../helpers.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js'; 
+const store = notificationStore();
 const router = useRouter();
 let tridy = ref([]);
 let selectedTrida = ref(null);

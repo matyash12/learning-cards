@@ -17,6 +17,7 @@ import RequestNewPasswordView from '../views/passwordReset/RequestNewPasswordVie
 import CreateNewPasswordView from '../views/passwordReset/CreateNewPasswordView.vue';
 import CheckYourEmailView from '../views/passwordReset/CheckYourEmailView.vue';
 
+import MainNotificationView from '../views/modal/MainNotificationView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

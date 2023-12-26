@@ -4,6 +4,9 @@ import axios from 'axios';
 import { API_ADDRESS } from '../helpers.js';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js'; 
+const store = notificationStore();
+
 const router = useRouter();
 const route = useRoute();
 
@@ -29,6 +32,8 @@ const renameTrida = () => {
     )
         .then(function (response) {
             console.log(response);
+            store.newNotification("Class renamed",false,"is-success",3);
+
             moveToClasses();
         })
         .catch(function (error) {
