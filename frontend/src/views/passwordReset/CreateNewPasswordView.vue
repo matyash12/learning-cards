@@ -1,7 +1,8 @@
 <template>
+  <div class="m-4">
     <div>
-        <h1 class="title">Create new password</h1>
-        <form @submit.prevent>
+      <h1 class="title">Create new password</h1>
+      <form @submit.prevent>
         <div class="box">
           <div class="field">
             <label class="label">New password</label>
@@ -28,8 +29,8 @@
         </div>
       </form>
     </div>
-    
-    
+
+  </div>
 </template>
 
 <script setup>
@@ -50,31 +51,31 @@ const warningMessage = ref('');
 
 const createNewPasswordRequest = () => {
 
-    if (password1.value !== password2.value) {
-        return;
+  if (password1.value !== password2.value) {
+    return;
+  }
+
+
+
+  axios.post(API_ADDRESS + 'recovery/change/password',
+    {
+      "token": token,
+      "userid": userId,
+      "password": password1.value
+    },
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
     }
+  ).then(function (result) {
 
-
-
-    axios.post(API_ADDRESS + 'recovery/change/password',
-        {
-            "token": token,
-            "userid": userId,
-            "password": password1.value
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    ).then(function (result) {
-
-        router.push('/user/login');
-    }).catch(function (err) {
-        warningMessage.value = err.response.data.message;
-        showWarning.value = true;
-        console.log(err);
-    })
+    router.push('/user/login');
+  }).catch(function (err) {
+    warningMessage.value = err.response.data.message;
+    showWarning.value = true;
+    console.log(err);
+  })
 }
 
 </script>

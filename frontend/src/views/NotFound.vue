@@ -1,4 +1,5 @@
 <template>
+  <div class="m-4">
     <section class="hero is-fullheight is-bold">
       <div class="hero-body">
         <div class="container has-text-centered">
@@ -8,9 +9,10 @@
         </div>
       </div>
     </section>
-  </template>
+  </div>
+</template>
   
-  <style scoped>
-    /* Add your custom styles here if needed */
-  </style>
+<style scoped>
+/* Add your custom styles here if needed */
+</style>
   

@@ -416,32 +416,36 @@ loadImages();
     font-size: 18px;
     min-height: 100px;
 }
+
 /* Define a gradient from red to green */
 /* Define a gradient from green to red */
 .gradient {
-  background: linear-gradient(to right, green, yellow, red);
+    background: linear-gradient(to right, green, yellow, red);
 }
 
 /* Apply colors to marks from 1 to 5 using gradient stops */
 .mark-1 {
-  background-color: green; /* or any other color you prefer for 1 */
+    background-color: green;
+    /* or any other color you prefer for 1 */
 }
 
 .mark-2 {
-  background-color: #99cc00; /* or any other color you prefer for 2 using hexadecimal value */
+    background-color: #99cc00;
+    /* or any other color you prefer for 2 using hexadecimal value */
 }
 
 .mark-3 {
-  background-color: yellow; /* or any other color you prefer for 3 */
+    background-color: yellow;
+    /* or any other color you prefer for 3 */
 }
 
 .mark-4 {
-  background-color: #ff6600; /* or any other color you prefer for 4 using hexadecimal value */
+    background-color: #ff6600;
+    /* or any other color you prefer for 4 using hexadecimal value */
 }
 
 .mark-5 {
-  background-color: red; /* or any other color you prefer for 5 */
-}
-
-</style>
+    background-color: red;
+    /* or any other color you prefer for 5 */
+}</style>
   

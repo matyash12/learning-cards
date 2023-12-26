@@ -17,7 +17,7 @@ let deckid = route.params.deckid;
 // Methods
 const renameDeck = () => {
     axios.post(API_ADDRESS + 'deck/update', {
-        'id':deckid,
+        'id': deckid,
         'name': deckName.value,
     },
         {
@@ -38,44 +38,46 @@ const renameDeck = () => {
 
 };
 
-const loadDeck = () =>{
-    axios.get(API_ADDRESS+'deck/'+deckid).then(function(response){
+const loadDeck = () => {
+    axios.get(API_ADDRESS + 'deck/' + deckid).then(function (response) {
         deckName.value = response.data.data.name;
-    }).catch(function(error){
+    }).catch(function (error) {
         router.push("/user/login")
-            console.log(error);
+        console.log(error);
     });
 }
 
 loadDeck();
 
 const moveToDeck = () => {
-    router.push('/deck/'+deckid);
+    router.push('/deck/' + deckid);
 }
 </script>
 
 
 <template>
-    <div>
-        <h1 class="title">Rename deck</h1>
+    <div class="m-4">
+        <div>
+            <h1 class="title">Rename deck</h1>
 
-        <div class="box">
-        <div class="field">
-            <label class="label">New name for deck</label>
-            <div class="control">
-                <input v-model="deckName" class="input" type="text" placeholder="Deck name">
+            <div class="box">
+                <div class="field">
+                    <label class="label">New name for deck</label>
+                    <div class="control">
+                        <input v-model="deckName" class="input" type="text" placeholder="Deck name">
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-primary" @click="renameDeck">Rename</button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-link is-light" @click="moveToDeck">Cancel</button>
+                    </div>
+                </div>
             </div>
+
         </div>
-
-        <div class="field is-grouped">
-            <div class="control">
-                <button class="button is-primary" @click="renameDeck">Rename</button>
-            </div>
-            <div class="control">
-                <button class="button is-link is-light" @click="moveToDeck">Cancel</button>
-            </div>
-        </div>
-    </div>
-
     </div>
 </template>

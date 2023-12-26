@@ -123,56 +123,58 @@ const editDeck = () => {
 
 
 <template>
-    <div>
-        <div class="buttons">
-            <button @click="moveToLearning" class="button is-primary">Learn</button>
-            <button @click="editDeck" class="button is-info">Edit deck</button>
-            <button @click="createNewCard" class="button is-success">Add card</button>
-            <button @click="moveToClassView" class="button is-warning">Classes</button>
-            <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
+    <div class="m-4">
+        <div>
+            <div class="buttons">
+                <button @click="moveToLearning" class="button is-primary">Learn</button>
+                <button @click="editDeck" class="button is-info">Edit deck</button>
+                <button @click="createNewCard" class="button is-success">Add card</button>
+                <button @click="moveToClassView" class="button is-warning">Classes</button>
+                <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
+            </div>
+            <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
+            <table class="table is-fullwidth">
+                <thead>
+                    <tr>
+                        <th>Mark</th>
+                        <th>Visible side</th>
+                        <th>Hidden side</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(card, index) in cards" :key="card.id">
+                        <td>{{ card.mark }}</td>
+                        <td>{{ card.visiblePart }}</td>
+                        <td>{{ card.hiddenPart }}</td>
+                        <td>
+                            <a @click="editCard(card.id)" class="">Edit</a>
+                        </td>
+                        <td>
+                            <a @click="deleteCard(card.id)" class="has-text-danger">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
-        <table class="table is-fullwidth">
-            <thead>
-                <tr>
-                    <th>Mark</th>
-                    <th>Visible side</th>
-                    <th>Hidden side</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(card, index) in cards" :key="card.id">
-                    <td>{{ card.mark }}</td>
-                    <td>{{ card.visiblePart }}</td>
-                    <td>{{ card.hiddenPart }}</td>
-                    <td>
-                        <a @click="editCard(card.id)" class="">Edit</a>
-                    </td>
-                    <td>
-                        <a @click="deleteCard(card.id)" class="has-text-danger">Delete</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
 
-    <!-- Modal -->
-    <div class="modal" :class="{ 'is-active': isDeleteConfirmationModalActive }">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Confirmation</p>
-                <button class="delete" aria-label="close" @click="hideDeleteConfirmationModal()"></button>
-            </header>
-            <section class="modal-card-body">
-                Are you sure you want to delete this item?
-            </section>
-            <footer class="modal-card-foot">
-                <button class="button is-danger" @click="deleteThisDeck">Delete</button>
-                <button class="button" @click="hideDeleteConfirmationModal">Cancel</button>
-            </footer>
+        <!-- Modal -->
+        <div class="modal" :class="{ 'is-active': isDeleteConfirmationModalActive }">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Confirmation</p>
+                    <button class="delete" aria-label="close" @click="hideDeleteConfirmationModal()"></button>
+                </header>
+                <section class="modal-card-body">
+                    Are you sure you want to delete this item?
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-danger" @click="deleteThisDeck">Delete</button>
+                    <button class="button" @click="hideDeleteConfirmationModal">Cancel</button>
+                </footer>
+            </div>
         </div>
     </div>
 </template>

@@ -1,29 +1,31 @@
 <template>
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-half">
-        <h1 class="title">Recover password</h1>
-        <form @submit.prevent>
-          <div class="field">
-            <label class="label">Email</label>
-            <div class="control">
-              <input v-model="email" class="input" type="email" placeholder="Email" autocomplete="email">
+  <div class="m-4">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-half">
+          <h1 class="title">Recover password</h1>
+          <form @submit.prevent>
+            <div class="field">
+              <label class="label">Email</label>
+              <div class="control">
+                <input v-model="email" class="input" type="email" placeholder="Email" autocomplete="email">
+              </div>
             </div>
-          </div>
-          <div class="notification is-danger" v-show="showWarning">
-            <button class="delete" @click="closeWarning"></button>
-            <p v-text="warningMessage"></p>
-          </div>
-          <div class="field is-grouped">
-            <div class="control">
-              <button class="button is-primary" @click="sendRecoveryEmail">Send recovery email</button>
+            <div class="notification is-danger" v-show="showWarning">
+              <button class="delete" @click="closeWarning"></button>
+              <p v-text="warningMessage"></p>
             </div>
-            <div class="control">
-              <button class="button is-link is-light" @click="loginInstead">Login instead</button>
-            </div>
+            <div class="field is-grouped">
+              <div class="control">
+                <button class="button is-primary" @click="sendRecoveryEmail">Send recovery email</button>
+              </div>
+              <div class="control">
+                <button class="button is-link is-light" @click="loginInstead">Login instead</button>
+              </div>
 
-          </div>
-        </form>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

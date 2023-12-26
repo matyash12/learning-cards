@@ -1,11 +1,4 @@
-<template>
-     <div class="buttons">
-            <button @click="moveToClassView" class="button is-info">Classes</button>
-        </div>
-    <h1 class="title">Export data</h1>
-    <p class="content">You can export data in csv format.</p>
-    <button class="button" @click="downloadHF">Download</button>
-</template>
+
 
 <script setup>
 import axios from 'axios';
@@ -44,3 +37,14 @@ const moveToClassView = () => {
 }
 
 </script>
+
+<template>
+    <div class="m-4">
+        <div class="buttons">
+            <button @click="moveToClassView" class="button is-info">Classes</button>
+        </div>
+        <h1 class="title">Export data</h1>
+        <p class="content">You can export data in csv format.</p>
+        <button class="button" @click="downloadHF">Download</button>
+    </div>
+</template>
