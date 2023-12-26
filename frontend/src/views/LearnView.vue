@@ -288,7 +288,23 @@ loadImages();
 </script>
 
 <template>
-    <div class='container hero is-fullheight'>
+    <nav class="navbar">
+        <div class="navbar-menu is-active">
+            <!-- shown on mobile -->
+            <div class="navbar-end">
+                <div class="navbar-start">
+                    <a class="navbar-item">
+                        <button @click="moveToDeck" class="button">
+                            Exit
+                        </button>
+
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class='container hero is-fullheight-with-navbar '>
+
 
         <div class="columns">
             <div class="column is-one-quarter is-hidden-mobile">
@@ -333,8 +349,9 @@ loadImages();
                     </table>
 
                 </div>
+                <!--
                 <button @click="moveToDeck" class="button is-link">Go to Deck</button>
-
+                    -->
             </div>
 
             <div class="column">
@@ -447,5 +464,6 @@ loadImages();
 .mark-5 {
     background-color: red;
     /* or any other color you prefer for 5 */
-}</style>
+}
+</style>
   
