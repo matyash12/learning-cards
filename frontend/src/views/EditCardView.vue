@@ -4,6 +4,8 @@ import axios from 'axios';
 import { API_ADDRESS, isValidField } from '../helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js'; 
+const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -97,6 +99,7 @@ const updateCard = () => {
             hiddenPart.value = '';
             visiblePartInput.value.focus();
             wasLastCardCreated.value = true;
+            store.newNotification("Card was successfuly updated",false,"is-success",3);
             router.push('/deck/' + deckid)
             //moveToDeckView();
         })

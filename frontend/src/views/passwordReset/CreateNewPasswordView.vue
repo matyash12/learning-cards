@@ -1,3 +1,52 @@
+<script setup>
+import axios from 'axios';
+
+import { API_ADDRESS } from '../../helpers.js';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js'; 
+const store = notificationStore();
+const router = useRouter();
+const route = useRoute();
+
+const { token, userId } = defineProps(['token', 'userId']);
+
+const password1 = ref("");
+const password2 = ref("");
+const showWarning = ref(false);
+const warningMessage = ref('');
+
+const createNewPasswordRequest = () => {
+
+  if (password1.value !== password2.value) {
+    return;
+  }
+
+
+
+  axios.post(API_ADDRESS + 'recovery/change/password',
+    {
+      "token": token,
+      "userid": userId,
+      "password": password1.value
+    },
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+  ).then(function (result) {
+    store.newNotification("New password created",false,"is-success",3);
+    router.push('/user/login');
+  }).catch(function (err) {
+    warningMessage.value = err.response.data.message;
+    showWarning.value = true;
+    console.log(err);
+  })
+}
+
+</script>
+
 <template>
   <div class="m-4">
     <div>
@@ -32,50 +81,3 @@
 
   </div>
 </template>
-
-<script setup>
-import axios from 'axios';
-
-import { API_ADDRESS } from '../../helpers.js';
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-const router = useRouter();
-const route = useRoute();
-
-const { token, userId } = defineProps(['token', 'userId']);
-
-const password1 = ref("");
-const password2 = ref("");
-const showWarning = ref(false);
-const warningMessage = ref('');
-
-const createNewPasswordRequest = () => {
-
-  if (password1.value !== password2.value) {
-    return;
-  }
-
-
-
-  axios.post(API_ADDRESS + 'recovery/change/password',
-    {
-      "token": token,
-      "userid": userId,
-      "password": password1.value
-    },
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }
-  ).then(function (result) {
-
-    router.push('/user/login');
-  }).catch(function (err) {
-    warningMessage.value = err.response.data.message;
-    showWarning.value = true;
-    console.log(err);
-  })
-}
-
-</script>

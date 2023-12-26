@@ -5,6 +5,8 @@ import axios from 'axios';
 import { API_ADDRESS } from '../helpers.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js'; 
+const store = notificationStore();
 const router = useRouter();
 let tridy = ref([]);
 let selectedTrida = ref(null);
@@ -83,6 +85,7 @@ const deleteTrida = () => {
     ).then(function (result) {
         selectedTrida.value = null;
         selectedTridaDecks.value = [];
+        store.newNotification("Class was deleted",false,"is-info",3);
         getAllTrida();
         isDeleteConfirmationModalActive.value = false;
 

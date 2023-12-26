@@ -1,3 +1,44 @@
+<script setup>
+import axios from 'axios';
+
+import { API_ADDRESS } from '../../helpers.js';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js'; 
+const store = notificationStore();
+const router = useRouter();
+const route = useRoute();
+
+const email = ref('');
+const showWarning = ref(false);
+const warningMessage = ref('');
+const sendRecoveryEmail = () => {
+  axios.post(API_ADDRESS + 'recovery/request/password',
+    {
+      "email": email.value
+    },
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+  ).then(function (result) {
+    store.newNotification("Request was succesful",false,"is-success",3);
+    router.push('/checkyouremail');
+  }).catch(function (err) {
+    warningMessage.value = err.response.data.message;
+    showWarning.value = true;
+    console.log(err);
+  })
+}
+
+const loginInstead = () => {
+  router.push("/user/login");
+}
+
+
+</script>
+
 <template>
   <div class="m-4">
     <div class="container">
@@ -30,41 +71,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import axios from 'axios';
-
-import { API_ADDRESS } from '../../helpers.js';
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-const router = useRouter();
-const route = useRoute();
-
-const email = ref('');
-const showWarning = ref(false);
-const warningMessage = ref('');
-const sendRecoveryEmail = () => {
-  axios.post(API_ADDRESS + 'recovery/request/password',
-    {
-      "email": email.value
-    },
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }
-  ).then(function (result) {
-    router.push('/checkyouremail');
-  }).catch(function (err) {
-    warningMessage.value = err.response.data.message;
-    showWarning.value = true;
-    console.log(err);
-  })
-}
-
-const loginInstead = () => {
-  router.push("/user/login");
-}
-
-
-</script>

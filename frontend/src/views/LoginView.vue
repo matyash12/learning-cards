@@ -1,3 +1,57 @@
+<script setup>
+import axios from 'axios';
+
+import { API_ADDRESS } from '../helpers.js';
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js'; 
+const store = notificationStore();
+
+const router = useRouter();
+const route = useRoute();
+
+const email = ref('');
+const password = ref('');
+const showWarning = ref(false);
+const warningMessage = ref('');
+
+const closeWarning = () => {
+  showWarning.value = false;
+  warningMessage.value = '';
+}
+
+const loginRequest = () => {
+  axios.post(API_ADDRESS + 'user/login',
+    {
+      "email": email.value,
+      "password": password.value
+    },
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+  ).then(function (result) {
+    store.newNotification("Login was successful",false,"is-success",3);
+    router.push('/');
+  }).catch(function (err) {
+    //notificationStore.newNotification("")
+    warningMessage.value = err.response.data.message;
+    showWarning.value = true;
+    console.log(err);
+  })
+}
+
+const createAccount = () => {
+  router.push("/user/register");
+}
+
+const recoverPassword = () => {
+  router.push("/requestnewpassword");
+}
+
+</script>
+
 <template>
   <div class="m-4">
     <div class="container">
@@ -34,55 +88,3 @@
     </div>
   </div>
 </template>
-  
-
-<script setup>
-import axios from 'axios';
-
-import { API_ADDRESS } from '../helpers.js';
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-const router = useRouter();
-const route = useRoute();
-
-const email = ref('');
-const password = ref('');
-const showWarning = ref(false);
-const warningMessage = ref('');
-
-const closeWarning = () => {
-  showWarning.value = false;
-  warningMessage.value = '';
-}
-
-const loginRequest = () => {
-  axios.post(API_ADDRESS + 'user/login',
-    {
-      "email": email.value,
-      "password": password.value
-    },
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }
-  ).then(function (result) {
-
-    router.push('/');
-  }).catch(function (err) {
-    warningMessage.value = err.response.data.message;
-    showWarning.value = true;
-    console.log(err);
-  })
-}
-
-const createAccount = () => {
-  router.push("/user/register");
-}
-
-const recoverPassword = () => {
-  router.push("/requestnewpassword");
-}
-
-</script>
-
