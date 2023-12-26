@@ -46,6 +46,9 @@ public class UserController {
     @Autowired
     private EmailMessages emailMessages;
 
+    @Autowired
+    private CreateExampleForNewUser createExampleForNewUser;
+
     /**
      * info_response_class
      */
@@ -181,6 +184,11 @@ public class UserController {
             var user = new UserEntity(username, email, passwordUtils.hashPassword(password, salt), salt, "ROLE_USER");
             userRepository.save(user);
             emailUtil.SendEmail(email, emailMessages.NewEmailSubject(), emailMessages.NewAccountBody());
+
+            //Create example class
+            createExampleForNewUser.CreateExample(user);
+
+
             return new ApiResponse(null, "New account created", HttpStatus.OK).toResponseEntity();
         } catch (Exception e) {
             System.out.println(e);
