@@ -106,10 +106,10 @@ const logOut = () => {
         router.push("/user/login")
         console.log(err);
     })
-    
+
 }
-const editTrida = () =>{
-    router.push("/"+selectedTrida.value.id+"/edit")
+const editTrida = () => {
+    router.push("/" + selectedTrida.value.id + "/edit")
 }
 
 
@@ -133,7 +133,7 @@ const hideDeleteConfirmationModal = () => {
 const isBurgerMenuOpen = ref(false);
 
 const toggleBurgerMenu = () => {
-  isBurgerMenuOpen.value = !isBurgerMenuOpen.value;
+    isBurgerMenuOpen.value = !isBurgerMenuOpen.value;
 };
 
 const exportData = () => {
@@ -144,115 +144,116 @@ const exportData = () => {
 
 
 <template>
-    <!--Navbar-->
-    <header>
-    <div class="wrapper">
-      <nav class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-          <a role="button" class="navbar-burger" aria-label="menu"
-             :class="{ 'is-active': isBurgerMenuOpen }"
-             @click="toggleBurgerMenu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-          </a>
-        </div>
+    <div class="m-4">
+        <!--Navbar-->
+        <header>
+            <div class="wrapper">
+                <nav class="navbar" role="navigation" aria-label="main navigation">
+                    <div class="navbar-brand">
+                        <a role="button" class="navbar-burger" aria-label="menu" :class="{ 'is-active': isBurgerMenuOpen }"
+                            @click="toggleBurgerMenu" aria-expanded="false" data-target="navbarBasicExample">
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                        </a>
+                    </div>
 
-        <div id="navbarBasicExample" :class="{ 'is-active': isBurgerMenuOpen }" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" @click="exportData">
-                    Export data
-                </a>
+                    <div id="navbarBasicExample" :class="{ 'is-active': isBurgerMenuOpen }" class="navbar-menu">
+                        <div class="navbar-start">
+                            <a class="navbar-item" @click="exportData">
+                                Export data
+                            </a>
+                        </div>
+                        <div class="navbar-end">
+                            <div class="navbar-item">
+                                <div class="buttons">
+                                    <a class="button is-light" @click="logOut">
+                                        Log out
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
             </div>
-          <div class="navbar-end">
-            <div class="navbar-item">
-              <div class="buttons">
-                <a class="button is-light" @click="logOut">
-                  Log out
-                </a>
-              </div>
+        </header>
+
+
+        <div class="columns">
+            <div class="column is-one-third">
+                <aside class="menu">
+                    <p class="menu-label">
+                        Classes
+                    </p>
+                    <ul class="menu-list">
+                        <li v-for="(trida) in tridy">
+                            <a :class="{ 'is-active': trida == selectedTrida }" @click="clickTrida(trida.id)">{{ trida.name
+                            }}</a>
+                        </li>
+
+                        <li>
+                            <a @click="createNewTrida" class="has-text-weight-bold">Create new class</a>
+                        </li>
+
+                    </ul>
+                </aside>
+
             </div>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
+            <div class="column" v-show="selectedTrida != null">
+                <div class="box">
+                    <p class="title">
+                        {{ selectedTrida?.name ?? '' }}
+                    </p>
+
+                    <div class="buttons">
+                        <button @click="createNewDeck" class="button is-primary ">
+                            Create new deck
+                        </button>
+                        <button @click="editTrida" class="button is-link">
+                            Edit class
+                        </button>
+                        <button class="button is-danger" @click="showDeleteConfirmationModal">Delete</button>
 
 
-    <div class="columns">
-        <div class="column is-one-third">
-            <aside class="menu">
-                <p class="menu-label">
-                    Classes
-                </p>
-                <ul class="menu-list">
-                    <li v-for="(trida) in tridy">
-                        <a :class="{ 'is-active': trida == selectedTrida }" @click="clickTrida(trida.id)">{{ trida.name
-                        }}</a>
-                    </li>
-
-                    <li>
-                        <a @click="createNewTrida" class="has-text-weight-bold">Create new class</a>
-                    </li>
-
-                </ul>
-            </aside>
-
-        </div>
-        <div class="column" v-show="selectedTrida != null">
-            <div class="box">
-                <p class="title">
-                    {{ selectedTrida?.name ?? '' }}
-                </p>
-
-                <div class="buttons">
-                    <button @click="createNewDeck" class="button is-primary ">
-                        Create new deck
-                    </button>
-                    <button @click="editTrida" class="button is-link">
-                        Edit class
-                    </button>
-                    <button class="button is-danger" @click="showDeleteConfirmationModal">Delete</button>
-
+                    </div>
 
                 </div>
 
+
+
+
+                <aside class="menu">
+
+                    <ul class="menu-list">
+                        <li v-for="(deck) in selectedTridaDecks">
+                            <a @click="clickDeck(deck.id)">{{ deck.name }}</a>
+                        </li>
+                        <li v-if="selectedTrida != null">
+                            <a class="has-text-weight-bold" @click="createNewDeck">Create new deck</a>
+                        </li>
+                    </ul>
+                </aside>
+
             </div>
-
-
-
-
-            <aside class="menu">
-
-                <ul class="menu-list">
-                    <li v-for="(deck) in selectedTridaDecks">
-                        <a @click="clickDeck(deck.id)">{{ deck.name }}</a>
-                    </li>
-                    <li v-if="selectedTrida != null">
-                        <a class="has-text-weight-bold" @click="createNewDeck">Create new deck</a>
-                    </li>
-                </ul>
-            </aside>
-
         </div>
-    </div>
 
-    
-    <!-- Modal -->
-    <div class="modal" :class="{ 'is-active': isDeleteConfirmationModalActive }">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Confirmation</p>
-                <button class="delete" aria-label="close" @click="hideDeleteConfirmationModal()"></button>
-            </header>
-            <section class="modal-card-body">
-                Are you sure you want to delete this item?
-            </section>
-            <footer class="modal-card-foot">
-                <button class="button is-danger" @click="deleteTrida">Delete</button>
-                <button class="button" @click="hideDeleteConfirmationModal">Cancel</button>
-            </footer>
+
+        <!-- Modal -->
+        <div class="modal" :class="{ 'is-active': isDeleteConfirmationModalActive }">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Confirmation</p>
+                    <button class="delete" aria-label="close" @click="hideDeleteConfirmationModal()"></button>
+                </header>
+                <section class="modal-card-body">
+                    Are you sure you want to delete this item?
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-danger" @click="deleteTrida">Delete</button>
+                    <button class="button" @click="hideDeleteConfirmationModal">Cancel</button>
+                </footer>
+            </div>
         </div>
     </div>
 </template>

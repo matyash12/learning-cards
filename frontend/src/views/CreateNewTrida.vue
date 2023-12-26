@@ -45,26 +45,28 @@ const moveToClasses = () => {
 
 
 <template>
-    <div>
-        <h1 class="title">Create new class</h1>
+    <div class="m-4">
+        <div>
+            <h1 class="title">Create new class</h1>
 
-        <div class="box">
-        <div class="field">
-            <label class="label">Class name</label>
-            <div class="control">
-                <input v-model="tridaName" class="input" type="text" placeholder="Class name">
+            <div class="box">
+                <div class="field">
+                    <label class="label">Class name</label>
+                    <div class="control">
+                        <input v-model="tridaName" class="input" type="text" placeholder="Class name">
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-primary" @click="createNewTrida">Create</button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-link is-light" @click="moveToClasses">Cancel</button>
+                    </div>
+                </div>
             </div>
+
         </div>
-
-        <div class="field is-grouped">
-            <div class="control">
-                <button class="button is-primary" @click="createNewTrida">Create</button>
-            </div>
-            <div class="control">
-                <button class="button is-link is-light" @click="moveToClasses">Cancel</button>
-            </div>
-        </div>
-    </div>
-
     </div>
 </template>

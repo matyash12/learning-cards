@@ -20,7 +20,7 @@ const getTrida = () => {
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: API_ADDRESS + 'tridy/'+tridaid,
+        url: API_ADDRESS + 'tridy/' + tridaid,
         headers: {}
     };
 
@@ -38,9 +38,9 @@ const getTrida = () => {
 
 // Methods
 const createNewDeckForm = () => {
-    axios.post(API_ADDRESS+'deck/new', {
+    axios.post(API_ADDRESS + 'deck/new', {
         'name': deckName.value,
-        tridaid:tridaid,
+        tridaid: tridaid,
     },
         {
             headers: {
@@ -52,8 +52,8 @@ const createNewDeckForm = () => {
         .then(function (response) {
             console.log(response);
             //moveToClasses();
-            
-            router.push('/deck/'+response.data.data.id)
+
+            router.push('/deck/' + response.data.data.id)
         })
         .catch(function (error) {
             router.push("/user/login")
@@ -63,7 +63,7 @@ const createNewDeckForm = () => {
 };
 
 
-const moveToClasses = () =>{
+const moveToClasses = () => {
     router.push('/');
 }
 getTrida();
@@ -71,26 +71,28 @@ getTrida();
 
 
 <template>
-    <div class="m-0">
-        <h1 class="title">Create new deck in {{ trida?.name ?? '' }}</h1>
+    <div class="m-4">
+        <div class="m-0">
+            <h1 class="title">Create new deck in {{ trida?.name ?? '' }}</h1>
 
-        <div class="box">
-        <div class="field">
-            <label class="label">Deck name</label>
-            <div class="control">
-                <input v-model="deckName" class="input" type="text" placeholder="Deck name">
+            <div class="box">
+                <div class="field">
+                    <label class="label">Deck name</label>
+                    <div class="control">
+                        <input v-model="deckName" class="input" type="text" placeholder="Deck name">
+                    </div>
+                </div>
+
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-primary" @click="createNewDeckForm">Create</button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-link is-light" @click="moveToClasses">Cancel</button>
+                    </div>
+                </div>
             </div>
+
         </div>
-
-        <div class="field is-grouped">
-            <div class="control">
-                <button class="button is-primary" @click="createNewDeckForm">Create</button>
-            </div>
-            <div class="control">
-                <button class="button is-link is-light" @click="moveToClasses">Cancel</button>
-            </div>
-        </div>
-    </div>
-
     </div>
 </template>
