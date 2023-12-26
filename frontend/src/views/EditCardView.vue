@@ -1,7 +1,7 @@
 <script setup>
 import axios from 'axios';
 
-import { API_ADDRESS, isValidField } from '../helpers.js';
+import { API_ADDRESS, isValidField } from '@/helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { notificationStore } from '@/stores/notification.js'; 
