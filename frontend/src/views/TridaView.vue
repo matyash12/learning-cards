@@ -5,13 +5,14 @@ import axios from 'axios';
 import { API_ADDRESS } from '@/helpers.js';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { notificationStore } from '@/stores/notification.js'; 
+import { notificationStore } from '@/stores/notification.js';
 const store = notificationStore();
 const router = useRouter();
 let tridy = ref([]);
 let selectedTrida = ref(null);
 let selectedTridaDecks = ref(null);
-
+const installPWAButtonVisible = ref(false);
+const installPWAprompt = null;
 const getAllTrida = () => {
     let config = {
         method: 'get',
@@ -85,7 +86,7 @@ const deleteTrida = () => {
     ).then(function (result) {
         selectedTrida.value = null;
         selectedTridaDecks.value = [];
-        store.newNotification("Class was deleted",false,"is-info",3);
+        store.newNotification("Class was deleted", false, "is-info", 3);
         getAllTrida();
         isDeleteConfirmationModalActive.value = false;
 
@@ -114,6 +115,33 @@ const logOut = () => {
 const editTrida = () => {
     router.push("/" + selectedTrida.value.id + "/edit")
 }
+
+const installPWA = () => {
+    console.log("Client wants to install PWA");
+    if (!installPWAprompt) {
+        return;
+    }
+    installPWAprompt.prompt().then((response) => {
+        console.log(`Install prompt was: ${result.outcome}`);
+        disableInAppInstallPrompt();
+    });
+
+
+}
+window.addEventListener("appinstalled", () => {
+  disableInAppInstallPrompt();
+});
+function disableInAppInstallPrompt() {
+    installPWAprompt = null;
+    installPWAButtonVisible.value = false;
+}
+
+window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    installPWAprompt = event;
+    installPWAButtonVisible.value = true;
+});
+
 
 
 
@@ -165,6 +193,11 @@ const exportData = () => {
                         <div class="navbar-start">
                             <a class="navbar-item" @click="exportData">
                                 Export data
+                            </a>
+                            <a v-if="installPWAButtonVisible" class="navbar-item" @click="installPWA">
+                                <button class="button is-link">
+                                    Install app
+                                </button>
                             </a>
                         </div>
                         <div class="navbar-end">
