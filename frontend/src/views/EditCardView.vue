@@ -356,7 +356,7 @@ const imageVisibleFileDelete = () => {
             </div>
             <div class="field is-grouped">
                 <div class="control">
-                    <button class="button is-primary" @click="updateCard">Save changes (c)</button>
+                    <button class="button is-primary" @click="updateCard">Save changes</button>
                 </div>
                 <div class="control">
                     <button class="button is-link is-light" @click="moveToDeckView">Cancel</button>
