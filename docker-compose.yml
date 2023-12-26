@@ -56,7 +56,7 @@ services:
     image: minio/mc
     depends_on:
       - minio-data
-    entrypoint: >
+    entrypoint:
       /bin/sh -c "
       /usr/bin/mc alias set myminio http://minio-data:9000 $MINIO_USER $MINIO_PASSWORD;
       /usr/bin/mc mb myminio/images;
