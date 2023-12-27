@@ -13,26 +13,27 @@ if [[ "$1" == "-example" ]]; then
   cp "$example_file_application_properties" "$destination_file_application_properties"
    cp "$example_file_env" "$destination_file_env"
   echo "Example files copied successfully."
+  echo "running docker"
+  docker compose up -d --build
 else
   echo "For running as example run it using: $0 -example-run"
+  ##Installing everything
+  #Frontend
+  # Change directory to the frontend folder
+  cd frontend
+  # Run npm run build
+  npm install 
+  npm run build
+
+  #Backend
+  cd ..
+  cd backend
+
+  ./mvnw clean install
+
+
+  #start docker
+  docker compose up -d --build
 fi
 
 
-
-##Installing everything
-#Frontend
-# Change directory to the frontend folder
-cd frontend
-# Run npm run build
-npm install 
-npm run build
-
-#Backend
-cd ..
-cd backend
-
-./mvnw clean install
-
-
-#start docker
-docker compose up -d --build
