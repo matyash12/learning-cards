@@ -41,7 +41,7 @@ Open app and in search bar click on <img width="28" alt="Screenshot 2023-12-27 a
 2. Scroll down and click `Add to Home Screen`
 
 ## Technologies used:
-* Spring java
+* Spring boot, security
 * Docker
 * Vue
 * Bulma
