@@ -15,6 +15,27 @@ if [[ "$1" == "-example" ]]; then
   echo "Example files copied successfully."
   echo "running docker"
   docker compose up -d --build
+
+  echo """
+  FYI: This is only for example.
+  These passwords are hardcoded.
+  Check README.md on how to make it secure.
+  Some things may not work in this example (email = password recovery)
+
+  Link to website
+    Register to create account
+    http://localhost/user/login
+
+  Link to api (java backend)
+    Check docs for more info
+    http://localhost/api/user/login
+
+  Link to Minio console (image storage)
+    Username: spring
+    Password: ZmenitHeslo007
+    http://localhost:9001
+  
+  """
 else
   echo "For running as example run it using: $0 -example-run"
   ##Installing everything
