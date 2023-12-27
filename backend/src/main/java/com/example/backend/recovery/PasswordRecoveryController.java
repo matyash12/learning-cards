@@ -6,7 +6,6 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,12 +18,10 @@ import com.example.backend.EmailMessages;
 import com.example.backend.email.EmailUtil;
 import com.example.backend.recovery.recoveryTokens.RecoveryTokenEntity;
 import com.example.backend.recovery.recoveryTokens.RecoveryTokenRepository;
-import com.example.backend.security.session.SessionRepository;
 import com.example.backend.security.user.UserEntity;
 import com.example.backend.security.user.UserRepository;
 import com.example.backend.user.PasswordChecker;
 
-import jakarta.websocket.server.PathParam;
 import com.example.backend.security.PasswordUtils;
 
 @RestController
