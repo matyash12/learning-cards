@@ -1,15 +1,7 @@
 # Learning cards
-Personal showcase of coding abilities and the creation of a sophisticated learning tool. This application is designed for self-paced learning through interactive learning cards. Each card features a hidden side and a visible side. Assess your knowledge by rating yourself on a scale of 1-5 according to your familiarity with the content. Cards you find challenging will be prioritized for more frequent review, optimizing your learning experience.
+Web app for learning using cards.
 
 **You can try it out on [test server](https://www.learn.hajek.live/user/login)**
-
-## Technologies used:
-* Spring java
-* Docker
-* Vue
-* Jenkins
-* Github actions
-* Postman
 
 ## Docs
 ### Running as example
@@ -17,6 +9,7 @@ Personal showcase of coding abilities and the creation of a sophisticated learni
 You must have docker installed
 ```
 git clone https://github.com/matyash12/learning-cards.git
+cd learning-cards
 chmod +x build.sh
 ./build.sh -example
 ```
@@ -31,16 +24,23 @@ chmod +x build.sh
 8. Add manifest.json to credentials as `LEARNING_CARDS_MANIFESTJSON` (just copy frontend/src/manifest.json)
 9. Click run
 
-### API
+### Api
+You can view and test api on Postman
 [Postman public docs](https://elements.getpostman.com/redirect?entityId=23011773-bbce6d9f-fcb5-4de3-9357-f43d438b60d9&entityType=collection)
 
-### Jenkins
+### PWA
+*Progressive Web App*
+#### Chrome
+Open app and in search bar click on <img width="28" alt="Screenshot 2023-12-27 at 15 57 05" src="https://github.com/matyash12/learning-cards/assets/93146910/b94bba76-0394-4dfb-aa97-85a4c2a28d13">.
+#### IOS
+1. Click share
+2. Scroll down and click `Add to Home Screen`
 
-
-
-## Things to edit or create to run
-.env
-frontend/manifest.json - set start_url
-backend/src/main/resources/application.properties
-frontend/src/helpers.js - when running in development. Eg. change api address
-
+## Technologies used:
+* Spring java
+* Docker
+* Vue
+* Bulma
+* Jenkins
+* Github actions
+* Postman
