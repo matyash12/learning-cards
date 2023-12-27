@@ -50,7 +50,7 @@ Open app and in search bar click on <img width="28" alt="Screenshot 2023-12-27 a
 * Postman
 
 ## Note
-* I had to learn many technologies on the way. So some code can be messy and may contain not the "Best practices"
+* I had to learn many technologies on the way.
 * Passwords are stored hashed using salt (Unique salt for each password).
 * If account managment is slow try to adjust hashing algorithm (PasswordUtils.java)
 
