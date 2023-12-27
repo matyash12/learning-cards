@@ -3,8 +3,6 @@ package com.example.backend.minio;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import io.minio.MinioClient;
-
 @Component
 public class MinioService {
 
