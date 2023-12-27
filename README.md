@@ -14,6 +14,8 @@ Postman
 Build in postman with all endpoints: api_docs.postman_collection.json
 https://github.com/matyash12/learning-cards/blob/4bf3b972462fc9c79887c0780fdd43273180d6a4/api_docs.postman_collection.json
 
+### Postman public API docs
+[POSTMAN](https://elements.getpostman.com/redirect?entityId=23011773-bbce6d9f-fcb5-4de3-9357-f43d438b60d9&entityType=collection)
 
 ## Things to edit or create to run
 .env
