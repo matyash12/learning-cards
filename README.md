@@ -24,7 +24,11 @@ chmod +x build.sh
 8. Add manifest.json to credentials as `LEARNING_CARDS_MANIFESTJSON` (just copy frontend/src/manifest.json)
 9. Click run
 
-### Api
+### API
+#### Documentation
+*Note: autogerated* </br>
+[Docs](https://documenter.getpostman.com/view/23011773/2s9YkuXxkm)
+#### Postman
 You can view and test api on Postman
 [Postman public docs](https://elements.getpostman.com/redirect?entityId=23011773-bbce6d9f-fcb5-4de3-9357-f43d438b60d9&entityType=collection)
 
