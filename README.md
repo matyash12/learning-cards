@@ -13,7 +13,7 @@ cd learning-cards
 chmod +x build.sh
 ./build.sh -example
 ```
-### Running using Jenkins
+### Running using Jenkins (Production)
 1. Create new `Pipeline`
 2. Set pipeline definition to `Pipeline script from SCM`
 3. Set SCM to `Git`
