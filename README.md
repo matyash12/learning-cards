@@ -44,3 +44,7 @@ Open app and in search bar click on <img width="28" alt="Screenshot 2023-12-27 a
 * Jenkins
 * Github actions
 * Postman
+
+
+## Development tip
+* Disable Cross-Origin restrictions
