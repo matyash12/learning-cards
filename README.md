@@ -4,7 +4,7 @@ Web app for learning using cards.
 **You can try it out on [live server](https://www.learn.hajek.live/user/login)**
 
 ## Docs
-### Running as example
+### Running as example (Development)
 **Not secure using hardcoded usernames and password** <br/>
 You must have docker installed
 ```
