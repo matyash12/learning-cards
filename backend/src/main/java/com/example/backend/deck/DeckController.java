@@ -109,7 +109,7 @@ public class DeckController {
 
             for (var deck : decks) {
                 if (Helper.hasRightsForDeck(deck)) {
-                    decks.add(deck);
+                    allowedDecks.add(deck);
                 }
             }
             return new ApiResponse(allowedDecks, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
