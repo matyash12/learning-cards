@@ -1,7 +1,7 @@
 # Learning cards
 Web app for learning using cards.
 
-**You can try it out on [test server](https://www.learn.hajek.live/user/login)**
+**You can try it out on [live server](https://www.learn.hajek.live/user/login)**
 
 ## Docs
 ### Running as example
