@@ -25,6 +25,10 @@ let deck = ref(null);
 let hiddenImagePart = ref("")
 let visibleImagePart = ref("")
 
+//maximum number of cards user can have in "learning mode"
+//These cards will repeat until learned
+const maximumNumberOfCardsInLearning = ref(3);
+
 const getDeck = () => {
     let config = {
         method: 'get',
@@ -38,8 +42,9 @@ const getDeck = () => {
             deck.value = response.data.data;
         })
         .catch((error) => {
-            router.push("/user/login")
+
             console.log(error);
+            somethingFailed();
         });
 }
 
@@ -109,6 +114,7 @@ const findCards = () => {
             }
         }
     ).then(function (result) {
+        console.log("new cards from findCards")
         cards.value = result.data.data;
         updateUI();
 
@@ -117,8 +123,9 @@ const findCards = () => {
         }
 
     }).catch(function (err) {
-        router.push("/user/login")
+
         console.log(err);
+        somethingFailed();
     })
 }
 
@@ -126,27 +133,125 @@ const findCards = () => {
 const showHidden = () => {
     isHiddenVisible.value = true
 }
-const next = () => {
 
-    if (cards.value.length > 0) {
-        if (cards.value.length > activeid.value) {
-            activeid.value = activeid.value + 1;
+
+const cardsInLearning = ref([]);
+
+
+//clears cardsInLearning from cards with mark 1
+const dropCardsThatYouKnow = () => {
+
+    cardsInLearning.value = cardsInLearning.value.filter(function (card) {
+        return card.mark != 1;
+    });
+
+}
+function getRandomElement(arr) {
+    const randomIndex = Math.floor(Math.random() * arr.length);
+    return arr[randomIndex];
+}
+//returns cardsInLearning with random card which is not cardsInLearning
+const randomFillerCardItCantBeIncardsInLearning = () => {
+    var okCards = []
+    for (var card of cards.value) {
+        var cardIdOkToBeAdded = true;
+        for (var cardChecking of cardsInLearning.value) {
+            if (cardChecking.id == card.id) {
+                //ok and add the card
+
+                cardIdOkToBeAdded = false;
+            }
         }
-        if (cards.value.length == activeid.value) {
-            activeid.value = 0;
+        if (cardIdOkToBeAdded == true) {
+            okCards.push(card);
+
         }
     }
+
+    if (okCards.length == 0) {
+        return null;
+    } else {
+        var randomCard = getRandomElement(okCards);
+        return randomCard;
+    }
+
+
+}
+
+const next = () => {
+
+    dropCardsThatYouKnow();
+
+    if (cards.value.length > 0) {
+
+
+        //Add card in cardsInLearning
+        while (cardsInLearning.value.length < maximumNumberOfCardsInLearning.value) {
+            var cardAdded = false;
+
+            for (var card of cards.value) {
+                if (card.mark != 1) {
+                    var cardIdOkToBeAdded = true;
+                    for (var cardChecking of cardsInLearning.value) {
+                        if (cardChecking.id == card.id) {
+                            //ok and add the card
+
+                            cardIdOkToBeAdded = false;
+                        }
+                    }
+                    if (cardIdOkToBeAdded == true) {
+                        cardsInLearning.value.push(card);
+                        cardAdded = true;
+
+                        break;
+                    }
+                }
+            }
+            if (cardAdded == false) {
+                break;
+            }
+        }
+        //This runs when cardmanager is unable to find enough cards with bad marks
+        while (cardsInLearning.value.length < maximumNumberOfCardsInLearning.value) {
+            var maybecard = randomFillerCardItCantBeIncardsInLearning();
+            if (maybecard != null) {
+                cardsInLearning.value.push(maybecard);
+            } else {
+                //there arent any more cards
+                break;
+            }
+
+        }
+
+
+
+
+
+        if (cardsInLearning.value.length > activeid.value) {
+            activeid.value = activeid.value + 1;
+        }
+        if (cardsInLearning.value.length == activeid.value) {
+            activeid.value = 0;
+        }
+
+
+
+    }
+
+
+
+
     loadImages();
     isHiddenVisible.value = false;
 }
 const nextMark = (mark) => {
-    if (isHiddenVisible.value == false){
+    if (isHiddenVisible.value == false) {
         return;
     }
 
     axios.post(API_ADDRESS + 'card/update',
         {
-            id: cards.value[activeid.value].id,
+            id: cardsInLearning.value[activeid.value].id,
             mark: mark
         },
         {
@@ -160,10 +265,15 @@ const nextMark = (mark) => {
 
         }
     }).catch(function (err) {
-        router.push("/user/login")
         console.log(err);
+        somethingFailed();
     })
     next();
+}
+
+const somethingFailed = () => {
+    console.log("Something failed!")
+    //router.push("/user/login")
 }
 
 const updateProgressBar = () => {
@@ -260,7 +370,7 @@ const loadImages = () => {
     hiddenImagePart.value = "";
     visibleImagePart.value = "";
     axios.post(API_ADDRESS + 'image/find', {
-        "cardid": cards.value[activeid.value].id
+        "cardid": cardsInLearning.value[activeid.value].id
     },
         {
             headers: {
@@ -363,11 +473,11 @@ loadImages();
                 <div v-if="activeid !== -1">
                     <div class="box">
                         <img v-if="visibleImagePart != ''" :src="visibleImagePart">
-                        <textarea class="textarea" readonly>{{ cards[activeid].visiblePart }}</textarea>
+                        <textarea class="textarea" readonly>{{ cardsInLearning[activeid].visiblePart }}</textarea>
                     </div>
                     <div class="box" v-if="isHiddenVisible">
                         <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
-                        <textarea class="textarea" readonly>{{ cards[activeid].hiddenPart }}</textarea>
+                        <textarea class="textarea" readonly>{{ cardsInLearning[activeid].hiddenPart }}</textarea>
                     </div>
 
 
