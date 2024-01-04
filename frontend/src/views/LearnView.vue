@@ -396,97 +396,163 @@ const loadImages = () => {
         });
 }
 
+const isSettingsOpened = ref(false);
+const openLearningSettings = () => {
+    isSettingsOpened.value = !isSettingsOpened.value
+}
+
+const optionForNumberOfcards = ref([
+    { text: '3 cards', value: 3 },
+    { text: '4 cards', value: 4 },
+    { text: '5 cards', value: 5 },
+    { text: '6 cards', value: 6 },
+    { text: '7 cards', value: 7 },
+    { text: '8 cards', value: 8 },
+    { text: '9 cards', value: 9 },
+    { text: '10 cards', value: 10 },
+    { text: '11 cards', value: 11 },
+    { text: '12 cards', value: 12 },
+    { text: '13 cards', value: 13 },
+    { text: '14 cards', value: 14 },
+    { text: '15 cards', value: 15 },
+    { text: '16 cards', value: 16 },
+    { text: '17 cards', value: 17 },
+    { text: '18 cards', value: 18 },
+    { text: '19 cards', value: 19 },
+    { text: '20 cards', value: 20 },
+    { text: '21 cards', value: 21 },
+    { text: '22 cards', value: 22 }
+]);
+
 findCards();
 getDeck();
 loadImages();
 </script>
 
 <template>
-    <nav class="navbar">
-        <div class="navbar-menu is-active">
-            <!-- shown on mobile -->
-            <div class="navbar-end">
-                <div class="navbar-start">
-                    <a class="navbar-item">
-                        <button @click="moveToDeck" class="button">
-                            Exit
-                        </button>
+    <div v-if="isSettingsOpened">
+        <nav class="navbar">
+            <div class="navbar-menu is-active">
+                <!-- shown on mobile -->
+                <div class="navbar-end">
+                    <div class="navbar-start">
+                        <a class="navbar-item">
 
-                    </a>
+                        </a>
+                        <a class="navbar-item">
+                            <button @click="openLearningSettings" class="button">Done and save</button>
+                        </a>
+                    </div>
                 </div>
             </div>
+        </nav>
+        <div class="m-4">
+            <p class="">Number of cards to learn at once.</p>
+            <div class="select">
+                <select v-model="maximumNumberOfCardsInLearning">
+                    <option v-for="option in optionForNumberOfcards" :value="option.value">
+                        {{ option.text }}
+                    </option>
+                </select>
+            </div>
         </div>
-    </nav>
-    <div class='container hero is-fullheight-with-navbar '>
 
 
-        <div class="columns">
-            <div class="column is-one-quarter is-hidden-mobile">
-                <div class="box">
-                    <h1 class="title">{{ deck?.tridaEntity.name ?? 'Loading...' }}</h1>
-                    <h2 class="subtitle">{{ deck?.name ?? 'Loading...' }}</h2>
-                    <progress class="progress is-primary" :value="progressBarWidth" max="100">{{ progressBarWidth
-                    }}%</progress>
-                    <table class="table is-bordered is-striped is-narrow is-hoverable">
-                        <thead>
-                            <tr>
-                                <th>Mark</th>
-                                <th>Count</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>{{ mark_one_count ?? 0 }}</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>{{ mark_two_count ?? 0 }}</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>{{ mark_three_count ?? 0 }}</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>{{ mark_four_count ?? 0 }}</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>{{ mark_five_count ?? 0 }}</td>
-                            </tr>
-                            <tr>
-                                <td>None</td>
-                                <td>{{ mark_none_count ?? 0 }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+    </div>
 
+
+
+
+
+    <div v-if="!isSettingsOpened">
+        <nav class="navbar">
+            <div class="navbar-menu is-active">
+                <!-- shown on mobile -->
+                <div class="navbar-end">
+                    <div class="navbar-start">
+                        <a class="navbar-item">
+                            <button @click="moveToDeck" class="button">
+                                Exit
+                            </button>
+
+                        </a>
+                        <a class="navbar-item">
+                            <button @click="openLearningSettings" class="button">Setup</button>
+                        </a>
+                    </div>
                 </div>
-                <!--
+            </div>
+        </nav>
+        <div class='container hero is-fullheight-with-navbar '>
+
+
+            <div class="columns">
+                <div class="column is-one-quarter is-hidden-mobile">
+                    <div class="box">
+                        <h1 class="title">{{ deck?.tridaEntity.name ?? 'Loading...' }}</h1>
+                        <h2 class="subtitle">{{ deck?.name ?? 'Loading...' }}</h2>
+                        <progress class="progress is-primary" :value="progressBarWidth" max="100">{{ progressBarWidth
+                        }}%</progress>
+                        <table class="table is-bordered is-striped is-narrow is-hoverable">
+                            <thead>
+                                <tr>
+                                    <th>Mark</th>
+                                    <th>Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>{{ mark_one_count ?? 0 }}</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>{{ mark_two_count ?? 0 }}</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>{{ mark_three_count ?? 0 }}</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>{{ mark_four_count ?? 0 }}</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>{{ mark_five_count ?? 0 }}</td>
+                                </tr>
+                                <tr>
+                                    <td>None</td>
+                                    <td>{{ mark_none_count ?? 0 }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!--
                 <button @click="moveToDeck" class="button is-link">Go to Deck</button>
                     -->
-            </div>
-
-            <div class="column">
-
-                <div v-if="activeid !== -1">
-                    <div class="box">
-                        <img v-if="visibleImagePart != ''" :src="visibleImagePart">
-                        <textarea class="textarea" readonly>{{ cardsInLearning[activeid].visiblePart }}</textarea>
-                    </div>
-                    <div class="box" v-if="isHiddenVisible">
-                        <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
-                        <textarea class="textarea" readonly>{{ cardsInLearning[activeid].hiddenPart }}</textarea>
-                    </div>
-
-
-
                 </div>
-            </div>
 
-        </div>
-        <!--
+                <div class="column">
+
+                    <div v-if="activeid !== -1">
+                        <div class="box">
+                            <img v-if="visibleImagePart != ''" :src="visibleImagePart">
+                            <textarea class="textarea" readonly>{{ cardsInLearning[activeid].visiblePart }}</textarea>
+                        </div>
+                        <div class="box" v-if="isHiddenVisible">
+                            <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
+                            <textarea class="textarea" readonly>{{ cardsInLearning[activeid].hiddenPart }}</textarea>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+            <!--
         <footer class="has-text-centered m-4">
             <button v-if="!isHiddenVisible" @click="showHidden" class="button is-info is-fullwidth is-fullheight">Show hidden</button>
             <div v-if="isHiddenVisible">
@@ -524,19 +590,20 @@ loadImages();
     -->
 
 
-        <footer class="m-2">
-            <button v-if="!isHiddenVisible" @click="showHidden" class="button is-link"
-                style="width: 100%; padding: 15px; font-size: 18px; min-height: 100px;">Reveal answer</button>
+            <footer class="m-2">
+                <button v-if="!isHiddenVisible" @click="showHidden" class="button is-link"
+                    style="width: 100%; padding: 15px; font-size: 18px; min-height: 100px;">Reveal answer</button>
 
-            <div v-if="isHiddenVisible" style="width: 100%;">
-                <button @click="nextMark(1)" class="button mark-1 markedbutton">1</button>
-                <button @click="nextMark(2)" class="button mark-2 markedbutton">2</button>
-                <button @click="nextMark(3)" class="button mark-3 markedbutton">3</button>
-                <button @click="nextMark(4)" class="button mark-4 markedbutton">4</button>
-                <button @click="nextMark(5)" class="button mark-5 markedbutton">5</button>
-            </div>
-        </footer>
+                <div v-if="isHiddenVisible" style="width: 100%;">
+                    <button @click="nextMark(1)" class="button mark-1 markedbutton">1</button>
+                    <button @click="nextMark(2)" class="button mark-2 markedbutton">2</button>
+                    <button @click="nextMark(3)" class="button mark-3 markedbutton">3</button>
+                    <button @click="nextMark(4)" class="button mark-4 markedbutton">4</button>
+                    <button @click="nextMark(5)" class="button mark-5 markedbutton">5</button>
+                </div>
+            </footer>
 
+        </div>
     </div>
 </template>
 
