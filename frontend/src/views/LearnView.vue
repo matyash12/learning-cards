@@ -273,7 +273,7 @@ const nextMark = (mark) => {
 
 const somethingFailed = () => {
     console.log("Something failed!")
-    //router.push("/user/login")
+    router.push("/user/login")
 }
 
 const updateProgressBar = () => {
