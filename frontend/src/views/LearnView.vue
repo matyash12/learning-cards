@@ -25,9 +25,15 @@ let deck = ref(null);
 let hiddenImagePart = ref("")
 let visibleImagePart = ref("")
 
+
 //maximum number of cards user can have in "learning mode"
 //These cards will repeat until learned
 const maximumNumberOfCardsInLearning = ref(3);
+
+
+//false = first will be shown visible side
+//tru = first will be shown hidden side
+const showReversedSides = ref(false)
 
 const getDeck = () => {
     let config = {
@@ -430,6 +436,7 @@ loadImages();
 </script>
 
 <template>
+    <!--Settings START-->
     <div v-if="isSettingsOpened">
         <nav class="navbar">
             <div class="navbar-menu is-active">
@@ -447,18 +454,31 @@ loadImages();
             </div>
         </nav>
         <div class="m-4">
-            <p class="">Number of cards to learn at once.</p>
-            <div class="select">
-                <select v-model="maximumNumberOfCardsInLearning">
-                    <option v-for="option in optionForNumberOfcards" :value="option.value">
-                        {{ option.text }}
-                    </option>
-                </select>
+            <!--Cards to learn at once-->
+                <div>
+                <p class="">Number of cards to learn at once.</p>
+                <div class="select">
+                    <select v-model="maximumNumberOfCardsInLearning">
+                        <option v-for="option in optionForNumberOfcards" :value="option.value">
+                            {{ option.text }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+
+                <!--settings for showReversedSides-->
+                <div>
+                <label class="checkbox">
+                    <input type="checkbox" v-model="showReversedSides">
+                    Show hidden side first (reverse)
+                </label>
             </div>
         </div>
 
 
     </div>
+    <!--Settings END-->
 
 
 
@@ -538,12 +558,27 @@ loadImages();
 
                     <div v-if="activeid !== -1">
                         <div class="box">
-                            <img v-if="visibleImagePart != ''" :src="visibleImagePart">
-                            <textarea class="textarea" readonly>{{ cardsInLearning[activeid].visiblePart }}</textarea>
+
+                            <div v-if="!showReversedSides">
+                                <img v-if="visibleImagePart != ''" :src="visibleImagePart">
+                                <textarea class="textarea" readonly>{{ cardsInLearning[activeid].visiblePart }}</textarea>
+                            </div>
+
+                            <div v-if="showReversedSides">
+                                <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
+                                <textarea class="textarea" readonly>{{ cardsInLearning[activeid].hiddenPart }}</textarea>
+                            </div>
                         </div>
                         <div class="box" v-if="isHiddenVisible">
-                            <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
-                            <textarea class="textarea" readonly>{{ cardsInLearning[activeid].hiddenPart }}</textarea>
+                            <div v-if="showReversedSides">
+                                <img v-if="visibleImagePart != ''" :src="visibleImagePart">
+                                <textarea class="textarea" readonly>{{ cardsInLearning[activeid].visiblePart }}</textarea>
+                            </div>
+
+                            <div v-if="!showReversedSides">
+                                <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
+                                <textarea class="textarea" readonly>{{ cardsInLearning[activeid].hiddenPart }}</textarea>
+                            </div>
                         </div>
 
 
