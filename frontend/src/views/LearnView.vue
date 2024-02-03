@@ -433,6 +433,14 @@ const optionForNumberOfcards = ref([
 findCards();
 getDeck();
 loadImages();
+
+const isBurgerMenuOpen = ref(false);
+
+const toggleBurgerMenu = () => {
+    isBurgerMenuOpen.value = !isBurgerMenuOpen.value;
+};
+
+
 </script>
 
 <template>
@@ -455,7 +463,7 @@ loadImages();
         </nav>
         <div class="m-4">
             <!--Cards to learn at once-->
-                <div>
+            <div>
                 <p class="">Number of cards to learn at once.</p>
                 <div class="select">
                     <select v-model="maximumNumberOfCardsInLearning">
@@ -467,8 +475,8 @@ loadImages();
             </div>
 
 
-                <!--settings for showReversedSides-->
-                <div>
+            <!--settings for showReversedSides-->
+            <div>
                 <label class="checkbox">
                     <input type="checkbox" v-model="showReversedSides">
                     Show hidden side first (reverse)
@@ -485,24 +493,67 @@ loadImages();
 
 
     <div v-if="!isSettingsOpened">
-        <nav class="navbar">
-            <div class="navbar-menu is-active">
-                <!-- shown on mobile -->
-                <div class="navbar-end">
-                    <div class="navbar-start">
-                        <a class="navbar-item">
-                            <button @click="moveToDeck" class="button">
-                                Exit
-                            </button>
-
-                        </a>
-                        <a class="navbar-item">
-                            <button @click="openLearningSettings" class="button">Setup</button>
+        <!--Navbar-->
+        <header>
+            <div class="wrapper">
+                <nav class="navbar" role="navigation" aria-label="main navigation">
+                    <div class="navbar-brand">
+                        <a role="button" class="navbar-burger" aria-label="menu" :class="{ 'is-active': isBurgerMenuOpen }"
+                            @click="toggleBurgerMenu" aria-expanded="false" data-target="navbarBasicExample">
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
                         </a>
                     </div>
-                </div>
+
+                    <div id="navbarBasicExample" :class="{ 'is-active': isBurgerMenuOpen }" class="navbar-menu">
+                        <div class="navbar-start">
+                            <a class="navbar-item" @click="moveToDeck">
+                                Exit
+                            </a>
+                        </div>
+                        <div class="navbar-end">
+                            <div class="navbar-item">
+                                <div class="buttons">
+                                    <a class="button is-light" @click="openLearningSettings">
+                                        Setup
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
             </div>
-        </nav>
+        </header>
+
+
+
+
+        <!-- <header>
+            <div class="wrapper">
+                <nav class="navbar">
+                    <div class="navbar-menu is-active">
+                        <div class="navbar-end">
+                            <div class="navbar-start">
+                                <a class="navbar-item">
+                                    <button @click="moveToDeck" class="button">
+                                        Exit
+                                    </button>
+
+                                </a>
+                                <a class="navbar-item">
+                                    <button @click="openLearningSettings" class="button">Setup</button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header> -->
+
+
+
+
         <div class='container hero is-fullheight-with-navbar '>
 
 

@@ -7,6 +7,7 @@ Web app for learning using cards.
 ### Running as example (Development)
 **Not secure using hardcoded usernames and password** <br/>
 You must have docker installed
+For it to work on localhost it's best to disable cors restriction.
 ```
 git clone https://github.com/matyash12/learning-cards.git
 cd learning-cards
