@@ -492,7 +492,7 @@ const toggleBurgerMenu = () => {
 
 
 
-    <div v-if="!isSettingsOpened">
+    <div v-if="!isSettingsOpened" style="overflow-x: hidden;">
         <!--Navbar-->
         
         <header>
