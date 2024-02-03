@@ -120,7 +120,6 @@ const findCards = () => {
             }
         }
     ).then(function (result) {
-        console.log("new cards from findCards")
         cards.value = result.data.data;
         updateUI();
 
@@ -146,10 +145,17 @@ const cardsInLearning = ref([]);
 
 //clears cardsInLearning from cards with mark 1
 const dropCardsThatYouKnow = () => {
-
-    cardsInLearning.value = cardsInLearning.value.filter(function (card) {
-        return card.mark != 1;
-    });
+    
+    var newCards = []
+    for (var card of cardsInLearning.value){
+        if (card.mark != 1){
+            newCards.push(card)
+        }
+    }
+    cardsInLearning.value = newCards
+    // cardsInLearning.value = cardsInLearning.value.filter(function (card) {
+    //     return card.mark != 1;
+    // });
 
 }
 function getRandomElement(arr) {
@@ -187,7 +193,7 @@ const randomFillerCardItCantBeIncardsInLearning = () => {
 const next = () => {
 
     dropCardsThatYouKnow();
-
+    
     if (cards.value.length > 0) {
 
 
@@ -279,7 +285,7 @@ const nextMark = (mark) => {
 
 const somethingFailed = () => {
     console.log("Something failed!")
-    router.push("/user/login")
+    //router.push("/user/login")
 }
 
 const updateProgressBar = () => {
