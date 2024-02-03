@@ -104,8 +104,12 @@ const editDeck = () => {
 
 
 <template>
+    
+
     <div class="m-4">
         <div>
+            <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
+
             <div class="buttons">
                 <button @click="moveToLearning" class="button is-primary">Learn</button>
                 <button @click="editDeck" class="button is-info">Edit deck</button>
@@ -113,26 +117,26 @@ const editDeck = () => {
                 <button @click="moveToClassView" class="button is-warning">Classes</button>
                 <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
             </div>
-            <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
+            
             <table class="table is-fullwidth">
                 <thead>
                     <tr>
-                        <th>Mark</th>
+                        <th class="is-hidden-touch">Mark</th>
                         <th>Visible side</th>
                         <th>Hidden side</th>
                         <th>Edit</th>
-                        <th>Delete</th>
+                        <th class="is-hidden-touch">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(card, index) in cards" :key="card.id">
-                        <td>{{ card.mark }}</td>
+                        <td class="is-hidden-touch">{{ card.mark }}</td>
                         <td>{{ card.visiblePart }}</td>
                         <td>{{ card.hiddenPart }}</td>
                         <td>
                             <a @click="editCard(card.id)" class="">Edit</a>
                         </td>
-                        <td>
+                        <td class="is-hidden-touch">
                             <a @click="deleteCard(card.id)" class="has-text-danger">Delete</a>
                         </td>
                     </tr>
