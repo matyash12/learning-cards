@@ -1,115 +1,90 @@
 <script setup>
 import axios from 'axios';
-
 import { API_ADDRESS } from '@/helpers.js';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { notificationStore } from '@/stores/notification.js'; 
+
 const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
 
-let id = route.params.id;
+let id = ref(route.params.id);
 let deck = ref(null);
 let cards = ref([]);
 
-const getDeck = (deckid) => {
+const getDeck = async () => {
+    try {
+        const response = await axios.get(`${API_ADDRESS}deck/${id.value}`);
+        deck.value = response.data.data;
+    } catch (error) {
+        handleApiError(error);
+    }
+};
 
-    let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: API_ADDRESS + 'deck/' + deckid,
-        headers: {}
-    };
-
-    axios.request(config)
-        .then((response) => {
-            deck.value = response.data.data;
-        })
-        .catch((error) => {
-            router.push("/user/login")
-            console.log(error);
-        });
-
-}
-const findCards = (deckid) => {
-    axios.post(API_ADDRESS + 'card/find',
-        {
-            deckid: deckid,
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    ).then(function (result) {
+const findCards = async () => {
+    try {
+        const result = await axios.post(
+            `${API_ADDRESS}card/find`,
+            { deckid: id.value },
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
         cards.value = result.data.data;
-
-    }).catch(function (err) {
-        router.push("/user/login")
-        console.log(err);
-    })
-}
+    } catch (err) {
+        handleApiError(err);
+    }
+};
 
 const createNewCard = () => {
-    router.push('/deck/' + id + '/' + 'new');
-}
+    router.push(`/deck/${id.value}/new`);
+};
+
 const moveToClassView = () => {
-    router.push('/')
-}
+    router.push('/');
+};
+
 const moveToLearning = () => {
-    router.push('/learn/' + id);
-}
+    router.push(`/learn/${id.value}`);
+};
+
 const refreshDataOnPage = () => {
-    getDeck(id);
-    findCards(id);
-}
-const deleteCard = (cardid) => {
-    axios.post(API_ADDRESS + 'card/delete',
-        {
-            id: cardid,
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    ).then(function (result) {
-        store.newNotification("Card was deleted",false,"is-info",3);
+    getDeck();
+    findCards();
+};
+
+const deleteCard = async (cardid) => {
+    try {
+        await axios.post(
+            `${API_ADDRESS}card/delete`,
+            { id: cardid },
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+        store.newNotification("Card was deleted", false, "is-info", 3);
         refreshDataOnPage();
+    } catch (err) {
+        handleApiError(err);
+    }
+};
 
-    }).catch(function (err) {
-        router.push("/user/login")
-        console.log(err);
-    })
-}
-const deleteThisDeck = () => {
-    axios.post(API_ADDRESS + 'deck/delete',
-        {
-            id: id,
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    ).then(function (result) {
-        store.newNotification("Deck was deleted",false,"is-info",3);
+const deleteThisDeck = async () => {
+    try {
+        await axios.post(
+            `${API_ADDRESS}deck/delete`,
+            { id: id.value },
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+        store.newNotification("Deck was deleted", false, "is-info", 3);
         moveToClassView();
+    } catch (err) {
+        handleApiError(err);
+    }
+};
 
-    }).catch(function (err) {
-        router.push("/user/login")
-        console.log(err);
-    })
-}
 const editCard = (cardid) => {
-    router.push("/deck/" + deck.value.id + "/" + cardid + "/edit");
-}
+    router.push(`/deck/${deck.value.id}/${cardid}/edit`);
+};
 
 refreshDataOnPage();
-
-
-
 
 const isDeleteConfirmationModalActive = ref(false);
 
@@ -120,10 +95,12 @@ const showDeleteConfirmationModal = () => {
 const hideDeleteConfirmationModal = () => {
     isDeleteConfirmationModalActive.value = false;
 };
+
 const editDeck = () => {
-    router.push("/deck/" + id + "/edit")
+    router.push(`/deck/${id.value}/edit`);
 };
 </script>
+
 
 
 <template>
