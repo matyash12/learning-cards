@@ -494,7 +494,7 @@ const toggleBurgerMenu = () => {
 
     <div v-if="!isSettingsOpened" style="overflow-x: hidden;">
         <!--Navbar-->
-        
+
         <header>
             <div class="wrapper" style="height: 52px;">
                 <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -528,12 +528,13 @@ const toggleBurgerMenu = () => {
         </header>
 
 
-
         <div class='container hero is-fullheight-with-navbar '>
 
 
             <div class="columns">
-                <div class="column is-one-quarter is-hidden-mobile">
+
+                <!--Left side stats-->
+                <div class="column is-one-quarter is-hidden-touch">
                     <div class="box">
                         <h1 class="title">{{ deck?.tridaEntity.name ?? 'Loading...' }}</h1>
                         <h2 class="subtitle">{{ deck?.name ?? 'Loading...' }}</h2>
@@ -577,6 +578,11 @@ const toggleBurgerMenu = () => {
                     </div>
                 </div>
 
+
+                <div class="m-4 is-hidden-desktop">
+                    <progress class="progress is-primary " :value="progressBarWidth" max="100">{{ progressBarWidth
+                    }}%</progress>
+                </div>
                 <div class="column">
 
                     <div v-if="activeid !== -1">
