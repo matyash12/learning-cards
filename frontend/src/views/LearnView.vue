@@ -496,7 +496,7 @@ const toggleBurgerMenu = () => {
         <!--Navbar-->
         
         <header>
-            <div class="wrapper">
+            <div class="wrapper" style="height: 52px;">
                 <nav class="navbar" role="navigation" aria-label="main navigation">
                     <div class="navbar-brand">
                         <a role="button" class="navbar-burger" aria-label="menu" :class="{ 'is-active': isBurgerMenuOpen }"
@@ -575,9 +575,6 @@ const toggleBurgerMenu = () => {
                         </table>
 
                     </div>
-                    <!--
-                <button @click="moveToDeck" class="button is-link">Go to Deck</button>
-                    -->
                 </div>
 
                 <div class="column">
@@ -613,42 +610,6 @@ const toggleBurgerMenu = () => {
                 </div>
 
             </div>
-            <!--
-        <footer class="has-text-centered m-4">
-            <button v-if="!isHiddenVisible" @click="showHidden" class="button is-info is-fullwidth is-fullheight">Show hidden</button>
-            <div v-if="isHiddenVisible">
-                <div class="buttons">
-                    
-                    
-                    
-                   
-                    
-                </div>
-                
-                <div class="columns is-mobile is-gapless m-4">
-                    <div class="column">
-                        <button @click="nextMark(1)" class="button is-success is-responsible is-large">1</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(2)" class="button is-success is-responsible is-large ">2</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(3)" class="button is-success is-responsible is-large">3</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(4)" class="button is-success is-responsible is-large">4</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(5)" class="button is-success is-responsible is-large">5</button>
-                    </div>
-                </div>
-               
-                    
-                <button v-if="isHiddenVisible" @click="next" class="button is-primary is-light">Skip</button>
-
-            </div>
-        </footer>
-    -->
 
 
             <footer class="m-2">
