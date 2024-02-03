@@ -3,7 +3,9 @@ import axios from 'axios';
 import { API_ADDRESS } from '@/helpers.js';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { notificationStore } from '@/stores/notification.js'; 
+import { notificationStore } from '@/stores/notification.js';
+
+
 
 const store = notificationStore();
 const router = useRouter();
@@ -12,6 +14,8 @@ const route = useRoute();
 let id = ref(route.params.id);
 let deck = ref(null);
 let cards = ref([]);
+
+
 
 const getDeck = async () => {
     try {
@@ -99,25 +103,55 @@ const hideDeleteConfirmationModal = () => {
 const editDeck = () => {
     router.push(`/deck/${id.value}/edit`);
 };
+
+const isBurgerMenuOpen = ref(false);
+
+const toggleBurgerMenu = () => {
+    isBurgerMenuOpen.value = !isBurgerMenuOpen.value;
+};
 </script>
 
 
 
 <template>
+    <!--Navbar-->
     
+
+    <header>
+        <nav class="navbar">
+
+            <div class="navbar-brand">
+                <a class="navbar-item" @click="moveToClassView">
+                    <span class="icon">
+                        <ion-icon name="chevron-back-outline" style=" font-size: 64px;"></ion-icon>
+                    </span>
+                </a>
+                <a class="navbar-item">
+                    <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
+                </a>
+                <a class="navbar-item" @click="createNewCard" style="margin-right: 0; margin-left: auto;">
+                    <span class="icon">
+                        <ion-icon name="add-outline" style="font-size: 64px;"></ion-icon>
+                    </span>
+                </a>
+            </div>
+            
+
+        </nav>
+    </header>
 
     <div class="m-4">
         <div>
-            <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
+            <!-- <h1 class="title">{{ deck?.name ?? "loading..." }}</h1> -->
 
             <div class="buttons">
                 <button @click="moveToLearning" class="button is-primary">Learn</button>
-                <button @click="editDeck" class="button is-info">Edit deck</button>
-                <button @click="createNewCard" class="button is-success">Add card</button>
-                <button @click="moveToClassView" class="button is-warning">Classes</button>
+                <button @click="editDeck" class="button is-info">Edit</button>
+                <!-- <button @click="createNewCard" class="button is-success">Add card</button> -->
+                <!-- <button @click="moveToClassView" class="button is-warning">Classes</button> -->
                 <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
             </div>
-            
+
             <table class="table is-fullwidth">
                 <thead>
                     <tr>

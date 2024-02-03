@@ -110,6 +110,7 @@ const router = createRouter({
       name: 'checkyouremail',
       component: CheckYourEmailView
     }
+   
   ]
 })
 
