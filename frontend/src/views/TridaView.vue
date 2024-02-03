@@ -1,129 +1,110 @@
-
 <script setup>
 import axios from 'axios';
-
 import { API_ADDRESS } from '@/helpers.js';
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { notificationStore } from '@/stores/notification.js'; 
+import { notificationStore } from '@/stores/notification.js';
+
 const store = notificationStore();
 const router = useRouter();
-let tridy = ref([]);
-let selectedTrida = ref(null);
-let selectedTridaDecks = ref(null);
+const tridy = ref([]);
+const selectedTrida = ref(null);
+const selectedTridaDecks = ref(null);
+const isDeleteConfirmationModalActive = ref(false);
+const isBurgerMenuOpen = ref(false);
 
-const getAllTrida = () => {
-    let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: API_ADDRESS + 'tridy/all',
-        headers: {}
-    };
+//Loading statuses
+const isTridaLoading = ref(false) //whether the api request is still running
+const isDecksLoading = ref(false) //whenther the api request for decks of active class is still running
 
-    axios.request(config)
-        .then((response) => {
-            tridy.value = response.data.data;
-        })
-        .catch((error) => {
-            router.push("/user/login")
-            console.log(error);
-        });
+onMounted(() => {
+    fetchAllTrida();
+});
 
-}
-const findDecks = (tridaid) => {
-    axios.post(API_ADDRESS + 'deck/find',
-        {
-            tridaid: tridaid,
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    ).then(function (result) {
-        selectedTridaDecks.value = result.data.data;
 
-    }).catch(function (err) {
-        router.push("/user/login")
-        console.log(err);
-    })
-}
-
-const clickTrida = (id) => {
-
-    for (let trida of tridy.value) {
-        if (trida.id == id) {
-            selectedTrida.value = trida;
-            findDecks(selectedTrida.value.id);
-            break;
-        }
+//fetches all trida's from api
+const fetchAllTrida = async () => {
+    isTridaLoading.value = true;
+    try {
+        const response = await axios.get(API_ADDRESS + 'tridy/all');
+        isTridaLoading.value = false;
+        tridy.value = response.data.data;
+    } catch (error) {
+        isTridaLoading.value = false;
+        handleApiError(error);
     }
+};
+//fetches all decks for the class
+const fetchDecksForTrida = async (tridaid) => {
+    try {
+        isDecksLoading.value = true
+        const result = await axios.post(
+            `${API_ADDRESS}deck/find`,
+            { tridaid },
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+        isDecksLoading.value = false
+        selectedTridaDecks.value = result.data.data;
+    } catch (err) {
+        isDecksLoading.value = false
+        handleApiError(err);
+    }
+};
 
-}
+const selectTrida = (id) => {
+    const foundTrida = tridy.value.find((trida) => trida.id === id);
+    if (foundTrida) {
+        selectedTrida.value = foundTrida;
+        selectedTridaDecks.value = []
+        fetchDecksForTrida(selectedTrida.value.id);
+    }
+};
 
 const clickDeck = (id) => {
-    router.push('deck/' + id);
-}
+    router.push(`deck/${id}`);
+};
 
 const createNewDeck = () => {
-    router.push('/' + selectedTrida.value.id + '/new')
-}
-const createNewTrida = () => {
-    router.push('/new')
-}
+    router.push(`/${selectedTrida.value.id}/new`);
+};
 
-const deleteTrida = () => {
-    axios.post(API_ADDRESS + 'tridy/delete',
-        {
-            id: selectedTrida.value.id,
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    ).then(function (result) {
+const createNewTrida = () => {
+    router.push('/new');
+};
+
+const deleteTrida = async () => {
+    try {
+        await axios.post(
+            `${API_ADDRESS}tridy/delete`,
+            { id: selectedTrida.value.id },
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
         selectedTrida.value = null;
         selectedTridaDecks.value = [];
-        store.newNotification("Class was deleted",false,"is-info",3);
-        getAllTrida();
+        store.newNotification("Class was deleted", false, "is-info", 3);
+        fetchAllTrida();
         isDeleteConfirmationModalActive.value = false;
+    } catch (err) {
+        handleApiError(err);
+    }
+};
 
-    }).catch(function (err) {
-        router.push("/user/login")
-        console.log(err);
-    })
-}
-const logOut = () => {
-    axios.post(API_ADDRESS + 'user/logout',
-        {
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    ).then(function (result) {
+const logOut = async () => {
+    try {
+        await axios.post(
+            `${API_ADDRESS}user/logout`,
+            {},
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
         router.push("/user/login");
-    }).catch(function (err) {
-        router.push("/user/login")
-        console.log(err);
-    })
+    } catch (err) {
+        handleApiError(err);
+    }
+};
 
-}
 const editTrida = () => {
-    router.push("/" + selectedTrida.value.id + "/edit")
-}
-
-
-
-
-getAllTrida();
-
-
-
-
-const isDeleteConfirmationModalActive = ref(false);
+    router.push(`/${selectedTrida.value.id}/edit`);
+};
 
 const showDeleteConfirmationModal = () => {
     isDeleteConfirmationModalActive.value = true;
@@ -133,17 +114,20 @@ const hideDeleteConfirmationModal = () => {
     isDeleteConfirmationModalActive.value = false;
 };
 
-const isBurgerMenuOpen = ref(false);
-
 const toggleBurgerMenu = () => {
     isBurgerMenuOpen.value = !isBurgerMenuOpen.value;
 };
 
 const exportData = () => {
-    router.push("/export")
-}
+    router.push("/export");
+};
 
+const handleApiError = (error) => {
+    router.push("/user/login");
+    console.error(error);
+};
 </script>
+
 
 
 <template>
@@ -189,8 +173,11 @@ const exportData = () => {
                         Classes
                     </p>
                     <ul class="menu-list">
+                        <li v-if="isTridaLoading">
+                            <div class="loader"></div>
+                        </li>
                         <li v-for="(trida) in tridy">
-                            <a :class="{ 'is-active': trida == selectedTrida }" @click="clickTrida(trida.id)">{{ trida.name
+                            <a :class="{ 'is-active': trida == selectedTrida }" @click="selectTrida(trida.id)">{{ trida.name
                             }}</a>
                         </li>
 
@@ -226,8 +213,11 @@ const exportData = () => {
 
 
                 <aside class="menu">
-
+                    
                     <ul class="menu-list">
+                        <li v-if="isDecksLoading">
+                            <div class="loader"></div>
+                        </li>
                         <li v-for="(deck) in selectedTridaDecks">
                             <a @click="clickDeck(deck.id)">{{ deck.name }}</a>
                         </li>

@@ -120,7 +120,6 @@ const findCards = () => {
             }
         }
     ).then(function (result) {
-        console.log("new cards from findCards")
         cards.value = result.data.data;
         updateUI();
 
@@ -146,10 +145,17 @@ const cardsInLearning = ref([]);
 
 //clears cardsInLearning from cards with mark 1
 const dropCardsThatYouKnow = () => {
-
-    cardsInLearning.value = cardsInLearning.value.filter(function (card) {
-        return card.mark != 1;
-    });
+    
+    var newCards = []
+    for (var card of cardsInLearning.value){
+        if (card.mark != 1){
+            newCards.push(card)
+        }
+    }
+    cardsInLearning.value = newCards
+    // cardsInLearning.value = cardsInLearning.value.filter(function (card) {
+    //     return card.mark != 1;
+    // });
 
 }
 function getRandomElement(arr) {
@@ -187,7 +193,7 @@ const randomFillerCardItCantBeIncardsInLearning = () => {
 const next = () => {
 
     dropCardsThatYouKnow();
-
+    
     if (cards.value.length > 0) {
 
 
@@ -279,7 +285,7 @@ const nextMark = (mark) => {
 
 const somethingFailed = () => {
     console.log("Something failed!")
-    router.push("/user/login")
+    //router.push("/user/login")
 }
 
 const updateProgressBar = () => {
@@ -492,10 +498,11 @@ const toggleBurgerMenu = () => {
 
 
 
-    <div v-if="!isSettingsOpened">
+    <div v-if="!isSettingsOpened" style="overflow-x: hidden;">
         <!--Navbar-->
+
         <header>
-            <div class="wrapper">
+            <div class="wrapper" style="height: 52px;">
                 <nav class="navbar" role="navigation" aria-label="main navigation">
                     <div class="navbar-brand">
                         <a role="button" class="navbar-burger" aria-label="menu" :class="{ 'is-active': isBurgerMenuOpen }"
@@ -508,15 +515,15 @@ const toggleBurgerMenu = () => {
 
                     <div id="navbarBasicExample" :class="{ 'is-active': isBurgerMenuOpen }" class="navbar-menu">
                         <div class="navbar-start">
-                            <a class="navbar-item" @click="moveToDeck">
-                                Exit
+                            <a class="navbar-item" @click="openLearningSettings">
+                                Setup
                             </a>
                         </div>
                         <div class="navbar-end">
                             <div class="navbar-item">
                                 <div class="buttons">
-                                    <a class="button is-light" @click="openLearningSettings">
-                                        Setup
+                                    <a class="button is-light" @click="moveToDeck">
+                                        Exit
                                     </a>
                                 </div>
                             </div>
@@ -527,38 +534,13 @@ const toggleBurgerMenu = () => {
         </header>
 
 
-
-
-        <!-- <header>
-            <div class="wrapper">
-                <nav class="navbar">
-                    <div class="navbar-menu is-active">
-                        <div class="navbar-end">
-                            <div class="navbar-start">
-                                <a class="navbar-item">
-                                    <button @click="moveToDeck" class="button">
-                                        Exit
-                                    </button>
-
-                                </a>
-                                <a class="navbar-item">
-                                    <button @click="openLearningSettings" class="button">Setup</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </header> -->
-
-
-
-
         <div class='container hero is-fullheight-with-navbar '>
 
 
             <div class="columns">
-                <div class="column is-one-quarter is-hidden-mobile">
+
+                <!--Left side stats-->
+                <div class="column is-one-quarter is-hidden-touch">
                     <div class="box">
                         <h1 class="title">{{ deck?.tridaEntity.name ?? 'Loading...' }}</h1>
                         <h2 class="subtitle">{{ deck?.name ?? 'Loading...' }}</h2>
@@ -600,11 +582,13 @@ const toggleBurgerMenu = () => {
                         </table>
 
                     </div>
-                    <!--
-                <button @click="moveToDeck" class="button is-link">Go to Deck</button>
-                    -->
                 </div>
 
+
+                <div class="m-4 is-hidden-desktop">
+                    <progress class="progress is-primary " :value="progressBarWidth" max="100">{{ progressBarWidth
+                    }}%</progress>
+                </div>
                 <div class="column">
 
                     <div v-if="activeid !== -1">
@@ -638,42 +622,6 @@ const toggleBurgerMenu = () => {
                 </div>
 
             </div>
-            <!--
-        <footer class="has-text-centered m-4">
-            <button v-if="!isHiddenVisible" @click="showHidden" class="button is-info is-fullwidth is-fullheight">Show hidden</button>
-            <div v-if="isHiddenVisible">
-                <div class="buttons">
-                    
-                    
-                    
-                   
-                    
-                </div>
-                
-                <div class="columns is-mobile is-gapless m-4">
-                    <div class="column">
-                        <button @click="nextMark(1)" class="button is-success is-responsible is-large">1</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(2)" class="button is-success is-responsible is-large ">2</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(3)" class="button is-success is-responsible is-large">3</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(4)" class="button is-success is-responsible is-large">4</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(5)" class="button is-success is-responsible is-large">5</button>
-                    </div>
-                </div>
-               
-                    
-                <button v-if="isHiddenVisible" @click="next" class="button is-primary is-light">Skip</button>
-
-            </div>
-        </footer>
-    -->
 
 
             <footer class="m-2">

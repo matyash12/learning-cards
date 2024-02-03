@@ -4,7 +4,7 @@ import axios from 'axios';
 import { API_ADDRESS, isValidField } from '@/helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { notificationStore } from '@/stores/notification.js'; 
+import { notificationStore } from '@/stores/notification.js';
 const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
@@ -99,7 +99,7 @@ const updateCard = () => {
             hiddenPart.value = '';
             visiblePartInput.value.focus();
             wasLastCardCreated.value = true;
-            store.newNotification("Card was successfuly updated",false,"is-success",3);
+            store.newNotification("Card was successfuly updated", false, "is-success", 3);
             router.push('/deck/' + deckid)
             //moveToDeckView();
         })
@@ -252,6 +252,25 @@ const imageVisibleFileDelete = () => {
             console.log(error);
         });
 }
+const deleteCard = () => {
+    axios.post(API_ADDRESS + 'card/delete', {
+        'id': cardid
+    },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+        ,
+    )
+        .then(function (response) {
+            store.newNotification("Card was successfuly deleted", false, "is-success", 3);
+            moveToDeckView()
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+}
 
 </script>
 
@@ -360,6 +379,9 @@ const imageVisibleFileDelete = () => {
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-primary" @click="updateCard">Save changes</button>
+                </div>
+                <div class="control">
+                    <button class="button is-danger" @click="deleteCard">Delete</button>
                 </div>
                 <div class="control">
                     <button class="button is-link is-light" @click="moveToDeckView">Cancel</button>

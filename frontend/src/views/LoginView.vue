@@ -1,12 +1,11 @@
 <script setup>
 import axios from 'axios';
-
 import { API_ADDRESS } from '@/helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { notificationStore } from '@/stores/notification.js'; 
-const store = notificationStore();
 
+const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
 
@@ -15,42 +14,45 @@ const password = ref('');
 const showWarning = ref(false);
 const warningMessage = ref('');
 
+const isLoginRequestLoading = ref(false) //whether there is an api request running for login
+
 const closeWarning = () => {
   showWarning.value = false;
   warningMessage.value = '';
-}
+};
 
-const loginRequest = () => {
-  axios.post(API_ADDRESS + 'user/login',
-    {
-      "email": email.value,
-      "password": password.value
-    },
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    }
-  ).then(function (result) {
-    store.newNotification("Login was successful",false,"is-success",3);
+const loginRequest = async () => {
+  if (isLoginRequestLoading.value == true){
+    return
+  }
+  try {
+    isLoginRequestLoading.value = true
+    const result = await axios.post(
+      `${API_ADDRESS}user/login`,
+      { email: email.value, password: password.value },
+      { headers: { 'Content-Type': 'multipart/form-data' } }
+    );
+    isLoginRequestLoading.value = false
+    store.newNotification("Login was successful", false, "is-success", 3);
     router.push('/');
-  }).catch(function (err) {
-    //notificationStore.newNotification("")
+  } catch (err) {
+    isLoginRequestLoading.value = false
     warningMessage.value = err.response.data.message;
     showWarning.value = true;
-    console.log(err);
-  })
-}
+    console.error(err);
+  }
+};
 
 const createAccount = () => {
   router.push("/user/register");
-}
+};
 
 const recoverPassword = () => {
   router.push("/requestnewpassword");
-}
+};
 
 </script>
+
 
 <template>
   <div class="m-4">
@@ -78,7 +80,15 @@ const recoverPassword = () => {
               <p v-text="warningMessage"></p>
             </div>
             <div class="buttons">
-              <button class="button is-primary" @click="loginRequest">Login</button>
+              <button class="button is-primary" @click="loginRequest">
+                <div v-if="isLoginRequestLoading">
+                  <div class="loader"></div>
+                </div>
+                <div v-if="isLoginRequestLoading == false">
+                  Login
+                </div> 
+                
+              </button>
               <button class="button is-link is-light" @click="recoverPassword">Recover password</button>
               <button class="button is-link is-light" @click="createAccount">Create account</button>
             </div>
