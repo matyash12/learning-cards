@@ -120,7 +120,18 @@ const findCards = () => {
             }
         }
     ).then(function (result) {
+        var newcardsInLearning = []
+
         cards.value = result.data.data;
+        for (var oldcard of cardsInLearning.value){
+            for (var newcard of cards.value){
+                if (oldcard.id == newcard.id){
+                    newcardsInLearning.push(newcard)
+                }
+            }
+        }
+        cardsInLearning.value = newcardsInLearning
+
         updateUI();
 
         if (activeid.value == -1) {
@@ -191,8 +202,9 @@ const randomFillerCardItCantBeIncardsInLearning = () => {
 }
 
 const next = () => {
-
+    console.log(cards.value)
     dropCardsThatYouKnow();
+
     
     if (cards.value.length > 0) {
 
@@ -285,7 +297,7 @@ const nextMark = (mark) => {
 
 const somethingFailed = () => {
     console.log("Something failed!")
-    //router.push("/user/login")
+    router.push("/user/login")
 }
 
 const updateProgressBar = () => {
