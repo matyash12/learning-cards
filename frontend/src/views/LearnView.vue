@@ -494,6 +494,7 @@ const toggleBurgerMenu = () => {
 
     <div v-if="!isSettingsOpened">
         <!--Navbar-->
+        
         <header>
             <div class="wrapper">
                 <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -508,15 +509,15 @@ const toggleBurgerMenu = () => {
 
                     <div id="navbarBasicExample" :class="{ 'is-active': isBurgerMenuOpen }" class="navbar-menu">
                         <div class="navbar-start">
-                            <a class="navbar-item" @click="moveToDeck">
-                                Exit
+                            <a class="navbar-item" @click="openLearningSettings">
+                                Setup
                             </a>
                         </div>
                         <div class="navbar-end">
                             <div class="navbar-item">
                                 <div class="buttons">
-                                    <a class="button is-light" @click="openLearningSettings">
-                                        Setup
+                                    <a class="button is-light" @click="moveToDeck">
+                                        Exit
                                     </a>
                                 </div>
                             </div>
@@ -525,32 +526,6 @@ const toggleBurgerMenu = () => {
                 </nav>
             </div>
         </header>
-
-
-
-
-        <!-- <header>
-            <div class="wrapper">
-                <nav class="navbar">
-                    <div class="navbar-menu is-active">
-                        <div class="navbar-end">
-                            <div class="navbar-start">
-                                <a class="navbar-item">
-                                    <button @click="moveToDeck" class="button">
-                                        Exit
-                                    </button>
-
-                                </a>
-                                <a class="navbar-item">
-                                    <button @click="openLearningSettings" class="button">Setup</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </header> -->
-
 
 
 
