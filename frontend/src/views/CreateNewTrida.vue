@@ -12,12 +12,18 @@ const route = useRoute();
 
 // Data properties
 const tridaName = ref('');
-
 let tridaid = route.params.tridaid;
 
+//is running?
+const isCreateNewTridaRunning = ref(false);
 
 // Methods
 const createNewTrida = () => {
+    if (isCreateNewTridaRunning.value = true){
+        return;
+    }
+    isCreateNewTridaRunning.value = true;
+
     axios.post(API_ADDRESS + 'tridy/new', {
         'name': tridaName.value,
     },
@@ -29,11 +35,13 @@ const createNewTrida = () => {
         ,
     )
         .then(function (response) {
+            isCreateNewTridaRunning.value = false;
             console.log(response);
             store.newNotification("New class created",false,"is-success",3);
             moveToClasses();
         })
         .catch(function (error) {
+            isCreateNewTridaRunning.value = false;
             router.push("/user/login")
             console.log(error);
         });
@@ -62,7 +70,10 @@ const moveToClasses = () => {
 
                 <div class="field is-grouped">
                     <div class="control">
-                        <button class="button is-primary" @click="createNewTrida">Create</button>
+                        <button class="button is-primary" @click="createNewTrida">
+                            <div class="loader" v-if="isCreateNewTridaRunning == true"></div>
+                            <p v-if="isCreateNewTridaRunning == false">Create</p>
+                        </button>
                     </div>
                     <div class="control">
                         <button class="button is-link is-light" @click="moveToClasses">Cancel</button>

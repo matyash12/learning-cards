@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 import { API_ADDRESS, isValidField } from '@/helpers.js';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { notificationStore } from '@/stores/notification.js';
 const store = notificationStore();
@@ -21,6 +21,15 @@ let wasLastCardCreated = ref(null);
 let hiddenImagePart = ref();
 let visibleImagePart = ref();
 
+//is running
+const isLoadCardDetailsRunning = ref(true);
+const isUpdateCardRunning = ref(false);
+const isDeleteCardRunning = ref(false);
+
+
+watch(isLoadCardDetailsRunning, (newValue, oldValue) => {
+    visiblePartInput.value.focus();
+});
 
 const loadImages = () => {
     axios.post(API_ADDRESS + 'image/find', {
@@ -51,6 +60,7 @@ const loadImages = () => {
 }
 
 const loadCardDetails = (onlyImages) => {
+    isLoadCardDetailsRunning.value = true;
     axios.get(API_ADDRESS + 'card/' + cardid)
         .then(function (response) {
             if (!onlyImages) {
@@ -59,10 +69,11 @@ const loadCardDetails = (onlyImages) => {
                 hiddenPart.value = response.data.data.hiddenPart;
                 markValue.value = response.data.data.mark;
             }
-
+            isLoadCardDetailsRunning.value = false;
             loadImages();
 
         }).catch(function (error) {
+            isLoadCardDetailsRunning.value = false;
             router.push("/user/login")
             console.log(error);
         });
@@ -73,14 +84,15 @@ loadCardDetails();
 
 
 const updateCard = () => {
+    if (isUpdateCardRunning.value == true) {
+        return;
+    }
+    isUpdateCardRunning.value = true;
     if (!isValidField(hiddenPart.value) || !isValidField(visiblePart.value)) {
         showWarning.value = true;
         warningMessage.value = "You can't have empty side."
         return;
     }
-
-
-
     axios.post(API_ADDRESS + 'card/update', {
         hiddenPart: hiddenPart.value,
         visiblePart: visiblePart.value,
@@ -95,6 +107,7 @@ const updateCard = () => {
         ,
     )
         .then(function (response) {
+            isUpdateCardRunning.value = false;
             visiblePart.value = '';
             hiddenPart.value = '';
             visiblePartInput.value.focus();
@@ -104,6 +117,7 @@ const updateCard = () => {
             //moveToDeckView();
         })
         .catch(function (error) {
+            isUpdateCardRunning.value = false;
             router.push("/user/login")
             console.log(error);
             wasLastCardCreated.value = false;
@@ -145,7 +159,6 @@ const setMark = (mark) => {
 
 
 onMounted(() => {
-    visiblePartInput.value.focus();
     window.addEventListener('keydown', handleKeyDown);
 });
 onUnmounted(() => {
@@ -253,6 +266,10 @@ const imageVisibleFileDelete = () => {
         });
 }
 const deleteCard = () => {
+    if (isDeleteCardRunning.value == true) {
+        return;
+    }
+    isDeleteCardRunning.value = true;
     axios.post(API_ADDRESS + 'card/delete', {
         'id': cardid
     },
@@ -264,10 +281,12 @@ const deleteCard = () => {
         ,
     )
         .then(function (response) {
+            isDeleteCardRunning.value = false;
             store.newNotification("Card was successfuly deleted", false, "is-success", 3);
             moveToDeckView()
         })
         .catch(function (error) {
+            isDeleteCardRunning.value = false;
             console.log(error);
         });
 }
@@ -313,8 +332,10 @@ const deleteCard = () => {
                 <div class="field">
                     <label class="label">Visible side text</label>
                     <div class="control">
-                        <textarea ref="visiblePartInput" id="visiblePart" v-model="visiblePart" @input="userChangesValue"
-                            class="textarea" type="text" placeholder=""></textarea>
+                        <div class="loader" v-if="isLoadCardDetailsRunning == true"></div>
+                        <textarea v-if="isLoadCardDetailsRunning == false" ref="visiblePartInput" id="visiblePart"
+                            v-model="visiblePart" @input="userChangesValue" class="textarea" type="text"
+                            placeholder=""></textarea>
                     </div>
                 </div>
 
@@ -350,8 +371,9 @@ const deleteCard = () => {
                 <div class="field">
                     <label class="label">Hidden side text</label>
                     <div class="control">
-                        <textarea v-model="hiddenPart" id="hiddenPart" @input="userChangesValue" class="textarea"
-                            type="text" placeholder=""></textarea>
+                        <div class="loader" v-if="isLoadCardDetailsRunning == true"></div>
+                        <textarea v-if="isLoadCardDetailsRunning == false" v-model="hiddenPart" id="hiddenPart"
+                            @input="userChangesValue" class="textarea" type="text" placeholder=""></textarea>
                     </div>
                 </div>
             </div>
@@ -360,7 +382,8 @@ const deleteCard = () => {
 
             <div class="field">
                 <label class="label">Mark</label>
-                <div class="buttons">
+                <div class="loader" v-if="isLoadCardDetailsRunning == true"></div>
+                <div class="buttons" v-if="isLoadCardDetailsRunning == false">
                     <button @click="setMark(0)" :class="{ 'button': true, 'is-success': markValue === 0 }">None</button>
                     <button @click="setMark(1)" :class="{ 'button': true, 'is-success': markValue === 1 }">1</button>
                     <button @click="setMark(2)" :class="{ 'button': true, 'is-success': markValue === 2 }">2</button>
@@ -376,9 +399,19 @@ const deleteCard = () => {
                 <button class="delete" @click="closeWarning"></button>
                 <p v-text="warningMessage"></p>
             </div>
-            <div class="field is-grouped">
+            <div class="loader" v-if="isLoadCardDetailsRunning == true"></div>
+            <div class="field is-grouped" v-if="isLoadCardDetailsRunning == false">
                 <div class="control">
-                    <button class="button is-primary" @click="updateCard">Save changes</button>
+                    <button class="button is-primary" @click="updateCard">
+                        <p v-if="isUpdateCardRunning == false">Save changes</p>
+                        <div class="loader" v-if="isUpdateCardRunning"></div>
+                    </button>
+                </div>
+                <div class="control">
+                    <button class="button is-danger" @click="deleteCard">
+                        <p v-if="isDeleteCardRunning == false">Delete</p>
+                        <div class="loader" v-if="isDeleteCardRunning == true"></div>
+                    </button>
                 </div>
                 <div class="control">
                     <button class="button is-danger" @click="deleteCard">Delete</button>
