@@ -4,7 +4,7 @@ import axios from 'axios';
 import { API_ADDRESS } from '@/helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { notificationStore } from '@/stores/notification.js'; 
+import { notificationStore } from '@/stores/notification.js';
 const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
@@ -12,7 +12,15 @@ const route = useRoute();
 const email = ref('');
 const showWarning = ref(false);
 const warningMessage = ref('');
+
+const isSendRecoveryEmailRunning = ref(false);
+
 const sendRecoveryEmail = () => {
+  if (isSendRecoveryEmailRunning.value == true) {
+    return;
+  }
+  isSendRecoveryEmailRunning.value = true;
+
   axios.post(API_ADDRESS + 'recovery/request/password',
     {
       "email": email.value
@@ -23,9 +31,11 @@ const sendRecoveryEmail = () => {
       }
     }
   ).then(function (result) {
-    store.newNotification("Request was succesful",false,"is-success",3);
+    isSendRecoveryEmailRunning.value = false;
+    store.newNotification("Request was succesful", false, "is-success", 3);
     router.push('/checkyouremail');
   }).catch(function (err) {
+    isSendRecoveryEmailRunning.value = false;
     warningMessage.value = err.response.data.message;
     showWarning.value = true;
     console.log(err);
@@ -58,7 +68,11 @@ const loginInstead = () => {
             </div>
             <div class="field is-grouped">
               <div class="control">
-                <button class="button is-primary" @click="sendRecoveryEmail">Send recovery email</button>
+                <button class="button is-primary" @click="sendRecoveryEmail">
+
+                  <div class="loader" v-if="isSendRecoveryEmailRunning == true"></div>
+                  <p v-if="isSendRecoveryEmailRunning == false">Send recovery email</p>
+                </button>
               </div>
               <div class="control">
                 <button class="button is-link is-light" @click="loginInstead">Login instead</button>

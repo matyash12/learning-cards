@@ -17,6 +17,8 @@ const password2 = ref('');
 const showWarning = ref(false);
 const warningMessage = ref('');
 
+const isRegisterRequestRunning = ref(false);
+
 const closeWarning = () => {
   showWarning.value = false;
   warningMessage.value = '';
@@ -24,6 +26,11 @@ const closeWarning = () => {
 
 
 const registerRequest = () => {
+  if (isRegisterRequestRunning.value == true){
+    return;
+  }
+  isRegisterRequestRunning.value = true;
+
   if (password2.value !== password.value) {
     return;
   }
@@ -39,9 +46,11 @@ const registerRequest = () => {
       }
     }
   ).then(function (result) {
+    isRegisterRequestRunning.value =false;
     store.newNotification("Account created",false,"is-success",3);
     router.push('/user/login');
   }).catch(function (err) {
+    isRegisterRequestRunning.value = false;
     warningMessage.value = err.response.data.message;
     showWarning.value = true;
     console.log(err);
@@ -95,7 +104,11 @@ const loginInstead = () => {
             </div>
             <div class="field is-grouped">
               <div class="control">
-                <button class="button is-primary" @click="registerRequest">Create</button>
+                <button class="button is-primary" @click="registerRequest">
+                
+                  <div v-if="isRegisterRequestRunning == true" class="loader"></div>
+                  <p v-if="isRegisterRequestRunning == false">Create</p>
+                </button>
               </div>
               <div class="control">
                 <button class="button is-link is-light" @click="loginInstead">Login instead</button>

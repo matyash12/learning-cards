@@ -19,12 +19,20 @@ let wasLastCardCreated = ref(null);
 let hiddenImagePart = ref("");
 let visibleImagePart = ref("");
 
+//is running
+const isCreateCardRunning = ref(false);
+
 const createCard = () => {
+    if (isCreateCardRunning.value == true){
+        return;
+    }
     if (!isValidField(hiddenPart.value) || !isValidField(visiblePart.value)) {
         showWarning.value = true;
         warningMessage.value = "You can't have empty side."
         return;
     }
+    isCreateCardRunning.value = true;
+
     let formData = {
         hiddenPart: hiddenPart.value,
         visiblePart: visiblePart.value,
@@ -48,9 +56,9 @@ const createCard = () => {
         ,
     )
         .then(function (response) {
+            isCreateCardRunning.value = false;
             store.newNotification("Card was created",false,"is-success",1);
 
-            console.log(response);
             visiblePart.value = '';
             hiddenPart.value = '';
             visiblePartInput.value.focus();
@@ -67,6 +75,7 @@ const createCard = () => {
             //moveToDeckView();
         })
         .catch(function (error) {
+            isCreateCardRunning.value = false;
             router.push("/user/login")
             console.log(error);
             wasLastCardCreated.value = false;
@@ -233,7 +242,11 @@ const imageVisibleFileDelete = () => {
             </div>
             <div class="field is-grouped">
                 <div class="control">
-                    <button class="button is-primary" @click="createCard">Create</button>
+                    <button class="button is-primary" @click="createCard">
+                        <p v-if="isCreateCardRunning == false">Create</p>
+                        <div class="loader" v-if="isCreateCardRunning == true"></div>
+                    
+                    </button>
                 </div>
                 <div class="control">
                     <button class="button is-link is-light" @click="moveToDeckView">Done</button>

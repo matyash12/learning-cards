@@ -16,6 +16,7 @@ const isBurgerMenuOpen = ref(false);
 //Loading statuses
 const isTridaLoading = ref(false) //whether the api request is still running
 const isDecksLoading = ref(false) //whenther the api request for decks of active class is still running
+const isDeleteTridaRunning = ref(false);
 
 onMounted(() => {
     fetchAllTrida();
@@ -73,18 +74,24 @@ const createNewTrida = () => {
 };
 
 const deleteTrida = async () => {
+    if (isDeleteTridaRunning.value == true) {
+        return;
+    }
+    isDeleteTridaRunning.value = true;
     try {
         await axios.post(
             `${API_ADDRESS}tridy/delete`,
             { id: selectedTrida.value.id },
             { headers: { 'Content-Type': 'multipart/form-data' } }
         );
+        isDeleteTridaRunning.value = false;
         selectedTrida.value = null;
         selectedTridaDecks.value = [];
         store.newNotification("Class was deleted", false, "is-info", 3);
         fetchAllTrida();
         isDeleteConfirmationModalActive.value = false;
     } catch (err) {
+        isDeleteTridaRunning.value = false;
         handleApiError(err);
     }
 };
@@ -213,7 +220,7 @@ const handleApiError = (error) => {
 
 
                 <aside class="menu">
-                    
+
                     <ul class="menu-list">
                         <li v-if="isDecksLoading">
                             <div class="loader"></div>
@@ -243,7 +250,10 @@ const handleApiError = (error) => {
                     Are you sure you want to delete this item?
                 </section>
                 <footer class="modal-card-foot">
-                    <button class="button is-danger" @click="deleteTrida">Delete</button>
+                    <button class="button is-danger" @click="deleteTrida">
+                        <div class="loader" v-if="isDeleteTridaRunning == true"></div>
+                        <p v-if="isDeleteTridaRunning == false">Delete</p>
+                    </button>
                     <button class="button" @click="hideDeleteConfirmationModal">Cancel</button>
                 </footer>
             </div>
