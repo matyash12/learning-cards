@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +16,8 @@ import com.example.backend.ApiMessages;
 import com.example.backend.ApiResponse;
 import com.example.backend.deck.DeckRepository;
 import com.example.backend.security.Helper;
+
+import jakarta.websocket.server.PathParam;
 
 @RestController
 @RequestMapping("/learnsession")
@@ -72,9 +76,33 @@ public class LearnSessionController {
             session.setNumberOfCardsInActiveLearning(numberOfCardsInActiveLearning);
         }
 
+        //save the changes
+        learnSessionRepository.save(session);
+
         //return
         return new ApiResponse(null, ApiMessages.OK, HttpStatus.OK).toResponseEntity(); 
 
     }
 
+    @GetMapping("/{id}")
+    public @ResponseBody ResponseEntity<ApiResponse> getSession(@PathVariable long id){
+
+        // get session
+        var sessionOptional = learnSessionRepository.findById(id);
+        if (sessionOptional.isEmpty()) {
+            return new ApiResponse(null, ApiMessages.NOT_FOUND, HttpStatus.NOT_FOUND).toResponseEntity();
+        }
+        var session = sessionOptional.get();
+
+        // check rights
+        if (!Helper.hasRightsForLearnSession(session)) {
+            return new ApiResponse(null, ApiMessages.FORBIDDEN, HttpStatus.FORBIDDEN).toResponseEntity();
+        }
+
+        //add missing data
+        session.setProgress(learnSessionRepository.findProgressByLearnSessionId(id));
+        
+        //return
+        return new ApiResponse(session, ApiMessages.OK, HttpStatus.OK).toResponseEntity(); 
+    }
 }

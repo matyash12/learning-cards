@@ -2,6 +2,7 @@ package com.example.backend.learn.LearnSession;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.example.backend.deck.DeckEntity;
 
@@ -12,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "learnsession")
@@ -43,7 +45,18 @@ public class LearnSessionEntity {
     // number of cards which are change frequently
     private int numberOfCardsInActiveLearning;
 
-    // functions
+    @Transient
+    double Progress;
+
+    //functions
+    public double getProgress() {
+        return Progress;
+    }
+
+    public void setProgress(double progress) {
+        Progress = progress;
+    }
+
     public int getCurrentIndex() {
         return currentIndex;
     }

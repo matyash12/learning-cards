@@ -47,8 +47,29 @@ const moveToClassView = () => {
     router.push('/');
 };
 
+const movingToLearningIsRunning = ref(false);
 const moveToLearning = () => {
-    router.push(`/learn/${id.value}`);
+    if (movingToLearningIsRunning.value) {
+        return;
+    }
+    movingToLearningIsRunning.value = true;
+    axios.post(API_ADDRESS + 'learnsession/new',
+        {
+            deckId: id.value,
+            numberOfCardsInActiveLearning: 3
+        },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    ).then(function (result) {
+        movingToLearningIsRunning.value = false;
+        router.push(`/learn/${result.data.data.id}`);
+    }).catch(function (err) {
+        movingToLearningIsRunning.value = false;
+        handleApiError(err);
+    })
 };
 
 const refreshDataOnPage = () => {
@@ -109,13 +130,17 @@ const isBurgerMenuOpen = ref(false);
 const toggleBurgerMenu = () => {
     isBurgerMenuOpen.value = !isBurgerMenuOpen.value;
 };
+const handleApiError = (error) => {
+    console.log(error)
+    router.push("/user/login")
+}
 </script>
 
 
 
 <template>
     <!--Navbar-->
-    
+
 
     <header>
         <nav class="navbar">
@@ -135,7 +160,7 @@ const toggleBurgerMenu = () => {
                     </span>
                 </a>
             </div>
-            
+
 
         </nav>
     </header>
@@ -145,7 +170,11 @@ const toggleBurgerMenu = () => {
             <!-- <h1 class="title">{{ deck?.name ?? "loading..." }}</h1> -->
 
             <div class="buttons">
-                <button @click="moveToLearning" class="button is-primary">Learn</button>
+                <button @click="moveToLearning" class="button is-primary">
+                    <div v-if="movingToLearningIsRunning == true" class="loader"></div>
+                    <p v-if="movingToLearningIsRunning == false">Learn</p>
+
+                </button>
                 <button @click="editDeck" class="button is-info">Edit</button>
                 <!-- <button @click="createNewCard" class="button is-success">Add card</button> -->
                 <!-- <button @click="moveToClassView" class="button is-warning">Classes</button> -->
