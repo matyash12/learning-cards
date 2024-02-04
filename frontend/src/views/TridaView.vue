@@ -2,7 +2,10 @@
 import axios from 'axios';
 import { API_ADDRESS } from '@/helpers.js';
 import { ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { notificationStore } from '@/stores/notification.js';
+
 import { notificationStore } from '@/stores/notification.js';
 
 const store = notificationStore();
@@ -51,7 +54,20 @@ const fetchDecksForTrida = async (tridaid) => {
         handleApiError(err);
     }
 };
+    } catch (err) {
+        isDecksLoading.value = false
+        handleApiError(err);
+    }
+};
 
+const selectTrida = (id) => {
+    const foundTrida = tridy.value.find((trida) => trida.id === id);
+    if (foundTrida) {
+        selectedTrida.value = foundTrida;
+        selectedTridaDecks.value = []
+        fetchDecksForTrida(selectedTrida.value.id);
+    }
+};
 const selectTrida = (id) => {
     const foundTrida = tridy.value.find((trida) => trida.id === id);
     if (foundTrida) {
@@ -64,12 +80,19 @@ const selectTrida = (id) => {
 const clickDeck = (id) => {
     router.push(`deck/${id}`);
 };
+    router.push(`deck/${id}`);
+};
 
 const createNewDeck = () => {
     router.push(`/${selectedTrida.value.id}/new`);
 };
 
+    router.push(`/${selectedTrida.value.id}/new`);
+};
+
 const createNewTrida = () => {
+    router.push('/new');
+};
     router.push('/new');
 };
 
@@ -87,6 +110,8 @@ const deleteTrida = async () => {
         isDeleteTridaRunning.value = false;
         selectedTrida.value = null;
         selectedTridaDecks.value = [];
+        store.newNotification("Class was deleted", false, "is-info", 3);
+        fetchAllTrida();
         store.newNotification("Class was deleted", false, "is-info", 3);
         fetchAllTrida();
         isDeleteConfirmationModalActive.value = false;
@@ -109,7 +134,14 @@ const logOut = async () => {
     }
 };
 
+    } catch (err) {
+        handleApiError(err);
+    }
+};
+
 const editTrida = () => {
+    router.push(`/${selectedTrida.value.id}/edit`);
+};
     router.push(`/${selectedTrida.value.id}/edit`);
 };
 
@@ -128,12 +160,19 @@ const toggleBurgerMenu = () => {
 const exportData = () => {
     router.push("/export");
 };
+    router.push("/export");
+};
 
 const handleApiError = (error) => {
     router.push("/user/login");
     console.error(error);
 };
+const handleApiError = (error) => {
+    router.push("/user/login");
+    console.error(error);
+};
 </script>
+
 
 
 
@@ -183,7 +222,11 @@ const handleApiError = (error) => {
                         <li v-if="isTridaLoading">
                             <div class="loader"></div>
                         </li>
+                        <li v-if="isTridaLoading">
+                            <div class="loader"></div>
+                        </li>
                         <li v-for="(trida) in tridy">
+                            <a :class="{ 'is-active': trida == selectedTrida }" @click="selectTrida(trida.id)">{{ trida.name
                             <a :class="{ 'is-active': trida == selectedTrida }" @click="selectTrida(trida.id)">{{ trida.name
                             }}</a>
                         </li>
@@ -220,8 +263,11 @@ const handleApiError = (error) => {
 
 
                 <aside class="menu">
-
+                    
                     <ul class="menu-list">
+                        <li v-if="isDecksLoading">
+                            <div class="loader"></div>
+                        </li>
                         <li v-if="isDecksLoading">
                             <div class="loader"></div>
                         </li>
