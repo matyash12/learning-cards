@@ -40,7 +40,7 @@ const router = createRouter({
       component: CreateNewCard
     },
     {
-      path: '/learn/:deckid',
+      path: '/learn/:sessionid',
       name: 'learn',
       component: LearnView
     },
@@ -110,6 +110,7 @@ const router = createRouter({
       name: 'checkyouremail',
       component: CheckYourEmailView
     }
+   
   ]
 })
 

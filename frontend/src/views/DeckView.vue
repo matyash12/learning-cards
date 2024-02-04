@@ -1,115 +1,115 @@
 <script setup>
 import axios from 'axios';
-
 import { API_ADDRESS } from '@/helpers.js';
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { notificationStore } from '@/stores/notification.js'; 
+import { notificationStore } from '@/stores/notification.js';
+
+
+
 const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
 
-let id = route.params.id;
+let id = ref(route.params.id);
 let deck = ref(null);
 let cards = ref([]);
 
-const getDeck = (deckid) => {
 
-    let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: API_ADDRESS + 'deck/' + deckid,
-        headers: {}
-    };
 
-    axios.request(config)
-        .then((response) => {
-            deck.value = response.data.data;
-        })
-        .catch((error) => {
-            router.push("/user/login")
-            console.log(error);
-        });
+const getDeck = async () => {
+    try {
+        const response = await axios.get(`${API_ADDRESS}deck/${id.value}`);
+        deck.value = response.data.data;
+    } catch (error) {
+        handleApiError(error);
+    }
+};
 
-}
-const findCards = (deckid) => {
-    axios.post(API_ADDRESS + 'card/find',
-        {
-            deckid: deckid,
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    ).then(function (result) {
+const findCards = async () => {
+    try {
+        const result = await axios.post(
+            `${API_ADDRESS}card/find`,
+            { deckid: id.value },
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
         cards.value = result.data.data;
-
-    }).catch(function (err) {
-        router.push("/user/login")
-        console.log(err);
-    })
-}
+    } catch (err) {
+        handleApiError(err);
+    }
+};
 
 const createNewCard = () => {
-    router.push('/deck/' + id + '/' + 'new');
-}
+    router.push(`/deck/${id.value}/new`);
+};
+
 const moveToClassView = () => {
-    router.push('/')
-}
+    router.push('/');
+};
+
+const movingToLearningIsRunning = ref(false);
 const moveToLearning = () => {
-    router.push('/learn/' + id);
-}
+    if (movingToLearningIsRunning.value) {
+        return;
+    }
+    movingToLearningIsRunning.value = true;
+    axios.post(API_ADDRESS + 'learnsession/new',
+        {
+            deckId: id.value,
+            numberOfCardsInActiveLearning: 3
+        },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    ).then(function (result) {
+        movingToLearningIsRunning.value = false;
+        router.push(`/learn/${result.data.data.id}`);
+    }).catch(function (err) {
+        movingToLearningIsRunning.value = false;
+        handleApiError(err);
+    })
+};
+
 const refreshDataOnPage = () => {
-    getDeck(id);
-    findCards(id);
-}
-const deleteCard = (cardid) => {
-    axios.post(API_ADDRESS + 'card/delete',
-        {
-            id: cardid,
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    ).then(function (result) {
-        store.newNotification("Card was deleted",false,"is-info",3);
+    getDeck();
+    findCards();
+};
+
+const deleteCard = async (cardid) => {
+    try {
+        await axios.post(
+            `${API_ADDRESS}card/delete`,
+            { id: cardid },
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+        store.newNotification("Card was deleted", false, "is-info", 3);
         refreshDataOnPage();
+    } catch (err) {
+        handleApiError(err);
+    }
+};
 
-    }).catch(function (err) {
-        router.push("/user/login")
-        console.log(err);
-    })
-}
-const deleteThisDeck = () => {
-    axios.post(API_ADDRESS + 'deck/delete',
-        {
-            id: id,
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    ).then(function (result) {
-        store.newNotification("Deck was deleted",false,"is-info",3);
+const deleteThisDeck = async () => {
+    try {
+        await axios.post(
+            `${API_ADDRESS}deck/delete`,
+            { id: id.value },
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+        store.newNotification("Deck was deleted", false, "is-info", 3);
         moveToClassView();
+    } catch (err) {
+        handleApiError(err);
+    }
+};
 
-    }).catch(function (err) {
-        router.push("/user/login")
-        console.log(err);
-    })
-}
 const editCard = (cardid) => {
-    router.push("/deck/" + deck.value.id + "/" + cardid + "/edit");
-}
+    router.push(`/deck/${deck.value.id}/${cardid}/edit`);
+};
 
 refreshDataOnPage();
-
-
-
 
 const isDeleteConfirmationModalActive = ref(false);
 
@@ -120,42 +120,86 @@ const showDeleteConfirmationModal = () => {
 const hideDeleteConfirmationModal = () => {
     isDeleteConfirmationModalActive.value = false;
 };
+
 const editDeck = () => {
-    router.push("/deck/" + id + "/edit")
+    router.push(`/deck/${id.value}/edit`);
 };
+
+const isBurgerMenuOpen = ref(false);
+
+const toggleBurgerMenu = () => {
+    isBurgerMenuOpen.value = !isBurgerMenuOpen.value;
+};
+const handleApiError = (error) => {
+    console.log(error)
+    router.push("/user/login")
+}
 </script>
 
 
+
 <template>
+    <!--Navbar-->
+
+
+    <header>
+        <nav class="navbar">
+
+            <div class="navbar-brand">
+                <a class="navbar-item" @click="moveToClassView">
+                    <span class="icon">
+                        <ion-icon name="chevron-back-outline" style=" font-size: 64px;"></ion-icon>
+                    </span>
+                </a>
+                <a class="navbar-item">
+                    <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
+                </a>
+                <a class="navbar-item" @click="createNewCard" style="margin-right: 0; margin-left: auto;">
+                    <span class="icon">
+                        <ion-icon name="add-outline" style="font-size: 64px;"></ion-icon>
+                    </span>
+                </a>
+            </div>
+
+
+        </nav>
+    </header>
+
     <div class="m-4">
         <div>
+            <!-- <h1 class="title">{{ deck?.name ?? "loading..." }}</h1> -->
+
             <div class="buttons">
-                <button @click="moveToLearning" class="button is-primary">Learn</button>
-                <button @click="editDeck" class="button is-info">Edit deck</button>
-                <button @click="createNewCard" class="button is-success">Add card</button>
-                <button @click="moveToClassView" class="button is-warning">Classes</button>
+                <button @click="moveToLearning" class="button is-primary">
+                    <div v-if="movingToLearningIsRunning == true" class="loader"></div>
+                    <p v-if="movingToLearningIsRunning == false">Learn</p>
+
+                </button>
+                <button @click="editDeck" class="button is-info">Edit</button>
+                <!-- <button @click="createNewCard" class="button is-success">Add card</button> -->
+                <!-- <button @click="moveToClassView" class="button is-warning">Classes</button> -->
                 <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
             </div>
-            <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
+
             <table class="table is-fullwidth">
                 <thead>
                     <tr>
-                        <th>Mark</th>
+                        <th class="is-hidden-touch">Mark</th>
                         <th>Visible side</th>
                         <th>Hidden side</th>
                         <th>Edit</th>
-                        <th>Delete</th>
+                        <th class="is-hidden-touch">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(card, index) in cards" :key="card.id">
-                        <td>{{ card.mark }}</td>
+                        <td class="is-hidden-touch">{{ card.mark }}</td>
                         <td>{{ card.visiblePart }}</td>
                         <td>{{ card.hiddenPart }}</td>
                         <td>
                             <a @click="editCard(card.id)" class="">Edit</a>
                         </td>
-                        <td>
+                        <td class="is-hidden-touch">
                             <a @click="deleteCard(card.id)" class="has-text-danger">Delete</a>
                         </td>
                     </tr>

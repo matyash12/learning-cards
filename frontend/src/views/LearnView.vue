@@ -2,56 +2,99 @@
 import axios from 'axios';
 
 import { API_ADDRESS } from '@/helpers.js';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
 const route = useRoute();
 
-const cards = ref([]);
-const activeid = ref(-1);
 const isHiddenVisible = ref(false)
 const progressBarWidth = ref('45') //learning progress bar from 0-100
-let deckid = route.params.deckid;
-let mark_one_count = ref(null);
-let mark_two_count = ref(null);
-let mark_three_count = ref(null);
-let mark_four_count = ref(null);
-let mark_five_count = ref(null);
-let mark_none_count = ref(null);
+var sessionId = route.params.sessionid;
+var mark_one_count = ref(null);
+var mark_two_count = ref(null);
+var mark_three_count = ref(null);
+var mark_four_count = ref(null);
+var mark_five_count = ref(null);
+var mark_none_count = ref(null);
 
-let deck = ref(null);
+var deck = ref(null);
+var card = ref(null);
 
+const optionForNumberOfcards = ref([
+    { text: '3 cards', value: 3 },
+    { text: '4 cards', value: 4 },
+    { text: '5 cards', value: 5 },
+    { text: '6 cards', value: 6 },
+    { text: '7 cards', value: 7 },
+    { text: '8 cards', value: 8 },
+    { text: '9 cards', value: 9 },
+    { text: '10 cards', value: 10 },
+    { text: '11 cards', value: 11 },
+    { text: '12 cards', value: 12 },
+    { text: '13 cards', value: 13 },
+    { text: '14 cards', value: 14 },
+    { text: '15 cards', value: 15 },
+    { text: '16 cards', value: 16 },
+    { text: '17 cards', value: 17 },
+    { text: '18 cards', value: 18 },
+    { text: '19 cards', value: 19 },
+    { text: '20 cards', value: 20 },
+    { text: '21 cards', value: 21 },
+    { text: '22 cards', value: 22 }
+]);
 
-let hiddenImagePart = ref("")
-let visibleImagePart = ref("")
+var hiddenImagePart = ref("")
+var visibleImagePart = ref("")
 
+const isBurgerMenuOpen = ref(false);
+
+const isSettingsOpened = ref(false);
 
 //maximum number of cards user can have in "learning mode"
 //These cards will repeat until learned
 const maximumNumberOfCardsInLearning = ref(3);
 
-
 //false = first will be shown visible side
-//tru = first will be shown hidden side
+//true= first will be shown hidden side
 const showReversedSides = ref(false)
 
-const getDeck = () => {
-    let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: API_ADDRESS + 'deck/' + deckid,
-        headers: {}
-    };
 
-    axios.request(config)
-        .then((response) => {
-            deck.value = response.data.data;
-        })
-        .catch((error) => {
+watch(maximumNumberOfCardsInLearning, (newValue, oldValue) => {
+    axios.post(API_ADDRESS + '/learnsession/update',
+        {
+            sessionId: sessionId,
+            numberOfCardsInActiveLearning: newValue
+        },
+        {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    ).then(function (result) {
+    }).catch(function (err) {
+        somethingFailed(err);
+    })
+});
 
-            console.log(error);
-            somethingFailed();
-        });
+const toggleBurgerMenu = () => {
+    isBurgerMenuOpen.value = !isBurgerMenuOpen.value;
+};
+
+const somethingFailed = (error) => {
+    console.log(error)
+    router.push("/user/login")
+}
+
+const showHidden = () => {
+    isHiddenVisible.value = true
+}
+
+const moveToDeck = () => {
+    router.push('/deck/' + deck.value.id);
+}
+
+const openLearningSettings = () => {
+    isSettingsOpened.value = !isSettingsOpened.value
 }
 
 
@@ -109,177 +152,66 @@ const numberOfMarksCountCounter = () => {
     }
 }
 
-const findCards = () => {
-    axios.post(API_ADDRESS + 'card/find',
-        {
-            deckid: deckid,
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        }
+const fetchSession = () =>{
+    //fetchSession
+    axios.get(API_ADDRESS + '/learnsession/' + sessionId
     ).then(function (result) {
-        console.log("new cards from findCards")
-        cards.value = result.data.data;
-        updateUI();
-
-        if (activeid.value == -1) {
-            next();
-        }
-
+        maximumNumberOfCardsInLearning.value = result.data.data.numberOfCardsInActiveLearning;
+        progressBarWidth.value = result.data.data.progress;
     }).catch(function (err) {
-
-        console.log(err);
-        somethingFailed();
+        somethingFailed(err);
     })
 }
 
-
-const showHidden = () => {
-    isHiddenVisible.value = true
-}
-
-
-const cardsInLearning = ref([]);
-
-
-//clears cardsInLearning from cards with mark 1
-const dropCardsThatYouKnow = () => {
-
-    cardsInLearning.value = cardsInLearning.value.filter(function (card) {
-        return card.mark != 1;
-    });
-
-}
-function getRandomElement(arr) {
-    const randomIndex = Math.floor(Math.random() * arr.length);
-    return arr[randomIndex];
-}
-//returns cardsInLearning with random card which is not cardsInLearning
-const randomFillerCardItCantBeIncardsInLearning = () => {
-    var okCards = []
-    for (var card of cards.value) {
-        var cardIdOkToBeAdded = true;
-        for (var cardChecking of cardsInLearning.value) {
-            if (cardChecking.id == card.id) {
-                //ok and add the card
-
-                cardIdOkToBeAdded = false;
-            }
-        }
-        if (cardIdOkToBeAdded == true) {
-            okCards.push(card);
-
-        }
-    }
-
-    if (okCards.length == 0) {
-        return null;
-    } else {
-        var randomCard = getRandomElement(okCards);
-        return randomCard;
-    }
-
-
-}
-
-const next = () => {
-
-    dropCardsThatYouKnow();
-
-    if (cards.value.length > 0) {
-
-
-        //Add card in cardsInLearning
-        while (cardsInLearning.value.length < maximumNumberOfCardsInLearning.value) {
-            var cardAdded = false;
-
-            for (var card of cards.value) {
-                if (card.mark != 1) {
-                    var cardIdOkToBeAdded = true;
-                    for (var cardChecking of cardsInLearning.value) {
-                        if (cardChecking.id == card.id) {
-                            //ok and add the card
-
-                            cardIdOkToBeAdded = false;
-                        }
-                    }
-                    if (cardIdOkToBeAdded == true) {
-                        cardsInLearning.value.push(card);
-                        cardAdded = true;
-
-                        break;
-                    }
-                }
-            }
-            if (cardAdded == false) {
-                break;
-            }
-        }
-        //This runs when cardmanager is unable to find enough cards with bad marks
-        while (cardsInLearning.value.length < maximumNumberOfCardsInLearning.value) {
-            var maybecard = randomFillerCardItCantBeIncardsInLearning();
-            if (maybecard != null) {
-                cardsInLearning.value.push(maybecard);
-            } else {
-                //there arent any more cards
-                break;
-            }
-
-        }
-
-
-
-
-
-        if (cardsInLearning.value.length > activeid.value) {
-            activeid.value = activeid.value + 1;
-        }
-        if (cardsInLearning.value.length == activeid.value) {
-            activeid.value = 0;
-        }
-
-
-
-    }
-
-
-
-
-    loadImages();
-    isHiddenVisible.value = false;
-}
-const nextMark = (mark) => {
-    if (isHiddenVisible.value == false) {
+const next = (mark = null) => {
+    if (isHiddenVisible.value == false && mark != null) {
         return;
     }
 
-    axios.post(API_ADDRESS + 'card/update',
-        {
-            id: cardsInLearning.value[activeid.value].id,
-            mark: mark
-        },
-        {
-            headers: {
-                'Content-Type': 'multipart/form-data'
+    const fetchNextCard = () => {
+        axios.post(API_ADDRESS + '/learn/next',
+            {
+                id: sessionId
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             }
-        }
-    ).then(function (result) {
-        if (result.status == 200) {
-            findCards();
+        ).then(function (result) {
+            deck.value = result.data.data.deckEntity;
+            card.value = result.data.data;
+            isHiddenVisible.value = false;
+            fetchSession();
+            loadImages();
+        }).catch(function (err) {
+            somethingFailed(err);
+        })
 
-        }
-    }).catch(function (err) {
-        console.log(err);
-        somethingFailed();
-    })
-    next();
-}
+    }
 
-const somethingFailed = () => {
-    console.log("Something failed!")
-    router.push("/user/login")
+
+    if (mark != null) {
+        axios.post(API_ADDRESS + 'card/update',
+            {
+                id: card.value.id,
+                mark: mark
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+        ).then(function (result) {
+            if (result.status == 200) {
+                fetchNextCard();
+            }
+        }).catch(function (err) {
+            somethingFailed(err);
+        })
+    } else {
+        fetchNextCard();
+    }
 }
 
 const updateProgressBar = () => {
@@ -315,17 +247,8 @@ const updateProgressBar = () => {
     });
     progressBarWidth.value = (1 - (actualValueOfMarks / maximumValueOfMarks)) * 100;
 }
-const moveToDeck = () => {
-    router.push('/deck/' + deckid);
-}
-
-const updateUI = () => {
-    updateProgressBar();
-    numberOfMarksCountCounter();
-}
 
 const handleKeyDown = (event) => {
-
     if (event.key === ' ') {
         if (!isHiddenVisible.value) {
             isHiddenVisible.value = true;
@@ -333,50 +256,44 @@ const handleKeyDown = (event) => {
     }
     if (event.key === '1') {
         if (isHiddenVisible) {
-            nextMark(1);
+            next(1);
         }
     }
     if (event.key === '2') {
         if (isHiddenVisible) {
-            nextMark(2);
+            next(2);
         }
     }
     if (event.key === '3') {
         if (isHiddenVisible) {
-            nextMark(3);
+            next(3);
         }
     }
     if (event.key === '4') {
         if (isHiddenVisible) {
-            nextMark(4);
+            next(4);
         }
     }
     if (event.key === '5') {
         if (isHiddenVisible) {
-            nextMark(5);
+            next(5);
         }
     }
     if (event.key === '0') {
         if (isHiddenVisible) {
-            next();
+            next(0);
         }
     }
 };
 
-onMounted(() => {
-    window.addEventListener('keydown', handleKeyDown);
-});
-onUnmounted(() => {
-    window.removeEventListener('keydown', handleKeyDown);
-});
 const loadImages = () => {
-    if (activeid.value == -1) {
+    if (card.value == null) {
         return;
     }
     hiddenImagePart.value = "";
     visibleImagePart.value = "";
     axios.post(API_ADDRESS + 'image/find', {
-        "cardid": cardsInLearning.value[activeid.value].id
+        "cardid": card.value.id
     },
         {
             headers: {
@@ -395,52 +312,20 @@ const loadImages = () => {
                     visibleImagePart.value = API_ADDRESS + 'image/show/' + imageR.id;
                 }
             }
-
         }).catch(function (error) {
-            //router.push("/user/login")
-            console.log(error);
+            somethingFailed(error)
         });
 }
 
-const isSettingsOpened = ref(false);
-const openLearningSettings = () => {
-    isSettingsOpened.value = !isSettingsOpened.value
-}
+onMounted(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    fetchSession();
+    next();
 
-const optionForNumberOfcards = ref([
-    { text: '3 cards', value: 3 },
-    { text: '4 cards', value: 4 },
-    { text: '5 cards', value: 5 },
-    { text: '6 cards', value: 6 },
-    { text: '7 cards', value: 7 },
-    { text: '8 cards', value: 8 },
-    { text: '9 cards', value: 9 },
-    { text: '10 cards', value: 10 },
-    { text: '11 cards', value: 11 },
-    { text: '12 cards', value: 12 },
-    { text: '13 cards', value: 13 },
-    { text: '14 cards', value: 14 },
-    { text: '15 cards', value: 15 },
-    { text: '16 cards', value: 16 },
-    { text: '17 cards', value: 17 },
-    { text: '18 cards', value: 18 },
-    { text: '19 cards', value: 19 },
-    { text: '20 cards', value: 20 },
-    { text: '21 cards', value: 21 },
-    { text: '22 cards', value: 22 }
-]);
-
-findCards();
-getDeck();
-loadImages();
-
-const isBurgerMenuOpen = ref(false);
-
-const toggleBurgerMenu = () => {
-    isBurgerMenuOpen.value = !isBurgerMenuOpen.value;
-};
-
-
+});
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeyDown);
+});
 </script>
 
 <template>
@@ -492,10 +377,11 @@ const toggleBurgerMenu = () => {
 
 
 
-    <div v-if="!isSettingsOpened">
+    <div v-if="!isSettingsOpened" style="overflow-x: hidden;">
         <!--Navbar-->
+
         <header>
-            <div class="wrapper">
+            <div class="wrapper" style="height: 52px;">
                 <nav class="navbar" role="navigation" aria-label="main navigation">
                     <div class="navbar-brand">
                         <a role="button" class="navbar-burger" aria-label="menu" :class="{ 'is-active': isBurgerMenuOpen }"
@@ -508,15 +394,15 @@ const toggleBurgerMenu = () => {
 
                     <div id="navbarBasicExample" :class="{ 'is-active': isBurgerMenuOpen }" class="navbar-menu">
                         <div class="navbar-start">
-                            <a class="navbar-item" @click="moveToDeck">
-                                Exit
+                            <a class="navbar-item" @click="openLearningSettings">
+                                Setup
                             </a>
                         </div>
                         <div class="navbar-end">
                             <div class="navbar-item">
                                 <div class="buttons">
-                                    <a class="button is-light" @click="openLearningSettings">
-                                        Setup
+                                    <a class="button is-light" @click="moveToDeck">
+                                        Exit
                                     </a>
                                 </div>
                             </div>
@@ -527,38 +413,13 @@ const toggleBurgerMenu = () => {
         </header>
 
 
-
-
-        <!-- <header>
-            <div class="wrapper">
-                <nav class="navbar">
-                    <div class="navbar-menu is-active">
-                        <div class="navbar-end">
-                            <div class="navbar-start">
-                                <a class="navbar-item">
-                                    <button @click="moveToDeck" class="button">
-                                        Exit
-                                    </button>
-
-                                </a>
-                                <a class="navbar-item">
-                                    <button @click="openLearningSettings" class="button">Setup</button>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-        </header> -->
-
-
-
-
         <div class='container hero is-fullheight-with-navbar '>
 
 
             <div class="columns">
-                <div class="column is-one-quarter is-hidden-mobile">
+
+                <!--Left side stats-->
+                <div class="column is-one-quarter is-hidden-touch">
                     <div class="box">
                         <h1 class="title">{{ deck?.tridaEntity.name ?? 'Loading...' }}</h1>
                         <h2 class="subtitle">{{ deck?.name ?? 'Loading...' }}</h2>
@@ -600,35 +461,37 @@ const toggleBurgerMenu = () => {
                         </table>
 
                     </div>
-                    <!--
-                <button @click="moveToDeck" class="button is-link">Go to Deck</button>
-                    -->
                 </div>
 
+
+                <div class="m-4 is-hidden-desktop">
+                    <progress class="progress is-primary " :value="progressBarWidth" max="100">{{ progressBarWidth
+                    }}%</progress>
+                </div>
                 <div class="column">
 
-                    <div v-if="activeid !== -1">
+                    <div v-if="card != null">
                         <div class="box">
 
                             <div v-if="!showReversedSides">
                                 <img v-if="visibleImagePart != ''" :src="visibleImagePart">
-                                <textarea class="textarea" readonly>{{ cardsInLearning[activeid].visiblePart }}</textarea>
+                                <textarea class="textarea" readonly>{{ card.visiblePart }}</textarea>
                             </div>
 
                             <div v-if="showReversedSides">
                                 <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
-                                <textarea class="textarea" readonly>{{ cardsInLearning[activeid].hiddenPart }}</textarea>
+                                <textarea class="textarea" readonly>{{ card.hiddenPart }}</textarea>
                             </div>
                         </div>
                         <div class="box" v-if="isHiddenVisible">
                             <div v-if="showReversedSides">
                                 <img v-if="visibleImagePart != ''" :src="visibleImagePart">
-                                <textarea class="textarea" readonly>{{ cardsInLearning[activeid].visiblePart }}</textarea>
+                                <textarea class="textarea" readonly>{{ card.visiblePart }}</textarea>
                             </div>
 
                             <div v-if="!showReversedSides">
                                 <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
-                                <textarea class="textarea" readonly>{{ cardsInLearning[activeid].hiddenPart }}</textarea>
+                                <textarea class="textarea" readonly>{{ card.hiddenPart }}</textarea>
                             </div>
                         </div>
 
@@ -638,42 +501,6 @@ const toggleBurgerMenu = () => {
                 </div>
 
             </div>
-            <!--
-        <footer class="has-text-centered m-4">
-            <button v-if="!isHiddenVisible" @click="showHidden" class="button is-info is-fullwidth is-fullheight">Show hidden</button>
-            <div v-if="isHiddenVisible">
-                <div class="buttons">
-                    
-                    
-                    
-                   
-                    
-                </div>
-                
-                <div class="columns is-mobile is-gapless m-4">
-                    <div class="column">
-                        <button @click="nextMark(1)" class="button is-success is-responsible is-large">1</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(2)" class="button is-success is-responsible is-large ">2</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(3)" class="button is-success is-responsible is-large">3</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(4)" class="button is-success is-responsible is-large">4</button>
-                    </div>
-                    <div class="column">
-                        <button @click="nextMark(5)" class="button is-success is-responsible is-large">5</button>
-                    </div>
-                </div>
-               
-                    
-                <button v-if="isHiddenVisible" @click="next" class="button is-primary is-light">Skip</button>
-
-            </div>
-        </footer>
-    -->
 
 
             <footer class="m-2">
@@ -681,11 +508,11 @@ const toggleBurgerMenu = () => {
                     style="width: 100%; padding: 15px; font-size: 18px; min-height: 100px;">Reveal answer</button>
 
                 <div v-if="isHiddenVisible" style="width: 100%;">
-                    <button @click="nextMark(1)" class="button mark-1 markedbutton">1</button>
-                    <button @click="nextMark(2)" class="button mark-2 markedbutton">2</button>
-                    <button @click="nextMark(3)" class="button mark-3 markedbutton">3</button>
-                    <button @click="nextMark(4)" class="button mark-4 markedbutton">4</button>
-                    <button @click="nextMark(5)" class="button mark-5 markedbutton">5</button>
+                    <button @click="next(1)" class="button mark-1 markedbutton">1</button>
+                    <button @click="next(2)" class="button mark-2 markedbutton">2</button>
+                    <button @click="next(3)" class="button mark-3 markedbutton">3</button>
+                    <button @click="next(4)" class="button mark-4 markedbutton">4</button>
+                    <button @click="next(5)" class="button mark-5 markedbutton">5</button>
                 </div>
             </footer>
 
