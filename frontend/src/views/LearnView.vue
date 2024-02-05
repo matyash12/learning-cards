@@ -152,7 +152,7 @@ const numberOfMarksCountCounter = () => {
     }
 }
 
-const fetchSession = () =>{
+const fetchSession = () => {
     //fetchSession
     axios.get(API_ADDRESS + '/learnsession/' + sessionId
     ).then(function (result) {
@@ -326,6 +326,35 @@ onMounted(() => {
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeyDown);
 });
+
+
+watch(card, async () => {
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    await sleep(1);
+    try {
+        const firstTextArea = document.getElementById('firstTextArea')
+        firstTextArea.style.height = 'auto';
+        firstTextArea.style.height = `${firstTextArea.scrollHeight}px`;
+    } catch(e){}
+    try {
+        const secondTextArea = document.getElementById('secondTextArea')
+        secondTextArea.style.height = 'auto';
+        secondTextArea.style.height = `${secondTextArea.scrollHeight}px`;
+    } catch(e){}
+    try {
+        const thirdTextArea = document.getElementById('thirdTextArea')
+        thirdTextArea.style.height = 'auto';
+        thirdTextArea.style.height = `${thirdTextArea.scrollHeight}px`;
+    } catch(e){}
+    try {
+        const fourthTextArea = document.getElementById('fourthTextArea')
+        fourthTextArea.style.height = 'auto';
+        fourthTextArea.style.height = `${fourthTextArea.scrollHeight}px`;
+    } catch(e){}
+})
+
 </script>
 
 <template>
@@ -475,23 +504,23 @@ onUnmounted(() => {
 
                             <div v-if="!showReversedSides">
                                 <img v-if="visibleImagePart != ''" :src="visibleImagePart">
-                                <textarea class="textarea" readonly>{{ card.visiblePart }}</textarea>
+                                <textarea id="firstTextArea" class="textarea" readonly>{{ card.visiblePart }}</textarea>
                             </div>
 
                             <div v-if="showReversedSides">
                                 <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
-                                <textarea class="textarea" readonly>{{ card.hiddenPart }}</textarea>
+                                <textarea id="secondTextArea" class="textarea" readonly>{{ card.hiddenPart }}</textarea>
                             </div>
                         </div>
                         <div class="box" v-if="isHiddenVisible">
                             <div v-if="showReversedSides">
                                 <img v-if="visibleImagePart != ''" :src="visibleImagePart">
-                                <textarea class="textarea" readonly>{{ card.visiblePart }}</textarea>
+                                <textarea id="thirdTextArea" class="textarea" readonly>{{ card.visiblePart }}</textarea>
                             </div>
 
                             <div v-if="!showReversedSides">
                                 <img v-if="hiddenImagePart != ''" :src="hiddenImagePart">
-                                <textarea class="textarea" readonly>{{ card.hiddenPart }}</textarea>
+                                <textarea id="fourthTextArea" class="textarea" readonly>{{ card.hiddenPart }}</textarea>
                             </div>
                         </div>
 

@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 import { API_ADDRESS, isValidField } from '@/helpers.js';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { notificationStore } from '@/stores/notification.js';
 const store = notificationStore();
@@ -271,6 +271,27 @@ const deleteCard = () => {
             console.log(error);
         });
 }
+
+
+watch(visiblePart, async () => {
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    await sleep(1);
+    const textarea = document.getElementById('visiblePart')
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+});
+watch(hiddenPart, async () => {
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    await sleep(1);
+    const textarea = document.getElementById('hiddenPart')
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+});
+
 
 </script>
 
