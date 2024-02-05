@@ -291,6 +291,27 @@ const deleteCard = () => {
         });
 }
 
+
+watch(visiblePart, async () => {
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    await sleep(1);
+    const textarea = document.getElementById('visiblePart')
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+});
+watch(hiddenPart, async () => {
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    await sleep(1);
+    const textarea = document.getElementById('hiddenPart')
+    textarea.style.height = 'auto';
+    textarea.style.height = `${textarea.scrollHeight}px`;
+});
+
+
 </script>
 
 
