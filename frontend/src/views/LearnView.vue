@@ -60,7 +60,7 @@ const showReversedSides = ref(false)
 
 
 watch(maximumNumberOfCardsInLearning, (newValue, oldValue) => {
-    axios.post(API_ADDRESS + '/learnsession/update',
+    axios.post(API_ADDRESS + 'learnsession/update',
         {
             sessionId: sessionId,
             numberOfCardsInActiveLearning: newValue
@@ -154,7 +154,7 @@ const numberOfMarksCountCounter = () => {
 
 const fetchSession = () => {
     //fetchSession
-    axios.get(API_ADDRESS + '/learnsession/' + sessionId
+    axios.get(API_ADDRESS + 'learnsession/' + sessionId
     ).then(function (result) {
         maximumNumberOfCardsInLearning.value = result.data.data.numberOfCardsInActiveLearning;
         progressBarWidth.value = result.data.data.progress;
@@ -169,7 +169,7 @@ const next = (mark = null) => {
     }
 
     const fetchNextCard = () => {
-        axios.post(API_ADDRESS + '/learn/next',
+        axios.post(API_ADDRESS + 'learn/next',
             {
                 id: sessionId
             },
