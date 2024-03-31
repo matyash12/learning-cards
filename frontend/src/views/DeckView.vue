@@ -15,6 +15,8 @@ let id = ref(route.params.id);
 let deck = ref(null);
 let cards = ref([]);
 
+let isDeleteThisDeckRunning = ref(false)
+
 const getDeck = (deckid) => {
 
     let config = {
@@ -86,6 +88,8 @@ const moveToLearning = () => {
     })
 }
 const deleteThisDeck = () => {
+    isDeleteThisDeckRunning.value = true;
+
     axios.post(API_ADDRESS + 'deck/delete',
         {
             id: id,
@@ -96,10 +100,12 @@ const deleteThisDeck = () => {
             }
         }
     ).then(function (result) {
+        isDeleteThisDeckRunning.value = false;
         store.newNotification("Deck was deleted", false, "is-info", 3);
         moveToClassView();
 
     }).catch(function (err) {
+        isDeleteThisDeckRunning.value = false;
         router.push("/user/login")
         console.log(err);
     })
@@ -154,8 +160,8 @@ const handleApiError = (error) => {
 
                 </button>
                 <button @click="editDeck" class="button is-info">Edit</button>
-                <!-- <button @click="createNewCard" class="button is-success">Add card</button> -->
-                <!-- <button @click="moveToClassView" class="button is-warning">Classes</button> -->
+                <button @click="createNewCard" class="button is-success">Add card</button>
+                <button @click="moveToClassView" class="button is-warning">Classes</button>
                 <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
             </div>
 
