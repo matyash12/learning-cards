@@ -92,7 +92,7 @@ const deleteThisDeck = () => {
 
     axios.post(API_ADDRESS + 'deck/delete',
         {
-            id: id,
+            id: id.value,
         },
         {
             headers: {
