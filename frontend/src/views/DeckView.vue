@@ -15,6 +15,8 @@ let id = ref(route.params.id);
 let deck = ref(null);
 let cards = ref([]);
 
+let isDeleteThisDeckRunning = ref(false)
+
 const getDeck = (deckid) => {
 
     let config = {
@@ -86,9 +88,11 @@ const moveToLearning = () => {
     })
 }
 const deleteThisDeck = () => {
+    isDeleteThisDeckRunning.value = true;
+
     axios.post(API_ADDRESS + 'deck/delete',
         {
-            id: id,
+            id: id.value,
         },
         {
             headers: {
@@ -96,16 +100,38 @@ const deleteThisDeck = () => {
             }
         }
     ).then(function (result) {
-        store.newNotification("Deck was deleted",false,"is-info",3);
+        isDeleteThisDeckRunning.value = false;
+        store.newNotification("Deck was deleted", false, "is-info", 3);
         moveToClassView();
 
     }).catch(function (err) {
+        isDeleteThisDeckRunning.value = false;
         router.push("/user/login")
         console.log(err);
     })
 }
+
+const deleteCard = async (cardid) => {
+    try {
+        await axios.post(
+            `${API_ADDRESS}card/delete`,
+            { id: cardid },
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+        store.newNotification("Card was deleted", false, "is-info", 3);
+        refreshDataOnPage();
+    } catch (err) {
+        handleApiError(err);
+    }
+};
+
 const editCard = (cardid) => {
     router.push(`/deck/${deck.value.id}/${cardid}/edit`);
+};
+
+const refreshDataOnPage = () => {
+    getDeck(id.value);
+    findCards(id.value);
 };
 
 refreshDataOnPage();
@@ -140,7 +166,7 @@ const handleApiError = (error) => {
 <template>
     <div class="m-4">
         <div>
-            <!-- <h1 class="title">{{ deck?.name ?? "loading..." }}</h1> -->
+            <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
 
             <div class="buttons">
                 <button @click="moveToLearning" class="button is-primary">
@@ -149,8 +175,8 @@ const handleApiError = (error) => {
 
                 </button>
                 <button @click="editDeck" class="button is-info">Edit</button>
-                <!-- <button @click="createNewCard" class="button is-success">Add card</button> -->
-                <!-- <button @click="moveToClassView" class="button is-warning">Classes</button> -->
+                <button @click="createNewCard" class="button is-success">Add card</button>
+                <button @click="moveToClassView" class="button is-warning">Classes</button>
                 <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
             </div>
 
@@ -202,4 +228,3 @@ const handleApiError = (error) => {
         </div>
     </div>
 </template>
-

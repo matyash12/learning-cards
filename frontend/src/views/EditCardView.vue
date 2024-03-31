@@ -435,9 +435,6 @@ watch(hiddenPart, async () => {
                     </button>
                 </div>
                 <div class="control">
-                    <button class="button is-danger" @click="deleteCard">Delete</button>
-                </div>
-                <div class="control">
                     <button class="button is-link is-light" @click="moveToDeckView">Cancel</button>
                 </div>
             </div>
