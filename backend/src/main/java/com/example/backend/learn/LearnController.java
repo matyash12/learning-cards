@@ -24,6 +24,8 @@ import com.example.backend.learn.LearnChange.LearnChangeEntity;
 import com.example.backend.learn.LearnChange.LearnChangeRepository;
 import com.example.backend.learn.LearnSession.LearnSessionEntity;
 import com.example.backend.learn.LearnSession.LearnSessionRepository;
+import com.example.backend.learn.SupportClasses.CardWithMarkCount;
+import com.example.backend.learn.SupportClasses.MarkCount;
 
 @RestController
 @RequestMapping("/learn")
@@ -40,7 +42,6 @@ public class LearnController {
 
     @PostMapping(path = "/next")
     public @ResponseBody ResponseEntity<ApiResponse> getNextCard(@RequestParam Long id) {
-
         // check if id exists
         Optional<LearnSessionEntity> sessionOptional = learnSessionRepository.findById(id);
         if (sessionOptional.isEmpty()) {
@@ -148,10 +149,20 @@ public class LearnController {
         var learnChange = new LearnChangeEntity(session, theCard);
         learnChangeRepository.save(learnChange);
 
+        
+
+        //count of each mark
+        Double[] markCountArray = cardRepository.TableMarksByDeckEntityId(session.getDeckEntity().getId());
+        MarkCount markCount = new MarkCount(markCountArray[0].intValue(), markCountArray[1].intValue(), markCountArray[2].intValue(), markCountArray[3].intValue(), markCountArray[4].intValue(), markCountArray[5].intValue());
         //return theCard
-        return new ApiResponse(theCard, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
+
+        CardWithMarkCount cardWithMarkCount = new CardWithMarkCount(theCard, markCount);
+        
+        return new ApiResponse(cardWithMarkCount, ApiMessages.OK, HttpStatus.OK).toResponseEntity();
     }
 
 
 
 }
+
+

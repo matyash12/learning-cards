@@ -179,8 +179,16 @@ const next = (mark = null) => {
                 }
             }
         ).then(function (result) {
-            deck.value = result.data.data.deckEntity;
-            card.value = result.data.data;
+            card.value = result.data.data.theCard;
+            deck.value = card.value.deckEntity
+            
+            mark_none_count.value = result.data.data.markCount.mark_zero;
+            mark_one_count.value = result.data.data.markCount.mark_one;
+            mark_two_count.value = result.data.data.markCount.mark_two;
+            mark_three_count.value = result.data.data.markCount.mark_three;
+            mark_four_count.value = result.data.data.markCount.mark_four;
+            mark_five_count.value = result.data.data.markCount.mark_five;
+            
             isHiddenVisible.value = false;
             fetchSession();
             loadImages();
