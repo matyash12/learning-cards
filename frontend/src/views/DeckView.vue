@@ -108,6 +108,11 @@ const editCard = (cardid) => {
     router.push(`/deck/${deck.value.id}/${cardid}/edit`);
 };
 
+const refreshDataOnPage = () => {
+    getDeck(id.value);
+    findCards(id.value);
+};
+
 refreshDataOnPage();
 
 const isDeleteConfirmationModalActive = ref(false);
