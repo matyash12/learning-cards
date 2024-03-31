@@ -19,7 +19,7 @@ const isCreateNewTridaRunning = ref(false);
 
 // Methods
 const createNewTrida = () => {
-    if (isCreateNewTridaRunning.value = true){
+    if (isCreateNewTridaRunning.value == true){
         return;
     }
     isCreateNewTridaRunning.value = true;
