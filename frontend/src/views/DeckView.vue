@@ -110,6 +110,21 @@ const deleteThisDeck = () => {
         console.log(err);
     })
 }
+
+const deleteCard = async (cardid) => {
+    try {
+        await axios.post(
+            `${API_ADDRESS}card/delete`,
+            { id: cardid },
+            { headers: { 'Content-Type': 'multipart/form-data' } }
+        );
+        store.newNotification("Card was deleted", false, "is-info", 3);
+        refreshDataOnPage();
+    } catch (err) {
+        handleApiError(err);
+    }
+};
+
 const editCard = (cardid) => {
     router.push(`/deck/${deck.value.id}/${cardid}/edit`);
 };
