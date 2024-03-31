@@ -96,7 +96,7 @@ const deleteThisDeck = () => {
             }
         }
     ).then(function (result) {
-        store.newNotification("Deck was deleted",false,"is-info",3);
+        store.newNotification("Deck was deleted", false, "is-info", 3);
         moveToClassView();
 
     }).catch(function (err) {
@@ -145,7 +145,7 @@ const handleApiError = (error) => {
 <template>
     <div class="m-4">
         <div>
-            <!-- <h1 class="title">{{ deck?.name ?? "loading..." }}</h1> -->
+            <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
 
             <div class="buttons">
                 <button @click="moveToLearning" class="button is-primary">
@@ -207,4 +207,3 @@ const handleApiError = (error) => {
         </div>
     </div>
 </template>
-
