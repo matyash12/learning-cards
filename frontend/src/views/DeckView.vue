@@ -183,24 +183,28 @@ const handleApiError = (error) => {
 
                     </div>
                     <div class="level-right">
-                        <button @click="createNewCard" class="button is-success"><img
-                                src="/src/icons/add_FILL0_wght400_GRAD0_opsz24.svg">
-                            Add card
-                        </button>
+                        <div class="level-item">
+                            <button @click="moveToLearning" class="button is-primary">
+                                <div v-if="movingToLearningIsRunning == true" class="loader"></div>
+                                <p v-if="movingToLearningIsRunning == false">Learn</p>
+                            </button>
+                        </div>
+                        <div class="level-item">
+                            <button @click="editDeck" class="button is-info is-light">Edit</button>
+                        </div>
+                        <div class="level-item">
+                            <button @click="showDeleteConfirmationModal" class="button is-danger is-light">Delete</button>
+                        </div>
+                        <div class="level-item">
+                            <button @click="createNewCard" class="button is-primary"><img
+                                    src="/src/icons/add_FILL0_wght400_GRAD0_opsz24.svg">
+                                Add card
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-
-            <div class="buttons">
-                <button @click="moveToLearning" class="button is-primary">
-                    <div v-if="movingToLearningIsRunning == true" class="loader"></div>
-                    <p v-if="movingToLearningIsRunning == false">Learn</p>
-                </button>
-                <button @click="editDeck" class="button is-info">Edit</button>
-
-                <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
-            </div>
 
             <table class="table is-fullwidth">
                 <thead>
