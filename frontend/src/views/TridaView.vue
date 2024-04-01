@@ -147,25 +147,25 @@ const handleApiError = (error) => {
 
 <template>
     <div class="m-4">
-            <div class="level is-mobile">
-                <div class="level-left">
-                   
-                    <div class="level-item">
-                        <button class="button" @click="exportData">
-                            Export data
-                        </button>
-                    </div>
-                </div>
-                <div class="level-right">
-                    <div class="level-item">
-                        <button class="button is-light" @click="logOut">
-                            Log out
-                        </button>
-                    </div>
-                </div>
+        <div class="level is-mobile">
+            <div class="level-left">
 
+                <div class="level-item">
+                    <button class="button" @click="exportData">
+                        Export data
+                    </button>
+                </div>
             </div>
-            
+            <div class="level-right">
+                <div class="level-item">
+                    <button class="button is-light" @click="logOut">
+                        Log out
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
 
 
         <div class="columns">
@@ -181,7 +181,7 @@ const handleApiError = (error) => {
 
                         <li v-for="(trida) in tridy">
                             <a :class="{ 'is-active': trida == selectedTrida }" @click="selectTrida(trida.id)">{{
-                            trida.name }}</a>
+                        trida.name }}</a>
                         </li>
 
                         <li>
@@ -198,16 +198,20 @@ const handleApiError = (error) => {
                         {{ selectedTrida?.name ?? '' }}
                     </p>
 
-                    <div class="buttons">
-                        <button @click="createNewDeck" class="button ">
-                            Create new deck
-                        </button>
-                        <button @click="editTrida" class="button">
-                            Edit class
-                        </button>
-                        <button class="button" @click="showDeleteConfirmationModal">Delete</button>
+                    <div class="level">
+                        <div class="level-left">
+                            <div class="level-item">
 
+                                <button @click="createNewDeck" class="button ">Create new deck</button>
+                            </div>
+                            <div class="level-item">
+                                <button @click="editTrida" class="button">Edit class</button>
+                            </div>
+                            <div class="level-item">
+                                <button class="button" @click="showDeleteConfirmationModal">Delete</button>
+                            </div>
 
+                        </div>
                     </div>
 
                 </div>
