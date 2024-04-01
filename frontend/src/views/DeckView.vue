@@ -218,14 +218,14 @@ const handleApiError = (error) => {
                 </thead>
                 <tbody>
                     <tr v-for="(card, index) in cards" :key="card.id">
-                        <td>{{ card.mark }}</td>
+                        <td class="is-hidden-touch">{{ card.mark }}</td>
                         <td>{{ card.visiblePart }}</td>
                         <td>{{ card.hiddenPart }}</td>
                         <td>
                             <a @click="editCard(card.id)" class="">Edit</a>
                         </td>
                         <td>
-                            <a @click="deleteCard(card.id)" class="has-text-danger">Delete</a>
+                            <a @click="deleteCard(card.id)" class="has-text-danger is-hidden-touch">Delete</a>
                         </td>
                     </tr>
                 </tbody>
