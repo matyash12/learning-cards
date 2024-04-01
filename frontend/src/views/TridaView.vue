@@ -152,14 +152,24 @@ const handleApiError = (error) => {
 
                 <div class="level-item">
                     <button class="button" @click="exportData">
-                        Export data
+                        <span class="icon">
+                            <img src="/src/icons/download_FILL0_wght400_GRAD0_opsz24.svg">
+                        </span>
+                        <span>
+                            Export data
+                        </span>
                     </button>
                 </div>
             </div>
             <div class="level-right">
                 <div class="level-item">
                     <button class="button is-light" @click="logOut">
-                        Log out
+                        <span class="icon">
+                            <img src="/src/icons/logout_FILL0_wght400_GRAD0_opsz24.svg">
+                        </span>
+                        <span>
+                            Log out
+                        </span>
                     </button>
                 </div>
             </div>
@@ -200,15 +210,41 @@ const handleApiError = (error) => {
 
                     <div class="level">
                         <div class="level-left">
-                            <div class="level-item">
 
-                                <button @click="createNewDeck" class="button ">Create new deck</button>
-                            </div>
+
+                             <!--Create new deck button-->
                             <div class="level-item">
-                                <button @click="editTrida" class="button">Edit class</button>
+                                <button @click="createNewDeck" class="button ">
+                                    <span class="icon">
+                                    <img src="/src/icons/add_FILL0_wght400_GRAD0_opsz24.svg">
+                                </span>
+                                <span>Create new deck</span>
+                                </button>
                             </div>
+                            
+                            <!--Edit class button-->
                             <div class="level-item">
-                                <button class="button" @click="showDeleteConfirmationModal">Delete</button>
+                                <button @click="editTrida" class="button">
+                                    <span class="icon">
+                                        <img src="/src/icons/edit_FILL0_wght400_GRAD0_opsz24.svg">
+                                    </span>
+                                   <span>
+                                    Edit class
+                                   </span>
+                                </button>
+                            </div>
+
+
+                            <!--Delete button-->
+                            <div class="level-item">
+                                <button class="button" @click="showDeleteConfirmationModal">
+                                    <span class="icon">
+                                        <img src="/src/icons/delete_FILL0_wght400_GRAD0_opsz24.svg">
+                                    </span>
+                                    <span>
+                                        Delete
+                                    </span>
+                                </button>
                             </div>
 
                         </div>
