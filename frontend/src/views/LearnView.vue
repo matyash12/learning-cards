@@ -418,36 +418,18 @@ watch(card, async () => {
         <!--Navbar-->
 
         <header>
-            <div class="wrapper" style="height: 52px;">
-                <nav class="navbar" role="navigation" aria-label="main navigation">
-                    <div class="navbar-brand">
-                        <a role="button" class="navbar-burger" aria-label="menu"
-                            :class="{ 'is-active': isBurgerMenuOpen }" @click="toggleBurgerMenu" aria-expanded="false"
-                            data-target="navbarBasicExample">
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                        </a>
-                    </div>
+            <div class="container" style="height: 52px;">
+                <div class="buttons">
+                    <button @click="moveToDeck" class="button">
+                        <img src="/src/icons/arrow_back_FILL0_wght400_GRAD0_opsz24.svg">
+                        Exit
+                    </button>
+                    <button class="button" @click="openLearningSettings">
+                        <img src="/src/icons/settings_FILL0_wght400_GRAD0_opsz24.svg">
+                        Setup
+                    </button>
 
-                    <div id="navbarBasicExample" :class="{ 'is-active': isBurgerMenuOpen }" class="navbar-menu">
-                        <div class="navbar-start">
-                            <div class="navbar-item">
-                                <div class="buttons">
-                                    <button @click="moveToDeck" class="button">
-                                        <img src="/src/icons/arrow_back_FILL0_wght400_GRAD0_opsz24.svg">
-                                        Exit
-                                    </button>
-                                    <button class="button" @click="openLearningSettings">
-                                        <img src="/src/icons/settings_FILL0_wght400_GRAD0_opsz24.svg">
-                                        Setup
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
+                </div>
             </div>
         </header>
 
