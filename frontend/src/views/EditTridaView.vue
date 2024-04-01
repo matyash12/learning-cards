@@ -83,21 +83,40 @@ const moveToClasses = () => {
                     <label class="label">New name for class</label>
                     <div class="control">
                         <div class="loader" v-if="isLoadTridaRunning == true"></div>
-                        <input v-model="tridaName" class="input" type="text" placeholder="Class name" v-if="isLoadTridaRunning == false">
+                        <input v-model="tridaName" class="input" type="text" placeholder="Class name"
+                            v-if="isLoadTridaRunning == false">
                     </div>
                 </div>
 
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-primary" @click="renameTrida">
-                            <div class="loader" v-if="isRenameTridaRunning == true"></div>
-                            <p v-if="isRenameTridaRunning == false">Rename</p>
-                        </button>
-                    </div>
-                    <div class="control">
-                        <button class="button is-link is-light" @click="moveToClasses">Cancel</button>
+                <div class="level">
+                    <div class="level-left">
+
+                        <!--Rename button-->
+                        <div class="level-item">
+                            <button class="button is-primary" @click="renameTrida">
+                                <span class="icon">
+                                    <div class="loader" v-if="isRenameTridaRunning == true"></div>
+                                    <img v-if="isRenameTridaRunning == false"
+                                        src="/src/icons/done_FILL0_wght400_GRAD0_opsz24.svg">
+                                </span>
+                                <span>Rename</span>
+                            </button>
+                        </div>
+
+
+                        <!--Cancel button-->
+                        <div class="level-item">
+                            <button class="button is-link is-light" @click="moveToClasses">
+                                <span class="icon">
+                                    <img src="/src/icons/undo_FILL0_wght400_GRAD0_opsz24.svg">
+                                </span>
+                                <span>Exit</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
+
+
             </div>
 
         </div>
