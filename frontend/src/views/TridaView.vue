@@ -191,9 +191,7 @@ const handleApiError = (error) => {
                         <li v-if="isTridaLoading">
                             <div class="loader"></div>
                         </li>
-                        <li v-if="isTridaLoading">
-                            <div class="loader"></div>
-                        </li>
+
                         <li v-for="(trida) in tridy">
                             <a :class="{ 'is-active': trida == selectedTrida }" @click="selectTrida(trida.id)">{{ trida.name }}</a>
                         </li>
@@ -235,9 +233,7 @@ const handleApiError = (error) => {
                         <li v-if="isDecksLoading">
                             <div class="loader"></div>
                         </li>
-                        <li v-if="isDecksLoading">
-                            <div class="loader"></div>
-                        </li>
+
                         <li v-for="(deck) in selectedTridaDecks">
                             <a @click="clickDeck(deck.id)">{{ deck.name }}</a>
                         </li>
