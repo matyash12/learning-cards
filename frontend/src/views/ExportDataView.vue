@@ -64,7 +64,8 @@ const moveToClassView = () => {
         </div>
 
 
-        <p class="content">You can export data in csv format.</p>
+        <p class="content has-text-centered-mobile">You can export data in csv format.</p>
+        <div class="has-text-centered-mobile">
         <button class="button is-primary" @click="downloadHF">
             <div v-if="isDownloadHFRunning == false">
                 <div class="level is-mobile">
@@ -80,5 +81,6 @@ const moveToClassView = () => {
             </div>
             <div class="loader" v-if="isDownloadHFRunning == true"></div>
         </button>
+    </div>
     </div>
 </template>
