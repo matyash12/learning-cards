@@ -85,13 +85,28 @@ getTrida();
                         <input v-model="deckName" class="input" type="text" placeholder="Deck name">
                     </div>
                 </div>
+                <div class="level">
+                    <div class="level-left">
 
-                <div class="field is-grouped">
-                    <div class="control">
-                        <button class="button is-primary" @click="createNewDeckForm">Create</button>
-                    </div>
-                    <div class="control">
-                        <button class="button is-link is-light" @click="moveToClasses">Cancel</button>
+                        <!--Create button-->
+                        <div class="level-item">
+                            <button class="button is-primary" @click="createNewDeckForm">
+                                <span class="icon">
+                                    <img  src="/src/icons/add_FILL0_wght400_GRAD0_opsz24.svg">
+                                </span>
+                                <span>Create</span>
+                            </button>
+                        </div>
+
+                        <!--Cancel button-->
+                        <div class="level-item">
+                            <button class="button" @click="moveToClasses">
+                            <span class="icon">
+                                <img src="/src/icons/undo_FILL0_wght400_GRAD0_opsz24.svg">
+                            </span>
+                            <span>Exit</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

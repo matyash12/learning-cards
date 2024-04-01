@@ -421,21 +421,42 @@ watch(hiddenPart, async () => {
                 <p v-text="warningMessage"></p>
             </div>
             <div class="loader" v-if="isLoadCardDetailsRunning == true"></div>
-            <div class="field is-grouped" v-if="isLoadCardDetailsRunning == false">
-                <div class="control">
-                    <button class="button is-primary" @click="updateCard">
-                        <p v-if="isUpdateCardRunning == false">Save changes</p>
-                        <div class="loader" v-if="isUpdateCardRunning"></div>
-                    </button>
-                </div>
-                <div class="control">
-                    <button class="button is-danger" @click="deleteCard">
-                        <p v-if="isDeleteCardRunning == false">Delete</p>
-                        <div class="loader" v-if="isDeleteCardRunning == true"></div>
-                    </button>
-                </div>
-                <div class="control">
-                    <button class="button is-link is-light" @click="moveToDeckView">Cancel</button>
+            <div class="level" v-if="isLoadCardDetailsRunning == false">
+                <div class="level-left">
+
+                    <!--Save changes button-->
+                    <div class="level-item">
+                        <button class="button is-primary" @click="updateCard">
+                            <span class="icon">
+                                <div class="loader" v-if="isUpdateCardRunning == true"></div>
+                                <img v-if="isUpdateCardRunning == false"
+                                    src="/src/icons/done_FILL0_wght400_GRAD0_opsz24.svg">
+                            </span>
+                            <span>Save changes</span>
+                        </button>
+                    </div>
+
+                    <!--delete button-->
+                    <div class="level-item">
+                        <button class="button" @click="deleteCard">
+                            <span class="icon">
+                                <img v-if="isDeleteCardRunning == false"
+                                    src="/src/icons/delete_FILL0_wght400_GRAD0_opsz24.svg">
+                                <div class="loader" v-if="isDeleteCardRunning == true"></div>
+                            </span>
+                            <span>Delete</span>
+                        </button>
+                    </div>
+
+                    <div class="level-item">
+                        <button class="button" @click="moveToDeckView">
+                            <span class="icon">
+                                <img src="/src/icons/undo_FILL0_wght400_GRAD0_opsz24.svg">
+                            </span>
+                            <span>Exit</span>
+
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

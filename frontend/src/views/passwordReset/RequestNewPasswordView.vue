@@ -66,18 +66,34 @@ const loginInstead = () => {
               <button class="delete" @click="closeWarning"></button>
               <p v-text="warningMessage"></p>
             </div>
-            <div class="field is-grouped">
-              <div class="control">
-                <button class="button is-primary" @click="sendRecoveryEmail">
 
-                  <div class="loader" v-if="isSendRecoveryEmailRunning == true"></div>
-                  <p v-if="isSendRecoveryEmailRunning == false">Send recovery email</p>
-                </button>
-              </div>
-              <div class="control">
-                <button class="button is-link is-light" @click="loginInstead">Login instead</button>
-              </div>
+            <div class="level">
+              <div class="level-left">
 
+
+                <!--Send recovery email button-->
+                <div class="level-item">
+                  <button class="button is-primary" @click="sendRecoveryEmail">
+                    <span class="icon">
+                      <div class="loader" v-if="isSendRecoveryEmailRunning == true"></div>
+                      <img v-if="isSendRecoveryEmailRunning == false"
+                        src="/src/icons/lock_reset_FILL0_wght400_GRAD0_opsz24.svg">
+                    </span>
+                    <span>Send recovery email</span>
+                  </button>
+                </div>
+
+                <!--Login instead button-->
+                <div class="level-item">
+                  <button @click="loginInstead" class="button">
+                    <span class="icon">
+                      <img src="/src/icons/login_FILL0_wght400_GRAD0_opsz24.svg">
+                    </span>
+                    <span>Login instead</span>
+                  </button>
+                </div>
+
+              </div>
             </div>
           </form>
         </div>

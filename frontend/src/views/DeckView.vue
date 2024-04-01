@@ -170,10 +170,17 @@ const handleApiError = (error) => {
                 <div class="level">
                     <div class="level-left">
                         <div class="level-item">
+
                             <button @click="moveToClassView" class="button">
-                                <img src="/src/icons/arrow_back_FILL0_wght400_GRAD0_opsz24.svg">
-                                Back
+                                <span class="icon">
+                                    <img src="/src/icons/arrow_back_FILL0_wght400_GRAD0_opsz24.svg">
+                                </span>
+                                <span>
+                                    Back
+                                </span>
                             </button>
+
+
                         </div>
                         <div class="level-item">
                             <h1 class="title">
@@ -185,20 +192,42 @@ const handleApiError = (error) => {
                     <div class="level-right">
                         <div class="level-item">
                             <button @click="moveToLearning" class="button">
-                                <div v-if="movingToLearningIsRunning == true" class="loader"></div>
-                                <p v-if="movingToLearningIsRunning == false">Learn</p>
+                                <span class="icon">
+                                    <img v-if="movingToLearningIsRunning == false"
+                                        src="/src/icons/school_FILL0_wght400_GRAD0_opsz24.svg">
+                                    <div v-if="movingToLearningIsRunning == true" class="loader"></div>
+                                </span>
+                                <span>Learn</span>
                             </button>
                         </div>
                         <div class="level-item">
-                            <button @click="editDeck" class="button">Edit</button>
+                            <button @click="editDeck" class="button">
+                                <span class="icon">
+                                    <img src="/src/icons/edit_FILL0_wght400_GRAD0_opsz24.svg">
+                                </span>
+                                <span>
+                                    Edit
+                                </span>
+                            </button>
                         </div>
                         <div class="level-item">
-                            <button @click="showDeleteConfirmationModal" class="button">Delete</button>
+                            <button @click="showDeleteConfirmationModal" class="button">
+                                <span class="icon">
+                                    <img src="/src/icons/delete_FILL0_wght400_GRAD0_opsz24.svg">
+                                </span>
+                                <span>
+                                    Delete
+                                </span>
+                            </button>
                         </div>
                         <div class="level-item">
-                            <button @click="createNewCard" class="button"><img
-                                    src="/src/icons/add_FILL0_wght400_GRAD0_opsz24.svg">
-                                New card
+                            <button @click="createNewCard" class="button">
+                                <span class="icon">
+                                    <img src="/src/icons/add_FILL0_wght400_GRAD0_opsz24.svg">
+                                </span>
+                                <span>
+                                    New card
+                                </span>
                             </button>
                         </div>
                     </div>
@@ -218,14 +247,16 @@ const handleApiError = (error) => {
                 </thead>
                 <tbody>
                     <tr v-for="(card, index) in cards" :key="card.id">
-                        <td>{{ card.mark }}</td>
+                        <td class="is-hidden-touch">{{ card.mark }}</td>
                         <td>{{ card.visiblePart }}</td>
                         <td>{{ card.hiddenPart }}</td>
                         <td>
-                            <a @click="editCard(card.id)" class="">Edit</a>
+                            <a @click="editCard(card.id)">
+                                Edit
+                            </a>
                         </td>
                         <td>
-                            <a @click="deleteCard(card.id)" class="has-text-danger">Delete</a>
+                            <a @click="deleteCard(card.id)" class="has-text-danger is-hidden-touch">Delete</a>
                         </td>
                     </tr>
                 </tbody>

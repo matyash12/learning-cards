@@ -3,7 +3,7 @@ import axios from 'axios';
 import { API_ADDRESS } from '@/helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { notificationStore } from '@/stores/notification.js'; 
+import { notificationStore } from '@/stores/notification.js';
 
 const store = notificationStore();
 const router = useRouter();
@@ -22,7 +22,7 @@ const closeWarning = () => {
 };
 
 const loginRequest = async () => {
-  if (isLoginRequestLoading.value == true){
+  if (isLoginRequestLoading.value == true) {
     return
   }
   try {
@@ -79,18 +79,50 @@ const recoverPassword = () => {
               <button class="delete" @click="closeWarning"></button>
               <p v-text="warningMessage"></p>
             </div>
-            <div class="buttons">
-              <button class="button is-primary" @click="loginRequest">
-                <div v-if="isLoginRequestLoading">
-                  <div class="loader"></div>
+            <div class="level">
+
+
+              <div class="level-left">
+
+
+
+                <!--Login button-->
+                <div class="level-item">
+                  <button class="button is-primary" @click="loginRequest">
+                    <span class="icon">
+                      <div v-if="isLoginRequestLoading" class="loader"></div>
+                      <img v-if="isLoginRequestLoading == false" src="/src/icons/login_FILL0_wght400_GRAD0_opsz24.svg">
+                    </span>
+                    <span>Login</span>
+
+                  </button>
                 </div>
-                <div v-if="isLoginRequestLoading == false">
-                  Login
-                </div> 
-                
-              </button>
-              <button class="button is-link is-light" @click="recoverPassword">Recover password</button>
-              <button class="button is-link is-light" @click="createAccount">Create account</button>
+
+                <!--Recover password button-->
+                <div class="level-item">
+                  <button class="button" @click="recoverPassword">
+                    <span class="icon">
+                      <img src="/src/icons/lock_reset_FILL0_wght400_GRAD0_opsz24.svg">
+                    </span>
+                    <span>
+                      Recover password
+                    </span>
+                  </button>
+                </div>
+
+                <!--Create account button-->
+                <div class="level-item">
+                  <button class="button" @click="createAccount">
+                    <span class="icon">
+                      <img src="/src/icons/person_add_FILL0_wght400_GRAD0_opsz24.svg">
+                    </span>
+                    <span>Create account</span>
+                  </button>
+                </div>
+
+
+
+              </div>
             </div>
           </form>
         </div>

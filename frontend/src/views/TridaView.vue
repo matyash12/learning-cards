@@ -147,39 +147,35 @@ const handleApiError = (error) => {
 
 <template>
     <div class="m-4">
-        <!--Navbar-->
-        <header>
-            <div class="wrapper">
-                <nav class="navbar" role="navigation" aria-label="main navigation">
-                    <div class="navbar-brand">
-                        <a role="button" class="navbar-burger" aria-label="menu"
-                            :class="{ 'is-active': isBurgerMenuOpen }" @click="toggleBurgerMenu" aria-expanded="false"
-                            data-target="navbarBasicExample">
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                        </a>
-                    </div>
+        <div class="level is-mobile">
+            <div class="level-left">
 
-                    <div id="navbarBasicExample" :class="{ 'is-active': isBurgerMenuOpen }" class="navbar-menu">
-                        <div class="navbar-start">
-                            <a class="navbar-item" @click="exportData">
-                                Export data
-                            </a>
-                        </div>
-                        <div class="navbar-end">
-                            <div class="navbar-item">
-                                <div class="buttons">
-                                    <a class="button is-light" @click="logOut">
-                                        Log out
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
+                <div class="level-item">
+                    <button class="button" @click="exportData">
+                        <span class="icon">
+                            <img src="/src/icons/download_FILL0_wght400_GRAD0_opsz24.svg">
+                        </span>
+                        <span>
+                            Export data
+                        </span>
+                    </button>
+                </div>
             </div>
-        </header>
+            <div class="level-right">
+                <div class="level-item">
+                    <button class="button is-light" @click="logOut">
+                        <span class="icon">
+                            <img src="/src/icons/logout_FILL0_wght400_GRAD0_opsz24.svg">
+                        </span>
+                        <span>
+                            Log out
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
 
 
         <div class="columns">
@@ -195,7 +191,7 @@ const handleApiError = (error) => {
 
                         <li v-for="(trida) in tridy">
                             <a :class="{ 'is-active': trida == selectedTrida }" @click="selectTrida(trida.id)">{{
-                                trida.name }}</a>
+                        trida.name }}</a>
                         </li>
 
                         <li>
@@ -212,16 +208,46 @@ const handleApiError = (error) => {
                         {{ selectedTrida?.name ?? '' }}
                     </p>
 
-                    <div class="buttons">
-                        <button @click="createNewDeck" class="button ">
-                            Create new deck
-                        </button>
-                        <button @click="editTrida" class="button">
-                            Edit class
-                        </button>
-                        <button class="button" @click="showDeleteConfirmationModal">Delete</button>
+                    <div class="level">
+                        <div class="level-left">
 
 
+                             <!--Create new deck button-->
+                            <div class="level-item">
+                                <button @click="createNewDeck" class="button ">
+                                    <span class="icon">
+                                    <img src="/src/icons/add_FILL0_wght400_GRAD0_opsz24.svg">
+                                </span>
+                                <span>Create new deck</span>
+                                </button>
+                            </div>
+                            
+                            <!--Edit class button-->
+                            <div class="level-item">
+                                <button @click="editTrida" class="button">
+                                    <span class="icon">
+                                        <img src="/src/icons/edit_FILL0_wght400_GRAD0_opsz24.svg">
+                                    </span>
+                                   <span>
+                                    Edit class
+                                   </span>
+                                </button>
+                            </div>
+
+
+                            <!--Delete button-->
+                            <div class="level-item">
+                                <button class="button" @click="showDeleteConfirmationModal">
+                                    <span class="icon">
+                                        <img src="/src/icons/delete_FILL0_wght400_GRAD0_opsz24.svg">
+                                    </span>
+                                    <span>
+                                        Delete
+                                    </span>
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
 
                 </div>

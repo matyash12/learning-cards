@@ -53,8 +53,12 @@ const moveToClassView = () => {
             <div class="level-left">
                 <div class="level-item">
                     <button @click="moveToClassView" class="button">
-                        <img src="/src/icons/arrow_back_FILL0_wght400_GRAD0_opsz24.svg">
-                        Back
+                        <span class="icon">
+                            <img src="/src/icons/arrow_back_FILL0_wght400_GRAD0_opsz24.svg">
+                        </span>
+                        <span>
+                            Back
+                        </span>
                     </button>
                 </div>
                 <div class="level-item">
@@ -65,22 +69,13 @@ const moveToClassView = () => {
 
 
         <p class="content has-text-centered-mobile">You can export data in csv format.</p>
-        <div class="has-text-centered-mobile">
+        
         <button class="button is-primary" @click="downloadHF">
-            <div v-if="isDownloadHFRunning == false">
-                <div class="level is-mobile">
-                    <div class="level-item">
-                        <img src="/src/icons/download_FILL0_wght400_GRAD0_opsz24.svg">
-                    </div>
-                    <div class="level-item">
-                        <p>Download</p>
-                    </div>
-                </div>
-               
-              
-            </div>
-            <div class="loader" v-if="isDownloadHFRunning == true"></div>
+            <span class="icon">
+                <img v-if="isDownloadHFRunning == false" src="/src/icons/download_FILL0_wght400_GRAD0_opsz24.svg">
+                <div class="loader" v-if="isDownloadHFRunning == true"></div>
+            </span>
+            <span>Download</span>
         </button>
-    </div>
     </div>
 </template>
