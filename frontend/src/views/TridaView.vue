@@ -148,38 +148,25 @@ const handleApiError = (error) => {
 <template>
     <div class="m-4">
         <!--Navbar-->
-        <header>
-            <div class="wrapper">
-                <nav class="navbar" role="navigation" aria-label="main navigation">
-                    <div class="navbar-brand">
-                        <a role="button" class="navbar-burger" aria-label="menu"
-                            :class="{ 'is-active': isBurgerMenuOpen }" @click="toggleBurgerMenu" aria-expanded="false"
-                            data-target="navbarBasicExample">
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                        </a>
+            <div class="level is-mobile">
+                <div class="level-left">
+                   
+                    <div class="level-item">
+                        <button class="button" @click="exportData">
+                            Export data
+                        </button>
                     </div>
+                </div>
+                <div class="level-right">
+                    <div class="level-item">
+                        <button class="button is-light" @click="logOut">
+                            Log out
+                        </button>
+                    </div>
+                </div>
 
-                    <div id="navbarBasicExample" :class="{ 'is-active': isBurgerMenuOpen }" class="navbar-menu">
-                        <div class="navbar-start">
-                            <a class="navbar-item" @click="exportData">
-                                Export data
-                            </a>
-                        </div>
-                        <div class="navbar-end">
-                            <div class="navbar-item">
-                                <div class="buttons">
-                                    <a class="button is-light" @click="logOut">
-                                        Log out
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
             </div>
-        </header>
+            
 
 
         <div class="columns">
@@ -195,7 +182,7 @@ const handleApiError = (error) => {
 
                         <li v-for="(trida) in tridy">
                             <a :class="{ 'is-active': trida == selectedTrida }" @click="selectTrida(trida.id)">{{
-                                trida.name }}</a>
+                            trida.name }}</a>
                         </li>
 
                         <li>
