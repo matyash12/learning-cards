@@ -147,7 +147,6 @@ const handleApiError = (error) => {
 
 <template>
     <div class="m-4">
-        <!--Navbar-->
             <div class="level is-mobile">
                 <div class="level-left">
                    
