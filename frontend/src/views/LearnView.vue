@@ -421,12 +421,17 @@ watch(card, async () => {
             <div class="container" style="height: 52px;">
                 <div class="buttons">
                     <button @click="moveToDeck" class="button">
-                        <img src="/src/icons/arrow_back_FILL0_wght400_GRAD0_opsz24.svg">
-                        Exit
+                        <span class="icon">
+                            <img src="/src/icons/arrow_back_FILL0_wght400_GRAD0_opsz24.svg">
+                        </span>
+                       <span>Exit</span>
+                        
                     </button>
                     <button class="button" @click="openLearningSettings">
-                        <img src="/src/icons/settings_FILL0_wght400_GRAD0_opsz24.svg">
-                        Setup
+                        <span class="icon">
+                            <img src="/src/icons/settings_FILL0_wght400_GRAD0_opsz24.svg">
+                        </span>
+                        <span>Setup</span>
                     </button>
 
                 </div>
