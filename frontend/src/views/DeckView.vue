@@ -166,17 +166,23 @@ const handleApiError = (error) => {
 <template>
     <div class="m-4">
         <div>
-            <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
-
+            
+            <h1 class="title">
+                <button @click="moveToClassView" class="button">
+                    <img src="/src/icons/arrow_back_FILL0_wght400_GRAD0_opsz24.svg">
+                    Back
+                </button>
+                 {{ deck?.name ?? "loading..." }}
+                </h1>
+    
             <div class="buttons">
                 <button @click="moveToLearning" class="button is-primary">
                     <div v-if="movingToLearningIsRunning == true" class="loader"></div>
                     <p v-if="movingToLearningIsRunning == false">Learn</p>
-
                 </button>
                 <button @click="editDeck" class="button is-info">Edit</button>
                 <button @click="createNewCard" class="button is-success">Add card</button>
-                <button @click="moveToClassView" class="button is-warning">Classes</button>
+                
                 <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
             </div>
 
