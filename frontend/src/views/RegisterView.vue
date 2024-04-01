@@ -4,7 +4,7 @@ import axios from 'axios';
 import { API_ADDRESS } from '@/helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { notificationStore } from '@/stores/notification.js'; 
+import { notificationStore } from '@/stores/notification.js';
 const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
@@ -26,7 +26,7 @@ const closeWarning = () => {
 
 
 const registerRequest = () => {
-  if (isRegisterRequestRunning.value == true){
+  if (isRegisterRequestRunning.value == true) {
     return;
   }
   isRegisterRequestRunning.value = true;
@@ -46,8 +46,8 @@ const registerRequest = () => {
       }
     }
   ).then(function (result) {
-    isRegisterRequestRunning.value =false;
-    store.newNotification("Account created",false,"is-success",3);
+    isRegisterRequestRunning.value = false;
+    store.newNotification("Account created", false, "is-success", 3);
     router.push('/user/login');
   }).catch(function (err) {
     isRegisterRequestRunning.value = false;
@@ -102,16 +102,30 @@ const loginInstead = () => {
               <button class="delete" @click="closeWarning"></button>
               <p v-text="warningMessage"></p>
             </div>
-            <div class="field is-grouped">
-              <div class="control">
-                <button class="button is-primary" @click="registerRequest">
-                
-                  <div v-if="isRegisterRequestRunning == true" class="loader"></div>
-                  <p v-if="isRegisterRequestRunning == false">Create</p>
-                </button>
-              </div>
-              <div class="control">
-                <button class="button is-link is-light" @click="loginInstead">Login instead</button>
+
+
+            <div class="level">
+
+              <div class="level-left">
+                <div class="level-item">
+                  <!--Create account button-->
+                  <button class="button is-primary" @click="registerRequest">
+                    <span class="icon">
+                      <img v-if="isRegisterRequestRunning == false"
+                        src="/src/icons/person_add_FILL0_wght400_GRAD0_opsz24.svg">
+                      <div v-if="isRegisterRequestRunning == true" class="loader"></div>
+                    </span>
+                    <span>Create account</span>
+                  </button>
+                </div>
+                <div class="level-item">
+                  <button class="button" @click="loginInstead">
+                    <span class="icon">
+                      <img src="/src/icons/login_FILL0_wght400_GRAD0_opsz24.svg">
+                    </span>
+                    <span>Login instead</span>
+                  </button>
+                </div>
               </div>
             </div>
           </form>
