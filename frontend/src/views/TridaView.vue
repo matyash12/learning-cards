@@ -152,8 +152,9 @@ const handleApiError = (error) => {
             <div class="wrapper">
                 <nav class="navbar" role="navigation" aria-label="main navigation">
                     <div class="navbar-brand">
-                        <a role="button" class="navbar-burger" aria-label="menu" :class="{ 'is-active': isBurgerMenuOpen }"
-                            @click="toggleBurgerMenu" aria-expanded="false" data-target="navbarBasicExample">
+                        <a role="button" class="navbar-burger" aria-label="menu"
+                            :class="{ 'is-active': isBurgerMenuOpen }" @click="toggleBurgerMenu" aria-expanded="false"
+                            data-target="navbarBasicExample">
                             <span aria-hidden="true"></span>
                             <span aria-hidden="true"></span>
                             <span aria-hidden="true"></span>
@@ -193,7 +194,8 @@ const handleApiError = (error) => {
                         </li>
 
                         <li v-for="(trida) in tridy">
-                            <a :class="{ 'is-active': trida == selectedTrida }" @click="selectTrida(trida.id)">{{ trida.name }}</a>
+                            <a :class="{ 'is-active': trida == selectedTrida }" @click="selectTrida(trida.id)">{{
+                                trida.name }}</a>
                         </li>
 
                         <li>
@@ -211,13 +213,13 @@ const handleApiError = (error) => {
                     </p>
 
                     <div class="buttons">
-                        <button @click="createNewDeck" class="button is-primary ">
+                        <button @click="createNewDeck" class="button ">
                             Create new deck
                         </button>
-                        <button @click="editTrida" class="button is-link">
+                        <button @click="editTrida" class="button">
                             Edit class
                         </button>
-                        <button class="button is-danger" @click="showDeleteConfirmationModal">Delete</button>
+                        <button class="button" @click="showDeleteConfirmationModal">Delete</button>
 
 
                     </div>
@@ -228,7 +230,7 @@ const handleApiError = (error) => {
 
 
                 <aside class="menu">
-                    
+
                     <ul class="menu-list">
                         <li v-if="isDecksLoading">
                             <div class="loader"></div>

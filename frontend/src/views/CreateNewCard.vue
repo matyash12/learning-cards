@@ -240,6 +240,7 @@ const imageVisibleFileDelete = () => {
                 <button class="delete" @click="closeWarning"></button>
                 <p v-text="warningMessage"></p>
             </div>
+            <br>
             <div class="field is-grouped">
                 <div class="control">
                     <button class="button is-primary" @click="createCard">

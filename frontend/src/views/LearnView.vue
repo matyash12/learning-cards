@@ -181,14 +181,14 @@ const next = (mark = null) => {
         ).then(function (result) {
             card.value = result.data.data.theCard;
             deck.value = card.value.deckEntity
-            
+
             mark_none_count.value = result.data.data.markCount.mark_zero;
             mark_one_count.value = result.data.data.markCount.mark_one;
             mark_two_count.value = result.data.data.markCount.mark_two;
             mark_three_count.value = result.data.data.markCount.mark_three;
             mark_four_count.value = result.data.data.markCount.mark_four;
             mark_five_count.value = result.data.data.markCount.mark_five;
-            
+
             isHiddenVisible.value = false;
             fetchSession();
             loadImages();
@@ -345,22 +345,22 @@ watch(card, async () => {
         const firstTextArea = document.getElementById('firstTextArea')
         firstTextArea.style.height = 'auto';
         firstTextArea.style.height = `${firstTextArea.scrollHeight}px`;
-    } catch(e){}
+    } catch (e) { }
     try {
         const secondTextArea = document.getElementById('secondTextArea')
         secondTextArea.style.height = 'auto';
         secondTextArea.style.height = `${secondTextArea.scrollHeight}px`;
-    } catch(e){}
+    } catch (e) { }
     try {
         const thirdTextArea = document.getElementById('thirdTextArea')
         thirdTextArea.style.height = 'auto';
         thirdTextArea.style.height = `${thirdTextArea.scrollHeight}px`;
-    } catch(e){}
+    } catch (e) { }
     try {
         const fourthTextArea = document.getElementById('fourthTextArea')
         fourthTextArea.style.height = 'auto';
         fourthTextArea.style.height = `${fourthTextArea.scrollHeight}px`;
-    } catch(e){}
+    } catch (e) { }
 })
 
 </script>
@@ -418,34 +418,18 @@ watch(card, async () => {
         <!--Navbar-->
 
         <header>
-            <div class="wrapper" style="height: 52px;">
-                <nav class="navbar" role="navigation" aria-label="main navigation">
-                    <div class="navbar-brand">
-                        <a role="button" class="navbar-burger" aria-label="menu" :class="{ 'is-active': isBurgerMenuOpen }"
-                            @click="toggleBurgerMenu" aria-expanded="false" data-target="navbarBasicExample">
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                            <span aria-hidden="true"></span>
-                        </a>
-                    </div>
+            <div class="container" style="height: 52px;">
+                <div class="buttons">
+                    <button @click="moveToDeck" class="button">
+                        <img src="/src/icons/arrow_back_FILL0_wght400_GRAD0_opsz24.svg">
+                        Exit
+                    </button>
+                    <button class="button" @click="openLearningSettings">
+                        <img src="/src/icons/settings_FILL0_wght400_GRAD0_opsz24.svg">
+                        Setup
+                    </button>
 
-                    <div id="navbarBasicExample" :class="{ 'is-active': isBurgerMenuOpen }" class="navbar-menu">
-                        <div class="navbar-start">
-                            <a class="navbar-item" @click="openLearningSettings">
-                                Setup
-                            </a>
-                        </div>
-                        <div class="navbar-end">
-                            <div class="navbar-item">
-                                <div class="buttons">
-                                    <a class="button is-light" @click="moveToDeck">
-                                        Exit
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
+                </div>
             </div>
         </header>
 
@@ -461,7 +445,7 @@ watch(card, async () => {
                         <h1 class="title">{{ deck?.tridaEntity.name ?? 'Loading...' }}</h1>
                         <h2 class="subtitle">{{ deck?.name ?? 'Loading...' }}</h2>
                         <progress class="progress is-primary" :value="progressBarWidth" max="100">{{ progressBarWidth
-                        }}%</progress>
+                            }}%</progress>
                         <table class="table is-bordered is-striped is-narrow is-hoverable">
                             <thead>
                                 <tr>
@@ -503,7 +487,7 @@ watch(card, async () => {
 
                 <div class="m-4 is-hidden-desktop">
                     <progress class="progress is-primary " :value="progressBarWidth" max="100">{{ progressBarWidth
-                    }}%</progress>
+                        }}%</progress>
                 </div>
                 <div class="column">
 
@@ -597,4 +581,3 @@ watch(card, async () => {
     /* or any other color you prefer for 5 */
 }
 </style>
-  

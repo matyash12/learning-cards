@@ -166,19 +166,45 @@ const handleApiError = (error) => {
 <template>
     <div class="m-4">
         <div>
-            <h1 class="title">{{ deck?.name ?? "loading..." }}</h1>
+            <div class="block">
+                <div class="level">
+                    <div class="level-left">
+                        <div class="level-item">
+                            <button @click="moveToClassView" class="button">
+                                <img src="/src/icons/arrow_back_FILL0_wght400_GRAD0_opsz24.svg">
+                                Back
+                            </button>
+                        </div>
+                        <div class="level-item">
+                            <h1 class="title">
+                                {{ deck?.name ?? "loading..." }}
+                            </h1>
+                        </div>
 
-            <div class="buttons">
-                <button @click="moveToLearning" class="button is-primary">
-                    <div v-if="movingToLearningIsRunning == true" class="loader"></div>
-                    <p v-if="movingToLearningIsRunning == false">Learn</p>
-
-                </button>
-                <button @click="editDeck" class="button is-info">Edit</button>
-                <button @click="createNewCard" class="button is-success">Add card</button>
-                <button @click="moveToClassView" class="button is-warning">Classes</button>
-                <button @click="showDeleteConfirmationModal" class="button is-danger">Delete</button>
+                    </div>
+                    <div class="level-right">
+                        <div class="level-item">
+                            <button @click="moveToLearning" class="button">
+                                <div v-if="movingToLearningIsRunning == true" class="loader"></div>
+                                <p v-if="movingToLearningIsRunning == false">Learn</p>
+                            </button>
+                        </div>
+                        <div class="level-item">
+                            <button @click="editDeck" class="button">Edit</button>
+                        </div>
+                        <div class="level-item">
+                            <button @click="showDeleteConfirmationModal" class="button">Delete</button>
+                        </div>
+                        <div class="level-item">
+                            <button @click="createNewCard" class="button"><img
+                                    src="/src/icons/add_FILL0_wght400_GRAD0_opsz24.svg">
+                                New card
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
+
 
             <table class="table is-fullwidth">
                 <thead>
