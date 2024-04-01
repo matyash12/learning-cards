@@ -4,7 +4,7 @@ import axios from 'axios';
 import { API_ADDRESS, isValidField } from '@/helpers.js';
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { notificationStore } from '@/stores/notification.js'; 
+import { notificationStore } from '@/stores/notification.js';
 const store = notificationStore();
 const router = useRouter();
 const route = useRoute();
@@ -23,7 +23,7 @@ let visibleImagePart = ref("");
 const isCreateCardRunning = ref(false);
 
 const createCard = () => {
-    if (isCreateCardRunning.value == true){
+    if (isCreateCardRunning.value == true) {
         return;
     }
     if (!isValidField(hiddenPart.value) || !isValidField(visiblePart.value)) {
@@ -57,7 +57,7 @@ const createCard = () => {
     )
         .then(function (response) {
             isCreateCardRunning.value = false;
-            store.newNotification("Card was created",false,"is-success",1);
+            store.newNotification("Card was created", false, "is-success", 1);
 
             visiblePart.value = '';
             hiddenPart.value = '';
@@ -188,8 +188,8 @@ const imageVisibleFileDelete = () => {
                 <div class="field">
                     <label class="label">Visible side text</label>
                     <div class="control">
-                        <textarea ref="visiblePartInput" id="visiblePart" v-model="visiblePart" @input="userChangesValue"
-                            class="textarea" type="text" placeholder=""></textarea>
+                        <textarea ref="visiblePartInput" id="visiblePart" v-model="visiblePart"
+                            @input="userChangesValue" class="textarea" type="text" placeholder=""></textarea>
                     </div>
                 </div>
 
@@ -241,18 +241,34 @@ const imageVisibleFileDelete = () => {
                 <p v-text="warningMessage"></p>
             </div>
             <br>
-            <div class="field is-grouped">
-                <div class="control">
-                    <button class="button is-primary" @click="createCard">
-                        <p v-if="isCreateCardRunning == false">Create</p>
-                        <div class="loader" v-if="isCreateCardRunning == true"></div>
-                    
-                    </button>
-                </div>
-                <div class="control">
-                    <button class="button is-link is-light" @click="moveToDeckView">Done</button>
+            <div class="level">
+                <div class="level-left">
+                    <!--Create-->
+                    <div class="level-item">
+                        <button class="button is-primary" @click="createCard">
+                            <span class="icon">
+                                <img v-if="isCreateCardRunning == false" src="/src/icons/add_FILL0_wght400_GRAD0_opsz24.svg">
+                                <div class="loader" v-if="isCreateCardRunning == true"></div>
+                            </span>
+                            <span>
+                                Create
+                            </span>
+                        </button>
+                    </div>
+
+                    <!--Exit button-->
+                    <div class="level-item">
+                        <button class="button" @click="moveToDeckView">
+                            <span class="icon">
+                                <img src="/src/icons/undo_FILL0_wght400_GRAD0_opsz24.svg">
+                            </span>
+                            <span>Exit</span>
+
+                        </button>
+                    </div>
                 </div>
             </div>
+         
         </div>
     </div>
 </template>
