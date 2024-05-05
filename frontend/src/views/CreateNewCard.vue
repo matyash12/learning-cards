@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 import { API_ADDRESS, isValidField } from '@/helpers.js';
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, onUpdated } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { notificationStore } from '@/stores/notification.js';
 const store = notificationStore();
@@ -149,10 +149,39 @@ const imageVisibleFileDelete = () => {
     imageVisibleFile.value = "";
     visibleImagePart.value = ""
 }
+
+async function makeCardsGoodSize() {
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    await sleep(1);
+    const expander = document.getElementById('expander')
+    try {
+        const visiblePart = document.getElementById('visiblePart')
+        expander.style.height = `${visiblePart.scrollHeight}px`;
+        visiblePart.style.height = 'auto';
+        visiblePart.style.height = `${visiblePart.scrollHeight}px`;
+        expander.style.height = `0px`
+    } catch (e) { }
+    try {
+        const hiddenPart = document.getElementById('hiddenPart')
+        expander.style.height = `${hiddenPart.scrollHeight}px`;
+        hiddenPart.style.height = 'auto';
+        hiddenPart.style.height = `${hiddenPart.scrollHeight}px`;
+        expander.style.height = `0px`
+    } catch (e) { }
+}
+
+onUpdated(()=>{
+    makeCardsGoodSize();
+})
+
 </script>
 
 
 <template>
+    <div id="expander"></div>
+
     <div class="m-4">
         <h1 class="title">Create new card</h1>
         <div>
