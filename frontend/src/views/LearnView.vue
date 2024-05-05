@@ -336,7 +336,7 @@ onUnmounted(() => {
 });
 
 
-watch(card, async () => {
+async function makeCardsGoodSize(){
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
@@ -361,6 +361,19 @@ watch(card, async () => {
         fourthTextArea.style.height = 'auto';
         fourthTextArea.style.height = `${fourthTextArea.scrollHeight}px`;
     } catch (e) { }
+}
+
+
+watch(card, async () => {
+  makeCardsGoodSize()
+})
+
+watch(isHiddenVisible, async() =>{
+   makeCardsGoodSize()
+})
+
+watch(showReversedSides, async() =>{
+   makeCardsGoodSize()
 })
 
 </script>
@@ -496,9 +509,11 @@ watch(card, async () => {
                 </div>
                 <div class="column">
 
+                    <!--cards-->
                     <div v-if="card != null">
+                        
+                        <!--first card-->
                         <div class="box">
-
                             <div v-if="!showReversedSides">
                                 <img v-if="visibleImagePart != ''" :src="visibleImagePart">
                                 <textarea id="firstTextArea" class="textarea" readonly>{{ card.visiblePart }}</textarea>
@@ -509,6 +524,8 @@ watch(card, async () => {
                                 <textarea id="secondTextArea" class="textarea" readonly>{{ card.hiddenPart }}</textarea>
                             </div>
                         </div>
+
+                        <!--second card-->
                         <div class="box" v-if="isHiddenVisible">
                             <div v-if="showReversedSides">
                                 <img v-if="visibleImagePart != ''" :src="visibleImagePart">
@@ -522,10 +539,8 @@ watch(card, async () => {
                         </div>
 
 
-
                     </div>
                 </div>
-
             </div>
 
 
