@@ -3,6 +3,13 @@ Web app for learning using cards.
 
 **You can try it out on [live server](https://www.learn.hajek.live/user/login)**
 
+## Screenshots
+<img src="https://github.com/matyash12/learning-cards/assets/93146910/1e221cdd-057f-41c3-a893-1039492ec759" width="300">
+<img src="https://github.com/matyash12/learning-cards/assets/93146910/0c748bae-9140-417a-a29e-97b39b1db5d7" width="300">
+<img src="https://github.com/matyash12/learning-cards/assets/93146910/258fd7b3-0e90-45ec-832e-99a348fb9358" width="300">
+
+
+
 ## Docs
 ### Running as example (Development)
 **Not secure using hardcoded usernames and password** <br/>
